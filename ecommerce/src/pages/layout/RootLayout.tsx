@@ -1,13 +1,11 @@
-import { Button, HStack } from "@chakra-ui/react";
 import { Outlet } from "react-router";
+import Navbar from "../../components/ui/Navbar";
 
 const RootLayout = () => {
   return (
     <div>
-      <HStack>
-        <Button>Click me</Button>
-        <Button>Click me</Button>
-      </HStack>
+      <Navbar />
+
       <Outlet />
     </div>
   );

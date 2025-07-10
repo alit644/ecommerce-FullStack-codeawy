@@ -1,28 +1,74 @@
-import { Button, Card, Image, Text } from "@chakra-ui/react";
+import { Box, Image, Text, Button, IconButton } from "@chakra-ui/react";
+import { FiHeart } from "react-icons/fi";
+import type { IProductCard } from "../../interfaces";
 
-const ProductCard = () => {
+const ProductCard = ({
+  title,
+  description,
+  thumbnail,
+  price,
+}: IProductCard) => {
   return (
-    <Card.Root w={"330px"} bg={"gray.100"} overflow="hidden">
-      <Image
-        rounded="md"
-        src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1770&q=80"
-        alt="Green double couch with wooden legs"
-      />
-      <Card.Body textAlign={"center"} gap="2">
-        <Card.Description fontWeight={"bold"} fontSize="lg">
-          This sofa is perfect for modern tropical spaces, baroque inspired
-          spaces.
-        </Card.Description>
-        <Text mt={0} textStyle="2xl" fontWeight="medium" letterSpacing="tight">
-          $450
+    <Box
+      bg="gray.50"
+      borderRadius="md" // borderRadius خفيف
+      overflow="hidden"
+      transition="transform 0.2s"
+      w={{ base: "100%", sm: "200px", md: "220px" }} // responsive width
+      mx="auto"
+      position="relative"
+      textAlign="center"
+      p={0}
+    >
+      <Box m={2} position="relative">
+        <Image
+          loading="lazy"
+          rounded={"md"}
+          src={thumbnail.url}
+          alt={title}
+          w="100%"
+          h="150px"
+          objectFit="cover"
+          bg="gray.100"
+        />
+        <IconButton
+          aria-label="إضافة إلى المفضلة"
+          // color={isFavorite ? "red.400" : "gray.400"}
+          variant="subtle"
+          size="sm"
+          position="absolute"
+          top={2}
+          right={2}
+          _hover={{ color: "red.500", bg: "gray.50" }}
+        >
+          <FiHeart />
+        </IconButton>
+      </Box>
+      <Box p={{ base: 2, sm: 4 }} spaceY={2}>
+        <Text
+          fontWeight="bold"
+          fontSize={{ base: "md", md: "lg" }}
+          color="gray.700"
+        >
+          {title}
         </Text>
-      </Card.Body>
-      <Card.Footer>
-        <Button w={"100%"} variant="solid">
-          Add to cart
+        <Text fontSize={{ base: "xs", md: "sm" }} color="gray.500">
+          {description}
+        </Text>
+        <Text fontWeight="bold" color="teal.600" fontSize="2xl">
+          ${price}
+        </Text>
+        <Button
+          colorScheme="teal"
+          size="sm"
+          borderRadius={"md"}
+          mt={2}
+          w="full"
+        >
+          Add To Cart
         </Button>
-      </Card.Footer>
-    </Card.Root>
+      </Box>
+    </Box>
   );
 };
 
