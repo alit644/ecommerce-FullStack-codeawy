@@ -79,7 +79,7 @@ export default function Navbar() {
                 type="submit"
                 onClick={() => {
                   dispatch(logout())
-                  window.location.href = "/";
+                  window.location.reload()
                 }}
               >
                 Logout

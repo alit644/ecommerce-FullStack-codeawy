@@ -25,7 +25,21 @@ export interface ICategory {
 
 export interface ILoginInput {
   id: string;
-  name: "identifier" | "password";
+  name: "identifier" | "password"
+  type: string;
+  placeholder: string;
+  label: string;
+  validation: {
+    required?: boolean;
+    pattern?: RegExp;
+    minLength?: number;
+    maxLength?: number;
+  };
+}
+
+export interface IRegisterInput {
+  id: string;
+  name: "username" | "email" | "password"
   type: string;
   placeholder: string;
   label: string;
