@@ -1,0 +1,11 @@
+.navbar {
+  padding: 10px 15px;
+  border-radius: 10px;
+  font-weight: normal;
+  font-size: 22px;
+}
+
+.navbar:hover {
+  text-decoration: none;
+  background-color: #e2e8f0;
+}

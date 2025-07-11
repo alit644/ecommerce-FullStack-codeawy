@@ -7,19 +7,20 @@ import {
   useDisclosure,
   Stack,
   Text,
-  Link,
   Spacer,
+  Button,
 } from "@chakra-ui/react";
 import { FaStore } from "react-icons/fa";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoIosClose } from "react-icons/io";
 import MButton from "./Button";
-
+import { Link as RouterLink } from "react-router";
+import { useAppDispatch, useAppSelector } from "../../App/store";
+import { logout } from "../../App/features/authSlice";
 const Links = [
   { name: "Home", href: "/" },
   { name: "Shop", href: "/shop" },
-  { name: "About", href: "/about" },
-  { name: "Contact", href: "/contact" },
+  { name: "Dashbord", href: "/dashbord" },
 ];
 
 const NavLink = ({
@@ -29,24 +30,15 @@ const NavLink = ({
   href: string;
   children: React.ReactNode;
 }) => (
-  <Link
-    px={3}
-    py={2}
-    rounded={"md"}
-    _hover={{
-      textDecoration: "none",
-      bg: "gray.200",
-    }}
-    href={href}
-    fontWeight="medium"
-    fontSize="md"
-  >
+  <RouterLink className="navbar" to={href}>
     {children}
-  </Link>
+  </RouterLink>
 );
 
 export default function Navbar() {
+  const dispatch = useAppDispatch();
   const { open, onOpen, onClose } = useDisclosure();
+  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
 
   return (
     <Box
@@ -76,16 +68,34 @@ export default function Navbar() {
         <Spacer />
         {/* Auth */}
         <Flex alignItems={"center"} spaceX={2}>
-          <MButton
-            size="sm"
-            title="Login"
-            variant="outline"
-          />
-          <MButton
-            size="sm"
-            title="Sign Up"
-            variant="solid"
-          />
+          {isAuthenticated ? (
+            <>
+              <RouterLink to={"dashbord"}>
+                <MButton size="md" title="Dashbord" variant="solid" />
+              </RouterLink>
+              <Button
+                size="md"
+                variant="outline"
+                type="submit"
+                onClick={() => {
+                  dispatch(logout())
+                  window.location.href = "/";
+                }}
+              >
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <RouterLink to={"login"}>
+                <MButton size="md" title="Login" variant="outline" />
+              </RouterLink>
+              <RouterLink to={"register"}>
+                <MButton size="md" title="Sign Up" variant="solid" />
+              </RouterLink>
+            </>
+          )}
+
           <IconButton
             size={"sm"}
             aria-label={"Open Menu"}

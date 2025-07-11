@@ -28,7 +28,7 @@ const TabsProducts = () => {
     );
   });
 
-  if (isLoading) return <Skeleton height="280px" width="220px"/>
+  if (isLoading) return <Skeleton height="300px"/>
   if (error) return <div>Error fetching products</div>;
   if (data?.data?.length === 0) return <div>لا توجد منتجات في هذا القسم</div>;
 
