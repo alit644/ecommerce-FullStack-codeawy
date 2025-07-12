@@ -1,4 +1,5 @@
 import Cookies from "universal-cookie";
+import type { IUserInfo } from "../interfaces";
 class CookieManager {
   private cookie: Cookies;
 
@@ -7,9 +8,11 @@ class CookieManager {
   }
 
   //* Cookies  *//
-  get(key: string): string | undefined {
+  get<T = string | IUserInfo>(key: string): T | IUserInfo | undefined {
     try {
-      return this.cookie.get(key);
+      const value = this.cookie.get(key) as T | IUserInfo;
+      if(!value) return undefined;
+      return value;
     } catch (error) {
       console.log("Error retrieving cookie", error);
       return undefined;

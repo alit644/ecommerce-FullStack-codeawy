@@ -25,7 +25,7 @@ export interface ICategory {
 
 export interface ILoginInput {
   id: string;
-  name: "identifier" | "password"
+  name: "identifier" | "password";
   type: string;
   placeholder: string;
   label: string;
@@ -39,7 +39,7 @@ export interface ILoginInput {
 
 export interface IRegisterInput {
   id: string;
-  name: "username" | "email" | "password"
+  name: "username" | "email" | "password";
   type: string;
   placeholder: string;
   label: string;
@@ -55,4 +55,21 @@ export interface IError {
   error: {
     message?: string;
   };
+}
+
+export interface IUserInfo {
+  blocked: boolean;
+  confirmed: boolean;
+  createdAt: string;
+  documentId: string;
+  email: string;
+  id: number;
+  provider: string;
+  publishedAt: string;
+  updatedAt: string;
+  username: string;
+}
+export interface AuthData {
+  jwt: string;
+  user: IUserInfo;
 }

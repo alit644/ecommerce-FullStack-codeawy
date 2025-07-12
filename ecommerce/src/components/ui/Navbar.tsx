@@ -17,6 +17,9 @@ import MButton from "./Button";
 import { Link as RouterLink } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../App/store";
 import { logout } from "../../App/features/authSlice";
+import cookieManager from "../../utils/cookieManager";
+import type { IUserInfo } from "../../interfaces";
+
 const Links = [
   { name: "Home", href: "/" },
   { name: "Shop", href: "/shop" },
@@ -39,7 +42,8 @@ export default function Navbar() {
   const dispatch = useAppDispatch();
   const { open, onOpen, onClose } = useDisclosure();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
-
+  const user = cookieManager.get<IUserInfo>("user");
+  console.log(user);
   return (
     <Box
       bg="white"
@@ -70,16 +74,13 @@ export default function Navbar() {
         <Flex alignItems={"center"} spaceX={2}>
           {isAuthenticated ? (
             <>
-              <RouterLink to={"dashbord"}>
-                <MButton size="md" title="Dashbord" variant="solid" />
-              </RouterLink>
               <Button
                 size="md"
                 variant="outline"
                 type="submit"
                 onClick={() => {
-                  dispatch(logout())
-                  window.location.reload()
+                  dispatch(logout());
+                  window.location.reload();
                 }}
               >
                 Logout

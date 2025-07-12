@@ -46,6 +46,7 @@ const BrowseByCategory = () => {
   //! Render Categories Data
   const renderCategory = data?.data.map((item: ICategory) => (
     <CategoryCard
+      key={item.title}
       title={item.title}
       thumbnail={{
         formats: {

@@ -15,7 +15,6 @@ import { LOGIN_FORM } from "../../data";
 import { useAppDispatch, useAppSelector } from "../../App/store";
 import { loginUser } from "../../App/features/loginSlice";
 import { Toaster, toaster } from "../../components/ui/toaster";
-import { login } from "../../App/features/authSlice";
 
 export interface IFormInput {
   identifier: string;
@@ -37,14 +36,14 @@ const Login = () => {
     const resultAction = await dispatch(loginUser(data));
     //! Toaster
     if (loginUser.fulfilled.match(resultAction)) {
-      dispatch(login(resultAction.payload.jwt)); //تحديث حالة المصادقة
+      // dispatch(login(resultAction.payload.jwt)); //تحديث حالة المصادقة
       toaster.success({
         title: "Login successful",
         description: "You have successfully logged in",
-        duration: 3000,
+        duration: 2000,
         type: "success",
       });
-      // window.location.href = "/";
+      window.location.reload();
     } else if (loginUser.rejected.match(resultAction)) {
       const mss = resultAction.payload as string;
       toaster.error({

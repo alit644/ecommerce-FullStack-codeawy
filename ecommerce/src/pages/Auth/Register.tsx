@@ -8,20 +8,21 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import {  NavLink } from "react-router";
+import { NavLink } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
-import {  schemaRegister } from "../../schema";
-import {  REGISTER_FORM } from "../../data";
+import { schemaRegister } from "../../schema";
+import { REGISTER_FORM } from "../../data";
 import { useAppDispatch, useAppSelector } from "../../App/store";
 import { Toaster, toaster } from "../../components/ui/toaster";
-import { login } from "../../App/features/authSlice";
-import  { registerUser } from "../../App/features/registerSlice";
+import { registerUser } from "../../App/features/registerSlice";
 
 export interface IFormInput {
   username: string;
   email: string;
   password: string;
 }
+
+//TODO : في حال اضافة ايميل موجودمن قبل يقوم باضافة توكن داخل الكوكيز
 const Register = () => {
   const dispatch = useAppDispatch();
   const { isLoading } = useAppSelector((state) => state.register);
@@ -36,16 +37,17 @@ const Register = () => {
   });
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     const resultAction = await dispatch(registerUser(data));
+
     //! Toaster
     if (registerUser.fulfilled.match(resultAction)) {
-      dispatch(login(resultAction.payload.jwt)); //تحديث حالة المصادقة
+      // dispatch(login(resultAction.payload.jwt)); //تحديث حالة المصادقة
       toaster.success({
         title: "Login successful",
         description: "You have successfully logged in",
-        duration: 3000,
+        duration: 2000,
         type: "success",
       });
-      // window.location.href = "/";
+      window.location.reload();
     } else if (registerUser.rejected.match(resultAction)) {
       const mss = resultAction.payload as string;
       toaster.error({

@@ -13,16 +13,19 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    login: (state , action) => {
+    login: (state) => {
       state.isAuthenticated = true;
-      cookieManager.set("jwtToken", action.payload);
+      // cookieManager.set("jwtToken", action.payload.jwt, {
+      //   expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3),
+      // });
     },
     logout: (state) => {
       state.isAuthenticated = false;
       cookieManager.remove("jwtToken");
+      cookieManager.remove("user");
     },
   },
 });
 
-export const {login , logout} = authSlice.actions;
+export const { login, logout } = authSlice.actions;
 export default authSlice.reducer;
