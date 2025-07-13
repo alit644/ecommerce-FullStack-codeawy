@@ -15,6 +15,7 @@ import { REGISTER_FORM } from "../../data";
 import { useAppDispatch, useAppSelector } from "../../App/store";
 import { Toaster, toaster } from "../../components/ui/toaster";
 import { registerUser } from "../../App/features/registerSlice";
+import { login } from "../../App/features/authSlice";
 
 export interface IFormInput {
   username: string;
@@ -40,7 +41,7 @@ const Register = () => {
 
     //! Toaster
     if (registerUser.fulfilled.match(resultAction)) {
-      // dispatch(login(resultAction.payload.jwt)); //تحديث حالة المصادقة
+      dispatch(login(resultAction.payload)); //تحديث حالة المصادقة
       toaster.success({
         title: "Login successful",
         description: "You have successfully logged in",

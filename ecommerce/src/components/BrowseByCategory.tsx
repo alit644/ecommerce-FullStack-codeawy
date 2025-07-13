@@ -10,7 +10,7 @@ import { fetchCategory } from "../utils/fetchCategory";
 const BrowseByCategory = () => {
   const queryClient = useQueryClient();
   const [page, setPage] = useState<number>(1);
-  const pageSize = 2;
+  const pageSize = 6;
 
   const { data, isLoading, isFetching, error } = useBrowseByCategory({
     page,

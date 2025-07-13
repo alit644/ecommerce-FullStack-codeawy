@@ -6,10 +6,17 @@ export interface IProductCard {
   brand?: string;
   stock?: number;
   thumbnail: {
-    url: string;
+    url?: string;
     alternativeText?: string;
     caption?: string;
+    formats: {
+      small: {
+        url: string;
+      };
+    };
   };
+  quantity: number;
+  
 }
 
 export interface ICategory {
@@ -72,4 +79,24 @@ export interface IUserInfo {
 export interface AuthData {
   jwt: string;
   user: IUserInfo;
+}
+
+export interface ICartProduct {
+  id: number;
+  title: string;
+  description: string;
+  price: number;
+  brand?: string;
+  stock?: number;
+  thumbnail: {
+    url?: string;
+    alternativeText?: string;
+    caption?: string;
+    formats: {
+      small: {
+        url: string;
+      };
+    };
+  };
+  quantity: number;
 }

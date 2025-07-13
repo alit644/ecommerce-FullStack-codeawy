@@ -1,9 +1,8 @@
-import ProductCard from '../components/ui/ProductCard';
 
 const Products = () => {
   return (
     <>
-      <ProductCard />
+    Products page
     </>
   );
 }

@@ -9,6 +9,7 @@ import {
   Text,
   Spacer,
   Button,
+  Badge,
 } from "@chakra-ui/react";
 import { FaStore } from "react-icons/fa";
 import { RxHamburgerMenu } from "react-icons/rx";
@@ -17,8 +18,7 @@ import MButton from "./Button";
 import { Link as RouterLink } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../App/store";
 import { logout } from "../../App/features/authSlice";
-import cookieManager from "../../utils/cookieManager";
-import type { IUserInfo } from "../../interfaces";
+import { cartSelector } from "../../App/features/cartSlice";
 
 const Links = [
   { name: "Home", href: "/" },
@@ -42,8 +42,8 @@ export default function Navbar() {
   const dispatch = useAppDispatch();
   const { open, onOpen, onClose } = useDisclosure();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
-  const user = cookieManager.get<IUserInfo>("user");
-  console.log(user);
+  const { cartData } = useAppSelector(cartSelector);
+  // const user = cookieManager.get<IUserInfo>("user");
   return (
     <Box
       bg="white"
@@ -72,6 +72,64 @@ export default function Navbar() {
         <Spacer />
         {/* Auth */}
         <Flex alignItems={"center"} spaceX={2}>
+          <RouterLink to={"cart"}>
+            <Box position="relative">
+              {cartData.length > 0 && (
+                <Badge
+                  position="absolute"
+                  top={-1}
+                  right={-1}
+                  size="sm"
+                  colorPalette="red"
+                  variant="subtle"
+                >
+                  {cartData.length}
+                </Badge>
+              )}
+
+              <IconButton
+                variant={"plain"}
+                color={"gray.500"}
+                _hover={{ color: "teal.500" }}
+                size={"md"}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="34"
+                  height="34"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="lucide lucide-shopping-cart-icon lucide-shopping-cart"
+                >
+                  <circle cx="8" cy="21" r="1" />
+                  <circle cx="19" cy="21" r="1" />
+                  <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
+                </svg>
+              </IconButton>
+            </Box>
+          </RouterLink>
+
+          <IconButton variant={"plain"} size={"md"} color={"gray.500"}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="34"
+              height="34"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              className="lucide lucide-heart-icon lucide-heart"
+            >
+              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg>
+          </IconButton>
+
           {isAuthenticated ? (
             <>
               <Button

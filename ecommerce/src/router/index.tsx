@@ -5,6 +5,7 @@ import Home from "../pages/Home";
 import Login from "../pages/Auth/Login";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Register from "../pages/Auth/Register";
+import Cart from "../pages/Cart";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -17,6 +18,10 @@ export const router = createBrowserRouter([
       {
         path: "/products",
         Component: Products,
+      },
+      {
+        path: "/cart",
+        Component: Cart,
       },
       {
         path: "/login",

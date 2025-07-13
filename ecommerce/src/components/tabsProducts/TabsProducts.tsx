@@ -14,21 +14,10 @@ const TabsProducts = () => {
 
   //! Render the products based on the selected tab
   const renderProducts = data?.data?.map((product: IProductCard) => {
-    return (
-      <ProductCard
-        key={product.id}
-        id={product.id}
-        title={product.title}
-        description={product.description}
-        price={product.price}
-        thumbnail={{
-          url: `${import.meta.env.VITE_BASE_URL}${product.thumbnail.url}`,
-        }}
-      />
-    );
+    return <ProductCard key={product.id} data={product} />;
   });
 
-  if (isLoading) return <Skeleton height="300px"/>
+  if (isLoading) return <Skeleton height="300px" />;
   if (error) return <div>Error fetching products</div>;
   if (data?.data?.length === 0) return <div>لا توجد منتجات في هذا القسم</div>;
 
