@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchCategory } from "../utils/fetchCategory";
+import { fetchCategory } from "../utils/fetchingData";
 
 interface IBrowseByCategory {
   page: number;

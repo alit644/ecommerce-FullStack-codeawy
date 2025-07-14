@@ -6,7 +6,7 @@ import { useCallback, useEffect, useState } from "react";
 import { useBrowseByCategory } from "../Hooks/useBrowseByCategory";
 import Skeleton from "./ui/Skeleton";
 import { useQueryClient } from "@tanstack/react-query";
-import { fetchCategory } from "../utils/fetchCategory";
+import { fetchCategory } from "../utils/fetchingData";
 const BrowseByCategory = () => {
   const queryClient = useQueryClient();
   const [page, setPage] = useState<number>(1);

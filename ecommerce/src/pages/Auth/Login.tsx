@@ -8,7 +8,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import {  NavLink } from "react-router";
+import { NavLink } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaLogin } from "../../schema";
 import { LOGIN_FORM } from "../../data";
@@ -21,9 +21,12 @@ export interface IFormInput {
   identifier: string;
   password: string;
 }
+
 const Login = () => {
   const dispatch = useAppDispatch();
   const { isLoading } = useAppSelector((state) => state.login);
+
+  // GET /api/connect/google
 
   // React Hook Form
   const {

@@ -7,6 +7,7 @@ import authSlice from "./features/authSlice";
 import registerSlice from "./features/registerSlice";
 import cartSlice from "./features/cartSlice";
 import globalSlice from "./features/globalSlice";
+import  paginationSlice from "./features/paginationSlice";
 
 const persistConfig = {
   key: "cart",
@@ -21,6 +22,7 @@ export const store = configureStore({
     auth: authSlice,
     cart: persistedCart,
     global: globalSlice,
+    pagination: paginationSlice,
   },
 });
 

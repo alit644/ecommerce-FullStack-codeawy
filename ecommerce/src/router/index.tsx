@@ -1,11 +1,11 @@
 import { createBrowserRouter } from "react-router";
 import RootLayout from "../pages/layout/RootLayout";
-import Products from "../pages/Products";
 import Home from "../pages/Home";
 import Login from "../pages/Auth/Login";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Register from "../pages/Auth/Register";
 import Cart from "../pages/Cart";
+import Shop from "../pages/Products";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -16,8 +16,8 @@ export const router = createBrowserRouter([
         Component: Home,
       },
       {
-        path: "/products",
-        Component: Products,
+        path: "/shop",
+        Component: Shop,
       },
       {
         path: "/cart",
@@ -26,12 +26,12 @@ export const router = createBrowserRouter([
       {
         path: "/login",
         // Component : Login,
-        element: <ProtectedRoute reverse  path="/" children={<Login/>} />,
+        element: <ProtectedRoute reverse path="/" children={<Login />} />,
       },
       {
         path: "/register",
-        element: <ProtectedRoute reverse  path="/" children={<Register/>} />,
-      }
+        element: <ProtectedRoute reverse path="/" children={<Register />} />,
+      },
     ],
   },
 ]);

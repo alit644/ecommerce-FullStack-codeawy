@@ -1,5 +1,5 @@
 import { useQuery,  } from "@tanstack/react-query";
-import { fetchProductsByTag } from "../utils/fetchProductsByTag";
+import { fetchProductsByTag } from "../utils/fetchingData";
 
 export const useProductsByTag = (value: string | null) => {
   return useQuery({

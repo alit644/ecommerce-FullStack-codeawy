@@ -8,7 +8,6 @@ import {
   Stack,
   Text,
   Spacer,
-  Button,
   Badge,
 } from "@chakra-ui/react";
 import { FaStore } from "react-icons/fa";
@@ -16,9 +15,9 @@ import { RxHamburgerMenu } from "react-icons/rx";
 import { IoIosClose } from "react-icons/io";
 import MButton from "./Button";
 import { Link as RouterLink } from "react-router";
-import { useAppDispatch, useAppSelector } from "../../App/store";
-import { logout } from "../../App/features/authSlice";
+import { useAppSelector } from "../../App/store";
 import { cartSelector } from "../../App/features/cartSlice";
+import MenuComponent from "./Menu";
 
 const Links = [
   { name: "Home", href: "/" },
@@ -33,17 +32,25 @@ const NavLink = ({
   href: string;
   children: React.ReactNode;
 }) => (
-  <RouterLink className="navbar" to={href}>
-    {children}
+  <RouterLink to={href}>
+    <Box
+      px={2}
+      py={1}
+      rounded="md"
+      _hover={{
+        textDecoration: "none",
+        bg: "gray.200",
+      }}
+    >
+      {children}
+    </Box>
   </RouterLink>
 );
 
 export default function Navbar() {
-  const dispatch = useAppDispatch();
   const { open, onOpen, onClose } = useDisclosure();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const { cartData } = useAppSelector(cartSelector);
-  // const user = cookieManager.get<IUserInfo>("user");
   return (
     <Box
       bg="white"
@@ -100,9 +107,9 @@ export default function Navbar() {
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="lucide lucide-shopping-cart-icon lucide-shopping-cart"
                 >
                   <circle cx="8" cy="21" r="1" />
@@ -121,9 +128,9 @@ export default function Navbar() {
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="lucide lucide-heart-icon lucide-heart"
             >
               <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
@@ -132,32 +139,27 @@ export default function Navbar() {
 
           {isAuthenticated ? (
             <>
-              <Button
-                size="md"
-                variant="outline"
-                type="submit"
-                onClick={() => {
-                  dispatch(logout());
-                  window.location.reload();
-                }}
-              >
-                Logout
-              </Button>
+              <MenuComponent />
             </>
           ) : (
             <>
-              <RouterLink to={"login"}>
-                <MButton size="md" title="Login" variant="outline" />
-              </RouterLink>
-              <RouterLink to={"register"}>
-                <MButton size="md" title="Sign Up" variant="solid" />
-              </RouterLink>
+              <HStack display={{ base: "none", md: "flex" }}>
+                <RouterLink to={"login"}>
+                  <MButton size="md" title="Login" variant="outline" />
+                </RouterLink>
+                <RouterLink to={"register"}>
+                  <MButton size="md" title="Sign Up" variant="solid" />
+                </RouterLink>
+              </HStack>
             </>
           )}
 
           <IconButton
-            size={"sm"}
+            size={"md"}
             aria-label={"Open Menu"}
+            variant={"plain"}
+            color={"gray.500"}
+            _hover={{ color: "teal.500" }}
             display={{ md: "none" }}
             onClick={open ? onClose : onOpen}
             ml={2}
@@ -176,6 +178,16 @@ export default function Navbar() {
               </NavLink>
             ))}
           </Stack>
+          {!isAuthenticated && (
+            <HStack display={{ base: "flex", md: "none" }}>
+              <RouterLink to={"login"}>
+                <MButton size="md" title="Login" variant="outline" />
+              </RouterLink>
+              <RouterLink to={"register"}>
+                <MButton size="md" title="Sign Up" variant="solid" />
+              </RouterLink>
+            </HStack>
+          )}
         </Box>
       ) : null}
     </Box>
