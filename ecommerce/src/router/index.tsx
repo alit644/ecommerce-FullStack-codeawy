@@ -16,7 +16,7 @@ export const router = createBrowserRouter([
         Component: Home,
       },
       {
-        path: "/shop",
+        path: "/shop/:f?",
         Component: Shop,
       },
       {
@@ -25,7 +25,6 @@ export const router = createBrowserRouter([
       },
       {
         path: "/login",
-        // Component : Login,
         element: <ProtectedRoute reverse path="/" children={<Login />} />,
       },
       {

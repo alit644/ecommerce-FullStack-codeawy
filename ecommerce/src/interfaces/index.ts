@@ -30,6 +30,10 @@ export interface ICategory {
   };
 }
 
+export interface ITag {
+  tag: string;
+}
+
 export interface ILoginInput {
   id: string;
   name: "identifier" | "password";
@@ -99,4 +103,41 @@ export interface ICartProduct {
     };
   };
   quantity: number;
+}
+
+export interface IAccordionItems {
+  value: string;
+  key: string;
+  label: string;
+  each:  string[] | IBrand[] | ICategory[] | ITag[];
+}
+
+export interface IBrand {
+  id?: number;
+  name: string;
+  logo?: {
+    url?: string;
+    formats?: {
+      small?: {
+        url?: string;
+      };
+    };
+  };
+}
+
+export interface FilterType {
+ brand?: string[];
+ category?: string[];
+ tags?: string[];
+ price?: string[];
+ discount?: string[];
+ 
+}
+
+export interface StrapiFilters {
+ brand?: { $in: string[] };
+ category?: { title: { $in: string[] } };
+ tags?: { tag: { $in: string[] } };
+ price?: { $in: string[] };
+ discount?: { $in: string[] };
 }

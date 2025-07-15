@@ -1,5 +1,4 @@
 import { Box, Grid, Spinner } from "@chakra-ui/react";
-import MainTitle from "../MainTitle";
 interface ISkeleton {
   height: string;
   width?: string;
@@ -7,7 +6,6 @@ interface ISkeleton {
 const Skeleton = ({ height = "180px", width }: ISkeleton) => {
   return (
     <Box my={6}>
-      <MainTitle title="Browse By Category" />
       <Grid
         templateColumns={{
           base: "repeat(2, 1fr)",

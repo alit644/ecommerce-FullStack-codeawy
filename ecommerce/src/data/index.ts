@@ -1,4 +1,7 @@
-import type { ILoginInput, IRegisterInput } from "../interfaces";
+import type {
+  ILoginInput,
+  IRegisterInput,
+} from "../interfaces";
 
 export const tabs = [
   { label: "Featured Products", value: "featured" },
@@ -67,4 +70,25 @@ export const REGISTER_FORM: IRegisterInput[] = [
       maxLength: 20,
     },
   },
+];
+
+export const brands = [
+  { name: "Apple", count: 110 },
+  { name: "Samsung", count: 125 },
+  { name: "Xiaomi", count: 68 },
+  { name: "Poco", count: 44 },
+  { name: "OPPO", count: 38 },
+  { name: "Honor", count: 10 },
+  { name: "Motorola", count: 34 },
+  { name: "Nokia", count: 22 },
+  { name: "Realme", count: 35 },
+];
+
+export const price = [
+  { name: "Under $100", count: 110 },
+  { name: "$100 - $500", count: 125 },
+  { name: "$500 - $1000", count: 68 },
+  { name: "$1000 - $2000", count: 44 },
+  { name: "$2000 - $5000", count: 38 },
+  { name: "$5000 - $10000", count: 10 },
 ];

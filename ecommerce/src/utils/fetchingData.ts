@@ -1,9 +1,13 @@
 import api from "../Api/axios";
 
-export const fetchProducts = async (page: number, pageSize: number) => {
+export const fetchProducts = async (
+  page: number,
+  pageSize: number,
+  filters: string
+) => {
   try {
     const { data } = await api.get(
-      `api/products?populate=thumbnail&pagination[page]=${page}&pagination[pageSize]=${pageSize}`
+      `api/products?populate=thumbnail&pagination[page]=${page}&pagination[pageSize]=${pageSize}&${filters}`
     );
     return data;
   } catch (error) {

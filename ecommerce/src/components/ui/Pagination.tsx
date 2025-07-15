@@ -16,7 +16,6 @@ const PaginationComponent = ({ count, pageSize, page }: IPagination) => {
   const handlePageChange = useCallback(
     (e: { page: number }) => {
       dispatch(setPage(e.page));
-      console.log(e.page);
     },
     [dispatch]
   );

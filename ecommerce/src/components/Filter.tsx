@@ -4,52 +4,51 @@ import {
   Input,
   Checkbox,
   Stack,
-  Badge,
   Button,
+  For,
 } from "@chakra-ui/react";
+import api from "../Api/axios";
+import { useQuery } from "@tanstack/react-query";
+import type { FilterType, ICategory, ITag } from "../interfaces";
+import { brands, price } from "../data";
 
-const brands = [
-  { name: "Apple", count: 110 },
-  { name: "Samsung", count: 125 },
-  { name: "Xiaomi", count: 68 },
-  { name: "Poco", count: 44 },
-  { name: "OPPO", count: 38 },
-  { name: "Honor", count: 10 },
-  { name: "Motorola", count: 34 },
-  { name: "Nokia", count: 22 },
-  { name: "Realme", count: 35 },
-];
-const categories = [
-  { name: "Mobile", count: 110 },
-  { name: "Laptop", count: 125 },
-  { name: "Tablet", count: 68 },
-  { name: "Camera", count: 44 },
-  { name: "Headphone", count: 38 },
-  { name: "Smartwatch", count: 10 },
-  { name: "Gadget", count: 34 },
-  { name: "Gaming", count: 22 },
-  { name: "Accessories", count: 35 },
-];
+interface IFilterSidebarprops {
+  filters: FilterType;
+  handleFilterChange: (filter: string, value: string[]) => void;
+  resetFilters: () => void;
+}
 
-const price = [
-  { name: "Under $100", count: 110 },
-  { name: "$100 - $500", count: 125 },
-  { name: "$500 - $1000", count: 68 },
-  { name: "$1000 - $2000", count: 44 },
-  { name: "$2000 - $5000", count: 38 },
-  { name: "$5000 - $10000", count: 10 },
-];
+const fetchFilters = async () => {
+  const [catRes, tagRes] = await Promise.all([
+    api.get("/api/categories?fields=title"),
+    api.get("/api/tags?fields=tag"),
+  ]);
+  return {
+    categories: catRes.data,
+    tags: tagRes.data,
+  };
+};
 
-const tags = [
-  { name: "best-seller", count: 110 },
-  { name: "new-arrival", count: 125 },
-  { name: "top-rated", count: 68 },
-  { name: "featured", count: 44 },
-  { name: "sale", count: 38 },
-  { name: "discount", count: 10 },
-];
+//TODO : refactor this code (FilterSidebar)
+//TODO : Add Price Section
 
-const FilterSidebar = () => {
+const FilterSidebar = ({
+  filters,
+  handleFilterChange,
+  resetFilters,
+}: IFilterSidebarprops) => {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["filters"],
+    queryFn: fetchFilters,
+  });
+
+  //! Render Data
+  const categories: ICategory[] = data?.categories?.data;
+  const tags: ITag[] = data?.tags?.data;
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
+
   return (
     <Box w="full" maxW="300px" p={2} borderRight="1px solid #e2e8f0">
       <Accordion.Root collapsible defaultValue={[""]}>
@@ -65,30 +64,38 @@ const FilterSidebar = () => {
           </h2>
           <Accordion.ItemContent pb={4}>
             <Input placeholder="Search" mb={3} />
-            <Checkbox.Root colorScheme="blackAlpha" w="full">
-              <Stack align="start" spaceY={1} w="full">
-                {brands.map((brand) => (
-                  <Checkbox.Group
-                    p={2}
-                    key={brand.name}
-                    w="full"
-                    display="flex"
-                    flexDirection="row"
-                  >
-                    <Checkbox.Control />
-                    <Checkbox.Label fontWeight="600">
-                      {brand.name}{" "}
-                      <Badge mx={2} colorPalette="teal">
-                        {brand.count}
-                      </Badge>
-                    </Checkbox.Label>
-                  </Checkbox.Group>
-                ))}
-              </Stack>
-            </Checkbox.Root>
+            <Stack align="start" spaceY={1} w="full">
+              <Checkbox.Group
+                value={filters.brand}
+                onValueChange={(e: string[]) => {
+                  handleFilterChange("brand", e);
+                }}
+              >
+                <For each={brands}>
+                  {(brand) => (
+                    <Checkbox.Root
+                      value={brand.name}
+                      colorPalette="teal"
+                      size="md"
+                      key={brand.name}
+                      p={2}
+                      w="full"
+                      display="flex"
+                      flexDirection="row"
+                    >
+                      <Checkbox.HiddenInput />
+                      <Checkbox.Control />
+                      <Checkbox.Label>{brand.name} </Checkbox.Label>
+                    </Checkbox.Root>
+                  )}
+                </For>
+              </Checkbox.Group>
+            </Stack>
           </Accordion.ItemContent>
         </Accordion.Item>
+
         {/* categories  Section*/}
+
         <Accordion.Item p={2} value="categories" key="categories">
           <h2>
             <Accordion.ItemTrigger>
@@ -100,31 +107,37 @@ const FilterSidebar = () => {
           </h2>
           <Accordion.ItemContent pb={4}>
             <Input placeholder="Search" mb={3} />
-            <Checkbox.Root colorScheme="blackAlpha" w="full">
-              <Stack align="start" spaceY={1} w="full">
-                {categories.map((category) => (
-                  <Checkbox.Group
-                    p={2}
-                    key={category.name}
-                    w="full"
-                    display="flex"
-                    flexDirection="row"
-                  >
-                    <Checkbox.Control />
-                    <Checkbox.Label fontWeight="600">
-                      {category.name}{" "}
-                      <Badge mx={2} colorPalette="teal">
-                        {category.count}
-                      </Badge>
-                    </Checkbox.Label>
-                  </Checkbox.Group>
-                ))}
-              </Stack>
-            </Checkbox.Root>
+            <Stack align="start" spaceY={1} w="full">
+              <Checkbox.Group
+                value={filters.category}
+                onValueChange={(e: string[]) =>
+                  handleFilterChange("category", e)
+                }
+              >
+                <For each={categories}>
+                  {(category) => (
+                    <Checkbox.Root
+                      value={category.title}
+                      colorPalette="teal"
+                      size="md"
+                      key={category.title}
+                      p={2}
+                      w="full"
+                      display="flex"
+                      flexDirection="row"
+                    >
+                      <Checkbox.HiddenInput />
+                      <Checkbox.Control />
+                      <Checkbox.Label>{category.title} </Checkbox.Label>
+                    </Checkbox.Root>
+                  )}
+                </For>
+              </Checkbox.Group>
+            </Stack>
           </Accordion.ItemContent>
         </Accordion.Item>
 
-        {/* Price Section */}
+        {/* Price */}
         <Accordion.Item p={2} value="price" key="price">
           <h2>
             <Accordion.ItemTrigger>
@@ -136,27 +149,31 @@ const FilterSidebar = () => {
           </h2>
           <Accordion.ItemContent pb={4}>
             <Input placeholder="Search" mb={3} />
-            <Checkbox.Root colorScheme="blackAlpha" w="full">
-              <Stack align="start" spaceY={1} w="full">
-                {price.map((price) => (
-                  <Checkbox.Group
-                    p={2}
-                    key={price.name}
-                    w="full"
-                    display="flex"
-                    flexDirection="row"
-                  >
-                    <Checkbox.Control />
-                    <Checkbox.Label fontWeight="600">
-                      {price.name}{" "}
-                      <Badge mx={2} colorPalette="teal">
-                        {price.count}
-                      </Badge>
-                    </Checkbox.Label>
-                  </Checkbox.Group>
-                ))}
-              </Stack>
-            </Checkbox.Root>
+            <Stack align="start" spaceY={1} w="full">
+              <Checkbox.Group
+                value={filters.price}
+                onValueChange={(e: string[]) => handleFilterChange("price", e)}
+              >
+                <For each={price}>
+                  {(price) => (
+                    <Checkbox.Root
+                      value={price.name}
+                      colorPalette="teal"
+                      size="md"
+                      key={price.name}
+                      p={2}
+                      w="full"
+                      display="flex"
+                      flexDirection="row"
+                    >
+                      <Checkbox.HiddenInput />
+                      <Checkbox.Control />
+                      <Checkbox.Label>{price.name} </Checkbox.Label>
+                    </Checkbox.Root>
+                  )}
+                </For>
+              </Checkbox.Group>
+            </Stack>
           </Accordion.ItemContent>
         </Accordion.Item>
 
@@ -173,30 +190,35 @@ const FilterSidebar = () => {
           </h2>
           <Accordion.ItemContent pb={4}>
             <Input placeholder="Search" mb={3} />
-            <Checkbox.Root colorScheme="blackAlpha" w="full">
-              <Stack align="start" spaceY={1} w="full">
-                {tags.map((tag) => (
-                  <Checkbox.Group
-                    p={2}
-                    key={tag.name}
-                    w="full"
-                    display="flex"
-                    flexDirection="row"
-                  >
-                    <Checkbox.Control />
-                    <Checkbox.Label fontWeight="600">
-                      {tag.name}{" "}
-                      <Badge mx={2} colorPalette="teal">
-                        {tag.count}
-                      </Badge>
-                    </Checkbox.Label>
-                  </Checkbox.Group>
-                ))}
-              </Stack>
-            </Checkbox.Root>
+            <Stack align="start" spaceY={1} w="full">
+              <Checkbox.Group
+                value={filters.tags}
+                onValueChange={(e: string[]) => handleFilterChange("tags", e)}
+              >
+                <For each={tags}>
+                  {(tag) => (
+                    <Checkbox.Root
+                      value={tag.tag}
+                      colorPalette="teal"
+                      size="md"
+                      key={tag.tag}
+                      p={2}
+                      w="full"
+                      display="flex"
+                      flexDirection="row"
+                    >
+                      <Checkbox.HiddenInput />
+                      <Checkbox.Control />
+                      <Checkbox.Label>{tag.tag} </Checkbox.Label>
+                    </Checkbox.Root>
+                  )}
+                </For>
+              </Checkbox.Group>
+            </Stack>
           </Accordion.ItemContent>
         </Accordion.Item>
       </Accordion.Root>
+
       {/* Reset Button */}
       <Button
         colorScheme="blackAlpha"
@@ -204,8 +226,9 @@ const FilterSidebar = () => {
         mt={4}
         variant="outline"
         size="md"
+        onClick={resetFilters}
       >
-        Reset
+        Reset Filters
       </Button>
     </Box>
   );
