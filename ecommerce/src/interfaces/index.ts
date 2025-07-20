@@ -16,15 +16,14 @@ export interface IProductCard {
     };
   };
   quantity: number;
-  
 }
 
 export interface ICategory {
   title: string;
-  thumbnail: {
-    formats: {
-      small: {
-        url: string;
+  thumbnail?: {
+    formats?: {
+      small?: {
+        url?: string;
       };
     };
   };
@@ -32,6 +31,11 @@ export interface ICategory {
 
 export interface ITag {
   tag: string;
+}
+
+export interface IPrice {
+  name: string;
+  count?: number;
 }
 
 export interface ILoginInput {
@@ -104,13 +108,20 @@ export interface ICartProduct {
   };
   quantity: number;
 }
+export interface CheckboxOption {
+ name?: string;
+ tag?: string;
+ title?: string;
+} 
 
 export interface IAccordionItems {
   value: string;
   key: string;
   label: string;
-  each:  string[] | IBrand[] | ICategory[] | ITag[];
+  each: CheckboxOption[] ;
 }
+
+
 
 export interface IBrand {
   id?: number;
@@ -126,18 +137,17 @@ export interface IBrand {
 }
 
 export interface FilterType {
- brand?: string[];
- category?: string[];
- tags?: string[];
- price?: string[];
- discount?: string[];
- 
+  brand?: string[];
+  category?: string[];
+  tags?: string[];
+  price?: string[];
+  discount?: string[];
 }
 
 export interface StrapiFilters {
- brand?: { $in: string[] };
- category?: { title: { $in: string[] } };
- tags?: { tag: { $in: string[] } };
- price?: { $in: string[] };
- discount?: { $in: string[] };
+  brand?: { $in: string[] };
+  category?: { title: { $in: string[] } };
+  tags?: { tag: { $in: string[] } };
+  price?: { $in: string[] };
+  discount?: { $in: string[] };
 }

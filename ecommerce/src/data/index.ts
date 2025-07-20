@@ -92,3 +92,5 @@ export const price = [
   { name: "$2000 - $5000", count: 38 },
   { name: "$5000 - $10000", count: 10 },
 ];
+
+

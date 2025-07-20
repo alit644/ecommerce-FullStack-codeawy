@@ -1,0 +1,43 @@
+import { Button, CloseButton, Drawer, Portal } from "@chakra-ui/react";
+import { useAppSelector, useAppDispatch } from "../../App/store";
+import { closeDrawer } from "../../App/features/globalSlice";
+interface DrawerProps {
+  children: React.ReactNode;
+  title: string;
+  onConfirm: () => void;
+}
+const DrawerComponent = ({ children, title, onConfirm }: DrawerProps) => {
+  const isOpenDrawer = useAppSelector((state) => state.global.isOpenDrawer);
+  const dispatch = useAppDispatch();
+  return (
+    <Drawer.Root
+      open={isOpenDrawer}
+      onOpenChange={() => dispatch(closeDrawer())}
+    >
+      <Portal>
+        <Drawer.Backdrop />
+        <Drawer.Positioner>
+          <Drawer.Content>
+            <Drawer.Header>
+              <Drawer.Title>{title}</Drawer.Title>
+            </Drawer.Header>
+            <Drawer.Body>{children}</Drawer.Body>
+            <Drawer.Footer>
+              <Button variant="outline" onClick={() => dispatch(closeDrawer())}>
+                Cancel
+              </Button>
+              <Button colorPalette="teal" onClick={onConfirm}>
+                Apply
+              </Button>
+            </Drawer.Footer>
+            <Drawer.CloseTrigger asChild>
+              <CloseButton size="sm" />
+            </Drawer.CloseTrigger>
+          </Drawer.Content>
+        </Drawer.Positioner>
+      </Portal>
+    </Drawer.Root>
+  );
+};
+
+export default DrawerComponent;

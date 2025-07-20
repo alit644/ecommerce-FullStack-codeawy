@@ -2,8 +2,9 @@ import { Box, Grid, Spinner } from "@chakra-ui/react";
 interface ISkeleton {
   height: string;
   width?: string;
+  count?: number;
 }
-const Skeleton = ({ height = "180px", width }: ISkeleton) => {
+const Skeleton = ({ height = "180px", width, count = 6 }: ISkeleton) => {
   return (
     <Box my={6}>
       <Grid
@@ -14,7 +15,7 @@ const Skeleton = ({ height = "180px", width }: ISkeleton) => {
         gap={6}
         mt={4}
       >
-        {[...Array(6)].map((_, idx) => (
+        {[...Array(count)].map((_, idx) => (
           <Box
             key={idx}
             height={height}
