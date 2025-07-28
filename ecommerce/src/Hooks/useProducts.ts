@@ -18,8 +18,7 @@ export const useProducts = (filters: FilterType) => {
   const { page, pageSize } = useAppSelector((state) => state.pagination);
   const queryClient = useQueryClient();
   const filtersQuery = generateStrapiQuery(filters);
-
-  const { data, isLoading, isError , isFetching } = useQuery<ProductsResponse>({
+  const { data, isLoading, isError, isFetching } = useQuery<ProductsResponse>({
     queryKey: ["products", "pagination", page, pageSize, filtersQuery],
     queryFn: () => fetchProducts(page, pageSize, filtersQuery),
     staleTime: 1000 * 60 * 2,

@@ -1,4 +1,5 @@
-import { Box, Grid } from "@chakra-ui/react";
+import { Box, Grid, Icon, Text } from "@chakra-ui/react";
+import { FaBoxOpen } from "react-icons/fa";
 import CategoryCard from "./ui/CategoryCard";
 import MainTitle from "./MainTitle";
 import type { ICategory } from "../interfaces";
@@ -7,6 +8,8 @@ import { useBrowseByCategory } from "../Hooks/useBrowseByCategory";
 import Skeleton from "./ui/Skeleton";
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchCategory } from "../utils/fetchingData";
+import Error from "./Error/Error";
+
 const BrowseByCategory = () => {
   const queryClient = useQueryClient();
   const [page, setPage] = useState<number>(1);
@@ -52,7 +55,7 @@ const BrowseByCategory = () => {
         formats: {
           small: {
             url: `${import.meta.env.VITE_BASE_URL}${
-              item.thumbnail.formats.small.url
+              item.thumbnail?.formats?.small?.url
             }`,
           },
         },
@@ -61,11 +64,44 @@ const BrowseByCategory = () => {
   ));
 
   if (isLoading || isFetching) return <Skeleton height="180px" />;
-  if (error) return <div>Error fetching products</div>;
-  if (data?.data?.length === 0) return <div>لا توجد منتجات في هذا القسم</div>;
+  if (error) return (
+    <Error code={500} message="Error" description="Failed to fetch categories" />
+  );
+
+  if (data?.data?.length === 0) return (
+    <Box
+      w="full"
+      h="200px"
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="center"
+      bg="white"
+      borderRadius="md"
+      boxShadow="lg"
+      p={6}
+    >
+      <Box
+        w={12}
+        h={12}
+        bg="gray.100"
+        borderRadius="full"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+      >
+        <Icon as={FaBoxOpen} color="gray.500" boxSize={6} />
+      </Box>
+      <Text mt={4} fontSize="xl" fontWeight="bold">
+        No Products Found
+      </Text>
+      <Text mt={2} color="gray.500" textAlign="center">
+        لا توجد منتجات في هذا القسم
+      </Text>
+    </Box>
+  );
   return (
     <Box my={6}>
-      {/* main title and arrow */}
       <MainTitle
         title="Browse By Category"
         onNext={onNext}
@@ -74,7 +110,6 @@ const BrowseByCategory = () => {
         page={page}
       />
 
-      {/* Categories grid */}
       <Grid
         templateColumns={{
           base: "repeat(2, 1fr)",
@@ -83,7 +118,6 @@ const BrowseByCategory = () => {
         gap={6}
         mt={4}
 
-        // templateColumns={"repeat(auto-fill, minmax(200px, 1fr))"} gap={6} mt={4}
       >
         {renderCategory}
       </Grid>

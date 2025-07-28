@@ -4,7 +4,7 @@ import { NavLink } from "react-router";
 
 const CategoryCard = ({ title, thumbnail }: ICategory) => {
   return (
-    <NavLink to={`/category/${title}`}>
+    <NavLink to={`/shop/filters[category][$in][0]=${title}`}>
       <Box
         bg="gray.50"
         borderRadius="xl"
@@ -17,7 +17,7 @@ const CategoryCard = ({ title, thumbnail }: ICategory) => {
       >
         <Image
           loading="lazy"
-          src={`${thumbnail.formats.small.url}`}
+          src={`${thumbnail?.formats?.small?.url}`}
           alt={title}
           w="100%"
           h="140px"

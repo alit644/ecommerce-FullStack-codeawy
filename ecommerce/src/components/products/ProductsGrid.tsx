@@ -2,6 +2,7 @@ import { Box, Grid, Text, Center, VStack, Icon } from "@chakra-ui/react";
 import type { JSX } from "react";
 import Skeleton from "../ui/Skeleton";
 import { FaBoxOpen } from "react-icons/fa";
+import Error from "../Error/Error";
 
 interface ProductsGridProps {
   renderProducts: JSX.Element[];
@@ -31,7 +32,7 @@ export const ProductsGrid = ({
         </VStack>
       </Center>
     );
-  if (isError) return <div>Error</div>;
+  if (isError) return <Error code={500} message="Error" description="Something went wrong" />;
 
   return (
     <Box w="full" p={3}>

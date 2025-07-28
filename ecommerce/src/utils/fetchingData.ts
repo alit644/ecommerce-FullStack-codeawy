@@ -36,3 +36,14 @@ export const fetchProductsByTag = async (tag: string) => {
     console.log(error);
   }
 };
+
+export const fetchDiscounts = async () => {
+  try {
+    const { data } = await api.get(
+      `api/products?populate=thumbnail&filters[discount][$gt]=0&pagination[limit]=5&fields=description,title,price,brand,discount`
+    );
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};

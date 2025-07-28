@@ -5,6 +5,7 @@ import type { IProductCard } from "../../interfaces";
 import { tabs } from "../../data";
 import { useProductsByTag } from "../../Hooks/useProductsByTag";
 import Skeleton from "../ui/Skeleton";
+import Error from "../Error/Error";
 
 const TabsProducts = () => {
   const [value, setValue] = useState<string | null>("featured");
@@ -18,8 +19,8 @@ const TabsProducts = () => {
   });
 
   if (isLoading) return <Skeleton height="300px" />;
-  if (error) return <div>Error fetching products</div>;
-  if (data?.data?.length === 0) return <div>لا توجد منتجات في هذا القسم</div>;
+  if (error) return <Error code={500} message="Error" description="Failed to fetch products" />;
+  if (data?.data?.length === 0) return <Error code={404} message="Not Found" description="No products found" />;
 
   return (
     <Box fontSize="2xl" fontWeight="bold" color="gray.700" mb={4}>

@@ -6,18 +6,27 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import Register from "../pages/Auth/Register";
 import Cart from "../pages/Cart";
 import Shop from "../pages/Products";
+import Error from "../components/Error/Error";
+import Product from "../pages/Product";
 export const router = createBrowserRouter([
   {
     path: "/",
     Component: RootLayout,
+    errorElement: (
+      <Error code={500} message="Error" description="Something went wrong" />
+    ),
     children: [
       {
         index: true,
         Component: Home,
       },
       {
-        path: "/shop/:f?",
+        path: "/shop/*",
         Component: Shop,
+      },
+      {
+        path: "/product/:id",
+        Component: Product,
       },
       {
         path: "/cart",
@@ -34,3 +43,4 @@ export const router = createBrowserRouter([
     ],
   },
 ]);
+

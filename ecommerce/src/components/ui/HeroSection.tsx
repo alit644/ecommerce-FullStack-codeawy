@@ -59,7 +59,7 @@ export default function HeroSection() {
             _hover={{  color: "black" }}
             w={{ base: "full", md: "fit-content" }}
           >
-            تسوق الآن
+            Shop Now
           </Button>
         </Stack>
       </Flex>

@@ -20,18 +20,26 @@ const Shop = () => {
 
   const handleFilterChange = useCallback(
     (filter: string, value: string[]) => {
+      // TODO: Generate Path From Filters
+
       dispatch(
         setFilter({
           ...filtersSlice,
           [filter]: value,
         })
       );
+
       dispatch(setPage(1));
+      // TODO: Generate Path From Filters
+      // const newPath = generateStrapiQuery({
+      //   ...filtersSlice,
+      //   [filter]: value,
+      // });
+      // navigate(newPath, { replace: true });
     },
     [dispatch, filtersSlice]
   );
 
-  //TODO: Add Drawer Filter
   const handleLocalFilterChange = useCallback(
     (filter: string, value: string[]) => {
       setLocalFilters((prev) => ({
@@ -45,10 +53,13 @@ const Shop = () => {
   const { data, isLoading, isError } = useProducts(filtersSlice);
   const total = data?.meta.pagination.total;
 
-  //! Handler
+  //!: Handler
   const resetFilters = useCallback(() => {
     setLocalFilters(filtersSlice);
     dispatch(resetFilter());
+    // TODO: Generate Path From Filters
+    // const path = generateStrapiQuery(filtersSlice);
+    // navigate(path, { replace: true });
     dispatch(setPage(1));
   }, [dispatch, filtersSlice]);
 
@@ -56,6 +67,9 @@ const Shop = () => {
     dispatch(closeDrawer());
     // filter change
     dispatch(setPage(1));
+    // TODO: Generate Path From Filters
+    // const path = generateStrapiQuery(filtersSlice);
+    // navigate(path, { replace: true });
     dispatch(
       setFilter({
         ...filtersSlice,
@@ -64,14 +78,12 @@ const Shop = () => {
     );
   };
 
-  //! Render Data
+  //!: Render Data
   const renderProducts = () => {
     return data?.data.map((product: IProductCard) => (
       <ProductCard key={product.id} data={product} />
     ));
   };
-
-  //TODO: Add Responsive Grid (Phone)  (Drawer)
 
   return (
     <Container maxW="container.xl" mt={6} mb={6}>

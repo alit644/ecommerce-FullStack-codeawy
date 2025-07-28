@@ -12,6 +12,7 @@ import { brands, price } from "../data";
 import AccordionComponent from "./Accordion/Accordion";
 import { useMemo } from "react";
 import Skeleton from "./ui/Skeleton";
+import Error from "./Error/Error";
 
 interface IFilterSidebarprops {
   filters: FilterType;
@@ -84,8 +85,8 @@ const FilterSidebar = ({
     return (
       <Skeleton height="60px" width="full" count={accordionItems.length} />
     );
-  if (error) return <div>Error: {error.message}</div>;
-  if (!categories || !tags) return <div>Filters not available</div>;
+  if (error) return <Error code={500} message="Error" description="Failed to fetch filters" />;
+  if (!categories || !tags) return <Error code={500} message="Error" description="Filters not available" />;
 
  return (
     <Box w="full" maxW="280px" p={2} borderRight="1px solid #e2e8f0">

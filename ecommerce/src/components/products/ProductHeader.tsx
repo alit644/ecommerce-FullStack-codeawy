@@ -1,4 +1,4 @@
-import { Box, Heading, Badge, IconButton } from "@chakra-ui/react";
+import { Box, Heading, Badge, IconButton, Button } from "@chakra-ui/react";
 import { BsFilterRight } from "react-icons/bs";
 import { useAppDispatch } from "../../App/store";
 import { openDrawer } from "../../App/features/globalSlice";
@@ -8,6 +8,8 @@ interface ProductHeaderProps {
 
 export const ProductHeader = ({ totalProducts }: ProductHeaderProps) => {
   const dispatch = useAppDispatch();
+  //TODO : Generate Fake Data (FAKER)
+
   return (
     <Box
       w="full"
@@ -15,9 +17,14 @@ export const ProductHeader = ({ totalProducts }: ProductHeaderProps) => {
       justifyContent="space-between"
       alignItems="center"
     >
-      <Heading fontSize="2xl" as="h2" fontWeight="bold">
-        Selected Products <Badge colorPalette="teal">{totalProducts}</Badge>
-      </Heading>
+      <Box display="flex" alignItems="center" gap={2}>
+        <Heading fontSize="2xl" as="h2" fontWeight="bold">
+          Selected Products <Badge colorPalette="teal">{totalProducts}</Badge>
+        </Heading>
+        <Button variant={"outline"} size={"sm"} >
+          Generate Fake Data
+        </Button>
+      </Box>
       {/* Filter Button */}
 
       <IconButton

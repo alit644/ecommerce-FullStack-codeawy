@@ -1,10 +1,12 @@
 export interface IProductCard {
   id: number;
+  documentId: string;
   title: string;
   description: string;
   price: number;
   brand?: string;
   stock?: number;
+  discount?: number;
   thumbnail: {
     url?: string;
     alternativeText?: string;
