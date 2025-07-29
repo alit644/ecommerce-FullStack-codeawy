@@ -2,6 +2,8 @@ import type {
   ILoginInput,
   IRegisterInput,
 } from "../interfaces";
+import { BsTruck } from "react-icons/bs";
+import { FiRotateCcw, FiShield } from "react-icons/fi";
 
 export const tabs = [
   { label: "Featured Products", value: "featured" },
@@ -94,3 +96,8 @@ export const price = [
 ];
 
 
+export const deliveryInfo = [
+  { name: "Free delivery", icon: BsTruck, color: "green.400" },
+  { name: "Express Shipping", icon: FiRotateCcw, color: "blue.400" },
+  { name: "Standard Shipping", icon: FiShield, color: "purple.400" },
+];

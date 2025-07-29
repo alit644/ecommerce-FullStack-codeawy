@@ -7,7 +7,21 @@ export interface IProductCard {
   brand?: string;
   stock?: number;
   discount?: number;
-  thumbnail: {
+  images?: {
+    url?: string;
+    formats?: {
+      small?: {
+        url?: string;
+      };
+    };
+
+  }[];
+  product_option?: {
+    color?: string;
+    storage?: string;
+    size?: string;
+  };
+  thumbnail?: {
     url?: string;
     alternativeText?: string;
     caption?: string;
@@ -17,7 +31,11 @@ export interface IProductCard {
       };
     };
   };
+  category?: {
+    title: string;
+  }
   quantity: number;
+  rating?: number;
 }
 
 export interface ICategory {

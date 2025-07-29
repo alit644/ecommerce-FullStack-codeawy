@@ -1,20 +1,31 @@
 import { Box, Image, Text, Button, IconButton, Badge } from "@chakra-ui/react";
 import { FiHeart } from "react-icons/fi";
-import type { IProductCard } from "../../interfaces";
+import type { ICartProduct, IProductCard } from "../../interfaces";
 import { useAppDispatch } from "../../App/store";
 import { addToCart } from "../../App/features/cartSlice";
 import { Link } from "react-router";
 
 const ProductCard = ({ data }: { data: IProductCard }) => {
-  const { title, description, price, thumbnail, discount, documentId } = data;
+  const { title, description, price, thumbnail, discount, documentId, brand } =
+    data;
   const dispatch = useAppDispatch();
   //! Handler
   const handelAddToCart = () => {
-    dispatch(addToCart(data));
+    const cartProduct: ICartProduct = {
+      ...data,
+      thumbnail: {
+        formats: {
+          small: {
+            url: thumbnail?.formats?.small?.url || "",
+          },
+        },
+      },
+    };
+    dispatch(addToCart(cartProduct));
   };
 
   return (
-    <Link to={`/product/${documentId}`}>
+    <Link to={`/${brand}/${documentId}`}>
       <Box
         bg="gray.50"
         borderRadius="md"
@@ -31,7 +42,7 @@ const ProductCard = ({ data }: { data: IProductCard }) => {
             loading="lazy"
             rounded={"md"}
             src={`${import.meta.env.VITE_BASE_URL}${
-              thumbnail.formats.small.url
+              thumbnail?.formats?.small?.url
             }`}
             alt={title}
             w="100%"

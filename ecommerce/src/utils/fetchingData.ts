@@ -47,3 +47,24 @@ export const fetchDiscounts = async () => {
     console.log(error);
   }
 };
+
+
+export const fetchProduct = async (documentId: string | undefined) => {
+  try {
+    const { data } = await api.get(`/api/products/${documentId}?populate=*`);
+    return data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchProductsByCategory = async (categoryTitle: string , documentId: string | undefined) => {
+  try {
+    const { data } = await api.get(
+      `/api/products?populate=*&filters[category][title][$eq]=${categoryTitle}&filters[documentId][$ne]=${documentId}&pagination[limit]=5`
+    );
+    return data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

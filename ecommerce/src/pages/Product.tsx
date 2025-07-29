@@ -1,85 +1,124 @@
-import { 
-  Box, 
-  Text, 
-  Image, 
-  VStack, 
-  HStack, 
-  Badge, 
-  Button, 
-  SimpleGrid, 
-  Heading, 
-  Stack, 
-  Icon, 
+import {
+  Box,
+  Text,
+  Image,
+  VStack,
+  HStack,
+  SimpleGrid,
+  Heading,
+  Stack,
   Container,
-} from '@chakra-ui/react';
-import { FaStar } from 'react-icons/fa';
-import { useState } from 'react';
+  Flex,
+  Button,
+  Icon,
+} from "@chakra-ui/react";
+import { useState } from "react";
+import { useParams } from "react-router";
+import type { IProductCard } from "../interfaces";
+import { FaStar } from "react-icons/fa";
+import ProductInformationCard from "../components/ui/ProductInformationCard";
+import ProductCard from "../components/ui/ProductCard";
+import MainTitle from "../components/MainTitle";
+import { ProductsGrid } from "../components/products/ProductsGrid";
+import { deliveryInfo } from "../data";
+import { useFetching } from "../Hooks/useFetching";
+import { fetchProduct, fetchProductsByCategory } from "../utils/fetchingData";
 
-interface ProductProps {
-  id: number;
-  name: string;
-  price: number;
-  description: string;
-  images: string[];
-  rating: number;
-  stock: number;
-}
+//TODO: add loading and error states
 
 const Product = () => {
-  const [selectedImage, setSelectedImage] = useState(0);
-  const [quantity, setQuantity] = useState(1);
+  const [selectedImage, setSelectedImage] = useState<number>(0);
+  const { documentId } = useParams<{ documentId: string | undefined }>();
+  //!: get product info
+  const { data, isLoading, error } = useFetching<IProductCard>({
+    queryKey: ["product", documentId || ""],
+    queryFn: () => fetchProduct(documentId),
+  });
 
-  const product: ProductProps = {
-    id: 1,
-    name: 'Modern Wireless Headphones',
-    price: 199.99,
-    description: 'Experience premium sound quality with our wireless headphones. With up to 30 hours of battery life and noise cancellation technology, these headphones are perfect for your daily commute or workout sessions.',
-    images: [
-      'https://images.pexels.com/photos/1696125/pexels-photo-1696125.jpeg',
-      'https://images.pexels.com/photos/29801986/pexels-photo-29801986.jpeg',
-      'https://images.pexels.com/photos/1696125/pexels-photo-1696125.jpeg'
-    ],
-    rating: 4.5,
-    stock: 25
+  const product: IProductCard = {
+    id: data?.id || 0,
+    documentId: data?.documentId || "",
+    title: data?.title || "",
+    price: data?.price || 0,
+    description: data?.description || "",
+    images: data?.images || [],
+    discount: data?.discount || 0,
+    stock: data?.stock || 0,
+    quantity: data?.quantity || 0,
+    rating: data?.rating || 0,
+    brand: data?.brand || "",
+    product_option: data?.product_option,
+    category: data?.category,
+  };
+  //!: get category title
+  const categoryTitle = product.category?.title || "";
+  // related-products
+  const {
+    data: relatedProducts,
+    isLoading: relatedProductsLoading,
+    error: relatedProductsError,
+  } = useFetching<IProductCard[]>({
+    queryKey: ["related-products", categoryTitle],
+    queryFn: () => fetchProductsByCategory(categoryTitle, documentId),
+  });
+
+  //!: Render Data
+  const renderProducts = () => {
+    return relatedProducts?.map((product: IProductCard) => (
+      <ProductCard key={product.id} data={product} />
+    ));
   };
 
-  const handleAddToCart = () => {
-   console.log('product added to cart');
-  };
+  const renderDeliveryInfo = deliveryInfo.map((item) => (
+    <Flex gap={2} key={item.name}>
+      <Icon as={item.icon} boxSize={6} color={item.color} />
+      <Text fontSize={"lg"} fontWeight={"medium"} color={"gray.600"}>
+        {item.name}
+      </Text>
+    </Flex>
+  ));
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <Container maxW="container.xl" py={8}>
-      <SimpleGrid columns={{ base: 1, md: 2 }}  spaceX={10}>
+      <SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>
         {/* Product Images */}
-        <Stack spaceY={4} align="center" direction="row-reverse">
+        <Stack
+          align={{ base: "center", md: "start" }}
+          direction={{ base: "column", md: "row-reverse" }}
+        >
           <Image
-            src={product.images[selectedImage]}
-            alt={product.name}
+            src={`${import.meta.env.VITE_BASE_URL}${
+              product?.images?.[selectedImage]?.formats?.small?.url
+            }`}
+            alt={product?.title}
             borderRadius="lg"
             boxShadow="lg"
             maxH="500px"
             w="100%"
             objectFit="cover"
-            
           />
-          
+
           {/* Image Thumbnails */}
-          <VStack spaceY={2}>
-            {product.images.map((image, index) => (
+          <Flex gap={2} direction={{ base: "row", md: "column" }}>
+            {product.images?.map((image, index) => (
               <Box
-                key={index}
                 cursor="pointer"
                 onClick={() => setSelectedImage(index)}
-                border={selectedImage === index ? '2px solid' : '1px solid'}
-                borderColor={selectedImage === index ? 'blue.500' : 'gray.200'}
+                border={selectedImage === index ? "2px solid" : "1px solid"}
+                borderColor={selectedImage === index ? "blue.500" : "gray.200"}
                 borderRadius="md"
                 _hover={{
-                  transform: 'scale(1.1)',
-                  transition: 'transform 0.3s ease-in-out',
+                  transform: "scale(1.1)",
+                  transition: "transform 0.3s ease-in-out",
                 }}
               >
                 <Image
-                  src={image}
+                  key={index}
+                  src={`${import.meta.env.VITE_BASE_URL}${
+                    image?.formats?.small?.url
+                  }`}
                   alt={`Thumbnail ${index + 1}`}
                   h="80px"
                   w="70px"
@@ -87,85 +126,107 @@ const Product = () => {
                 />
               </Box>
             ))}
-          </VStack>
+          </Flex>
         </Stack>
 
         {/* Product Details */}
-        <VStack spaceY={6} align="start">
-          <Heading size="xl" mb={2}>{product.name}</Heading>
-          
+        <VStack align="start" spaceY={4} w={"full"} mt={{ base: 4, md: 0 }}>
+          <Heading
+            mb={2}
+            as={"h1"}
+            fontSize={{ base: "2xl", md: "4xl" }}
+            fontWeight={"bold"}
+          >
+            {product.title}
+          </Heading>
           <HStack spaceX={2}>
-            <HStack spaceX={1}>
+            {/* rating */}
+            <HStack spaceX={0}>
               {[1, 2, 3, 4, 5].map((star) => (
                 <Icon
+                  fontSize={"2xl"}
                   key={star}
                   as={FaStar}
-                  color={star <= product.rating ? 'yellow.400' : 'gray.300'}
+                  color={
+                    star <= (product.rating || 0) ? "yellow.400" : "gray.300"
+                  }
                 />
               ))}
             </HStack>
-            <Text color="gray.600">{product.rating}</Text>
+            <Text color="gray.600">{`(${product.rating})`}</Text>
           </HStack>
-
-          <HStack spaceX={2}>
-            <Text fontSize="2xl" fontWeight="bold">${product.price}</Text>
-            <Badge colorScheme="green">In Stock</Badge>
-            <Text color="gray.500">{product.stock} left</Text>
-          </HStack>
-
-          <Text fontSize="lg" color="gray.600" mb={4}>
+          {/* description */}
+          <Text fontSize="lg" mt={3} color="gray.600">
             {product.description}
           </Text>
 
-          {/* Quantity Selector */}
-          <HStack>
-            <Button
-              size="sm"
-              onClick={() => setQuantity(Math.max(1, quantity - 1))}
-            >-</Button>
-            <Text fontSize="lg" fontWeight="bold">{quantity}</Text>
-            <Button
-              size="sm"
-              onClick={() => setQuantity(quantity + 1)}
-            >+</Button>
-          </HStack>
+          {/* Product Information*/}
+          <Flex direction={"row"} flexWrap={"wrap"} gap={2} w={"full"}>
+            <ProductInformationCard label="Brand" value={product.brand || ""} />
+            <ProductInformationCard label="Stock" value={product.stock || ""} />
 
-          {/* Action Buttons */}
-          <HStack spaceX={4}>
+            {product.product_option?.color && (
+              <ProductInformationCard
+                label="Color"
+                value={product.product_option?.color || ""}
+              />
+            )}
+            {product.product_option?.storage && (
+              <ProductInformationCard
+                label="Storage"
+                value={product.product_option?.storage || ""}
+              />
+            )}
+          </Flex>
+          {/* price */}
+          <Text fontSize="4xl" color="blackAlpha.900" fontWeight="bolder">
+            ${product.price}
+          </Text>
+
+          {/* Action */}
+          <Flex gap={2} flexWrap={"wrap"} w="full">
             <Button
-              colorScheme="blue"
-              size="lg"
-              onClick={handleAddToCart}
+              w="full"
+              variant={"outline"}
+              colorScheme="teal"
+              size="xl"
+              fontWeight="bold"
+              borderRadius="lg"
+              _hover={{
+                transform: "translateY(-3px)",
+                boxShadow: "lg",
+              }}
             >
-              Add to Cart
+              Add To Wishlist
             </Button>
             <Button
-              colorScheme="red"
-              size="lg"
-              
+              w="full"
+              colorScheme="teal"
+              size="xl"
+              fontWeight="bold"
+              borderRadius="lg"
+              _hover={{
+                transform: "translateY(-3px)",
+                boxShadow: "lg",
+              }}
             >
-              Add to Wishlist
+              Add To Cart
             </Button>
-          </HStack>
+          </Flex>
 
-          {/* Product Information */}
-          <Box>
-            <Heading size="md" mb={2}>Product Information</Heading>
-            <Stack spaceY={2}>
-              <HStack>
-                <Text fontWeight="bold">Brand:</Text>
-                <Text>Brand Name</Text>
-              </HStack>
-              <HStack>
-                <Text fontWeight="bold">Category:</Text>
-                <Text>Electronics</Text>
-              </HStack>
-              <HStack>
-                <Text fontWeight="bold">SKU:</Text>
-                <Text>SKU12345</Text>
-              </HStack>
-            </Stack>
-          </Box>
+          {/* Free delivery  */}
+          <VStack alignItems={"start"}>{renderDeliveryInfo}</VStack>
+        </VStack>
+
+        {/* related products */}
+        <VStack alignItems={"start"}>
+          <MainTitle title="More From This Category" isArrow={false} />
+          <ProductsGrid
+            renderProducts={renderProducts() || []}
+            totalProducts={relatedProducts?.length || 0}
+            isLoading={relatedProductsLoading}
+            isError={relatedProductsError ? true : false}
+          />
         </VStack>
       </SimpleGrid>
     </Container>
