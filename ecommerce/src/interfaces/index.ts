@@ -1,3 +1,5 @@
+import type { IconType } from "react-icons/lib";
+
 export interface IProductCard {
   id: number;
   documentId: string;
@@ -170,4 +172,19 @@ export interface StrapiFilters {
   tags?: { tag: { $in: string[] } };
   price?: { $in: string[] };
   discount?: { $in: string[] };
+}
+
+export interface IDashboardLink {
+  name: string;
+  href: string;
+  icon: IconType;
+}
+
+export interface IDashboardOverview{
+ name: string;
+ description: string;
+ percentage: string;
+ count: number;
+ icon: IconType;
+ color: string;
 }

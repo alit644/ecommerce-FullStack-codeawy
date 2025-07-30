@@ -12,9 +12,9 @@ import {
   Button,
   Icon,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useParams } from "react-router";
-import type { IProductCard } from "../interfaces";
+import type { ICartProduct, IProductCard } from "../interfaces";
 import { FaStar } from "react-icons/fa";
 import ProductInformationCard from "../components/ui/ProductInformationCard";
 import ProductCard from "../components/ui/ProductCard";
@@ -23,12 +23,15 @@ import { ProductsGrid } from "../components/products/ProductsGrid";
 import { deliveryInfo } from "../data";
 import { useFetching } from "../Hooks/useFetching";
 import { fetchProduct, fetchProductsByCategory } from "../utils/fetchingData";
+import { useAppDispatch } from "../App/store";
+import { addToCart } from "../App/features/cartSlice";
 
 //TODO: add loading and error states
 
 const Product = () => {
   const [selectedImage, setSelectedImage] = useState<number>(0);
   const { documentId } = useParams<{ documentId: string | undefined }>();
+  const dispatch = useAppDispatch();
   //!: get product info
   const { data, isLoading, error } = useFetching<IProductCard>({
     queryKey: ["product", documentId || ""],
@@ -61,6 +64,21 @@ const Product = () => {
     queryKey: ["related-products", categoryTitle],
     queryFn: () => fetchProductsByCategory(categoryTitle, documentId),
   });
+
+  //!: add to cart
+  const handelAddToCart = useCallback(() => {
+    const cartProduct: ICartProduct = {
+      ...product,
+      thumbnail: {
+        formats: {
+          small: {
+            url: product?.images?.[selectedImage]?.formats?.small?.url || "",
+          },
+        },
+      },
+    };
+    dispatch(addToCart(cartProduct));
+  }, [product, selectedImage, dispatch]);
 
   //!: Render Data
   const renderProducts = () => {
@@ -209,6 +227,7 @@ const Product = () => {
                 transform: "translateY(-3px)",
                 boxShadow: "lg",
               }}
+              onClick={handelAddToCart}
             >
               Add To Cart
             </Button>

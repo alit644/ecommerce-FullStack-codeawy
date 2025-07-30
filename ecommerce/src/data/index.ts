@@ -1,9 +1,14 @@
 import type {
+  IDashboardLink,
+  IDashboardOverview,
   ILoginInput,
   IRegisterInput,
 } from "../interfaces";
-import { BsTruck } from "react-icons/bs";
+import { BsBoxSeam, BsTruck } from "react-icons/bs";
 import { FiRotateCcw, FiShield } from "react-icons/fi";
+import { BiCategory } from "react-icons/bi";
+import { GoInbox, GoHome } from "react-icons/go";
+import { FaDollarSign, FaStore } from "react-icons/fa";
 
 export const tabs = [
   { label: "Featured Products", value: "featured" },
@@ -95,9 +100,51 @@ export const price = [
   { name: "$5000 - $10000", count: 10 },
 ];
 
-
 export const deliveryInfo = [
   { name: "Free delivery", icon: BsTruck, color: "green.400" },
   { name: "Express Shipping", icon: FiRotateCcw, color: "blue.400" },
   { name: "Standard Shipping", icon: FiShield, color: "purple.400" },
+];
+
+export const dashboardLinks: IDashboardLink[] = [
+  { name: "Dashboard", href: "/dashboard", icon: GoHome },
+  { name: "Products", href: "/dashboard/products", icon: GoInbox },
+  { name: "Categories", href: "/dashboard/categories", icon: BiCategory },
+  { name: "Orders", href: "/dashboard/orders", icon: BsBoxSeam },
+  { name: "Store", href: "/", icon: FaStore },
+];
+
+export const dashboardOverview: IDashboardOverview[] = [
+  {
+    name: "Total Products",
+    percentage: "+5%",
+    description: "increase from last month",
+    count: 100,
+    icon: GoInbox,
+    color: "blue.500",
+  },
+  {
+    name: "Categories",
+    percentage: "+10%",
+    description: "increase from last month",
+    count: 100,
+    icon: BiCategory,
+    color: "green.500",
+  },
+  {
+    name: "Total Orders",
+    percentage: "+15%",
+    description: "increase from last month",
+    count: 100,
+    icon: BsBoxSeam,
+    color: "purple.500",
+  },
+  {
+    name: "Total Value",
+    percentage: "+20%",
+    description: "increase from last month",
+    count: 100,
+    icon: FaDollarSign,
+    color: "orange.500",
+  },
 ];

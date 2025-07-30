@@ -52,6 +52,7 @@ export const cartSlice = createSlice({
       );
       if (product && product.quantity > 1) {
         product.quantity -= 1;
+        
       }
     },
     removeItem: (state, actions: PayloadAction<number>) => {

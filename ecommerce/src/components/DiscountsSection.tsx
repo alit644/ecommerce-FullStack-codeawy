@@ -1,19 +1,19 @@
-import {  Grid, Box } from "@chakra-ui/react";
+import { Grid, Box } from "@chakra-ui/react";
 import MainTitle from "./MainTitle";
-import { useQuery } from "@tanstack/react-query";
 import { fetchDiscounts } from "../utils/fetchingData";
 import type { IProductCard } from "../interfaces";
 import ProductCard from "./ui/ProductCard";
 import Error from "./Error/Error";
 import Skeleton from "./ui/Skeleton";
+import { useFetching } from "../Hooks/useFetching";
 
 const DiscountsSection = () => {
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error } = useFetching({
     queryKey: ["discounts"],
     queryFn: () => fetchDiscounts(),
   });
 
-  if (isLoading) return <Skeleton height="220px" count={6}/>;
+  if (isLoading) return <Skeleton height="220px" count={6} />;
   if (error)
     return (
       <Error
@@ -28,9 +28,10 @@ const DiscountsSection = () => {
       <Grid
         w="full"
         templateColumns={{
-         base: "repeat(2, 1fr)",
-         md: "repeat(auto-fill, minmax(220px, 1fr))",
-       }}        gap={6}
+          base: "repeat(2, 1fr)",
+          md: "repeat(auto-fill, minmax(220px, 1fr))",
+        }}
+        gap={6}
       >
         {data?.data?.map((product: IProductCard) => (
           <ProductCard key={product.id} data={product} />

@@ -4,13 +4,14 @@ import type { ICartProduct, IProductCard } from "../../interfaces";
 import { useAppDispatch } from "../../App/store";
 import { addToCart } from "../../App/features/cartSlice";
 import { Link } from "react-router";
+import { useCallback } from "react";
 
 const ProductCard = ({ data }: { data: IProductCard }) => {
   const { title, description, price, thumbnail, discount, documentId, brand } =
     data;
   const dispatch = useAppDispatch();
   //! Handler
-  const handelAddToCart = () => {
+  const handelAddToCart = useCallback(() => {
     const cartProduct: ICartProduct = {
       ...data,
       thumbnail: {
@@ -22,7 +23,7 @@ const ProductCard = ({ data }: { data: IProductCard }) => {
       },
     };
     dispatch(addToCart(cartProduct));
-  };
+  }, [data, thumbnail, dispatch]);
 
   return (
     <Link to={`/${brand}/${documentId}`}>

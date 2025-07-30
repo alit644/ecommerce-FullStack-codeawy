@@ -5,8 +5,14 @@ interface DrawerProps {
   children: React.ReactNode;
   title: string;
   onConfirm: () => void;
+  action?: boolean;
 }
-const DrawerComponent = ({ children, title, onConfirm }: DrawerProps) => {
+const DrawerComponent = ({
+  children,
+  title,
+  onConfirm,
+  action = true,
+}: DrawerProps) => {
   const isOpenDrawer = useAppSelector((state) => state.global.isOpenDrawer);
   const dispatch = useAppDispatch();
   return (
@@ -17,22 +23,28 @@ const DrawerComponent = ({ children, title, onConfirm }: DrawerProps) => {
       <Portal>
         <Drawer.Backdrop />
         <Drawer.Positioner>
-          <Drawer.Content>
+          <Drawer.Content >
             <Drawer.Header>
               <Drawer.Title>{title}</Drawer.Title>
             </Drawer.Header>
             <Drawer.Body>{children}</Drawer.Body>
-            <Drawer.Footer>
-              <Button variant="outline" onClick={() => dispatch(closeDrawer())}>
-                Cancel
-              </Button>
-              <Button colorPalette="teal" onClick={onConfirm}>
-                Apply
-              </Button>
-            </Drawer.Footer>
-            <Drawer.CloseTrigger asChild>
-              <CloseButton size="sm" />
-            </Drawer.CloseTrigger>
+            {action ? (
+              <Drawer.Footer>
+                <Button
+                  variant="outline"
+                  onClick={() => dispatch(closeDrawer())}
+                >
+                  Cancel
+                </Button>
+                <Button colorPalette="teal" onClick={onConfirm}>
+                  Apply
+                </Button>
+              </Drawer.Footer>
+            ) : (
+              <Drawer.CloseTrigger asChild>
+                <CloseButton size="sm" />
+              </Drawer.CloseTrigger>
+            )}
           </Drawer.Content>
         </Drawer.Positioner>
       </Portal>

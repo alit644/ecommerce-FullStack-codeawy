@@ -22,7 +22,7 @@ import MenuComponent from "./Menu";
 const Links = [
   { name: "Home", href: "/" },
   { name: "Shop", href: "/shop" },
-  { name: "Dashbord", href: "/dashbord" },
+  { name: "Dashboard", href: "/dashboard" },
 ];
 
 const NavLink = ({

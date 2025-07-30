@@ -9,3 +9,8 @@
   text-decoration: none;
   background-color: #e2e8f0;
 }
+
+.active button{
+  background-color: #14b8a6;
+  color: white;
+}

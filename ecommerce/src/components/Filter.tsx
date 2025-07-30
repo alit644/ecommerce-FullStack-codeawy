@@ -14,6 +14,8 @@ import { useMemo } from "react";
 import Skeleton from "./ui/Skeleton";
 import Error from "./Error/Error";
 
+//TODO: add filter price
+
 interface IFilterSidebarprops {
   filters: FilterType;
   handleFilterChange: (filter: string, value: string[]) => void;

@@ -8,6 +8,9 @@ import Cart from "../pages/Cart";
 import Shop from "../pages/Products";
 import Error from "../components/Error/Error";
 import Product from "../pages/Product";
+import DashboardLayout from "../pages/dashboard/DashboardLayout";
+import DashboardHome from "../pages/dashboard/Home";
+import ProductsDashboard from "../pages/dashboard/products/ProductsDashboard";
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -39,6 +42,21 @@ export const router = createBrowserRouter([
       {
         path: "/register",
         element: <ProtectedRoute reverse path="/" children={<Register />} />,
+      },
+    ],
+
+  },
+  {
+    path: "/dashboard",
+    Component: DashboardLayout,
+    children: [
+      {
+        index: true,
+        Component: DashboardHome,
+      },
+      {
+        path: "products",
+        Component: ProductsDashboard,
       },
     ],
   },
