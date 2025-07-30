@@ -34,7 +34,7 @@ export default function SidebarLayout() {
     <Flex h="100vh">
       <Box
         display={{ base: "none", md: "block" }}
-        borderRight={"1px solid #ccc"}
+        borderRight={"1px solid #e4e4e7"}
         w="260px"
         bg="white"
         // bg="gray.800"
@@ -58,9 +58,10 @@ export default function SidebarLayout() {
           h="60px"
           align="center"
           gap={4}
+          p={4}
           borderColor="gray.200"
           bg="white"
-          borderBottom="1px solid #ccc"
+          borderBottom="1px solid #e4e4e7"
           px={{ base: 4, lg: 6 }}
         >
           <IconButton
@@ -88,7 +89,7 @@ export default function SidebarLayout() {
                   type="search"
                   placeholder="Search products..."
                   pl="32px"
-                  bg="gray.50"
+                  bg="white"
                   maxW={{ md: "66%", lg: "33%" }}
                   _placeholder={{ color: "gray.500" }}
                   borderColor="gray.200"

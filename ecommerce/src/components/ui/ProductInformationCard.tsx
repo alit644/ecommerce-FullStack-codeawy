@@ -7,6 +7,7 @@ interface IProductInformationCard {
   children?: React.ReactNode;
   icon?: IconType;
   color?: string;
+  
 }
 const ProductInformationCard = ({
   label,

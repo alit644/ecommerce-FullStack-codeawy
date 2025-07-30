@@ -7,7 +7,7 @@ export const fetchProducts = async (
 ) => {
   try {
     const { data } = await api.get(
-      `api/products?populate=thumbnail&pagination[page]=${page}&pagination[pageSize]=${pageSize}&${filters}`
+      `api/products?populate=thumbnail&populate=category&pagination[page]=${page}&pagination[pageSize]=${pageSize}&${filters}`
     );
     return data;
   } catch (error) {

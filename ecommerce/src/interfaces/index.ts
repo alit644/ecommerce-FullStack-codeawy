@@ -16,7 +16,6 @@ export interface IProductCard {
         url?: string;
       };
     };
-
   }[];
   product_option?: {
     color?: string;
@@ -35,7 +34,7 @@ export interface IProductCard {
   };
   category?: {
     title: string;
-  }
+  };
   quantity: number;
   rating?: number;
 }
@@ -131,19 +130,17 @@ export interface ICartProduct {
   quantity: number;
 }
 export interface CheckboxOption {
- name?: string;
- tag?: string;
- title?: string;
-} 
+  name?: string;
+  tag?: string;
+  title?: string;
+}
 
 export interface IAccordionItems {
   value: string;
   key: string;
   label: string;
-  each: CheckboxOption[] ;
+  each: CheckboxOption[];
 }
-
-
 
 export interface IBrand {
   id?: number;
@@ -180,11 +177,17 @@ export interface IDashboardLink {
   icon: IconType;
 }
 
-export interface IDashboardOverview{
- name: string;
- description: string;
- percentage: string;
- count: number;
- icon: IconType;
- color: string;
+export interface IDashboardOverview {
+  name: string;
+  description: string;
+  percentage: string;
+  count: number;
+  icon: IconType;
+  color: string;
+}
+
+export interface ITableColumn {
+  label: string;
+  key: string;
+  type: "image" | "text" | "actions";
 }

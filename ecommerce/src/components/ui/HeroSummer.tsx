@@ -1,4 +1,5 @@
 import { Box, Text, Button, VStack, Image } from "@chakra-ui/react";
+import { Link } from "react-router";
 
 const HeroSummer = () => {
   return (
@@ -41,19 +42,24 @@ const HeroSummer = () => {
         <Text fontSize="xl" opacity={0.5} mb={6}>
           Discover our latest summer collection with exclusive deals
         </Text>
-        <Button
-        variant={"outline"}
-
-          size="lg"
-          colorScheme="teal"
-          color={"white"}
-          px={8}
-          py={4}
-          _hover={{ transform: "translateY(-2px)", boxShadow: "lg" , color:"black"}}
-          transition="all 0.3s ease"
-        >
-          Shop Now
-        </Button>
+        <Link to="/shop">
+          <Button
+            variant={"outline"}
+            size="lg"
+            colorScheme="teal"
+            color={"white"}
+            px={8}
+            py={4}
+            _hover={{
+              transform: "translateY(-2px)",
+              boxShadow: "lg",
+              color: "black",
+            }}
+            transition="all 0.3s ease"
+          >
+            Shop Now
+          </Button>
+        </Link>
       </VStack>
     </Box>
   );

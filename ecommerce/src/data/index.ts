@@ -3,6 +3,7 @@ import type {
   IDashboardOverview,
   ILoginInput,
   IRegisterInput,
+  ITableColumn,
 } from "../interfaces";
 import { BsBoxSeam, BsTruck } from "react-icons/bs";
 import { FiRotateCcw, FiShield } from "react-icons/fi";
@@ -141,10 +142,22 @@ export const dashboardOverview: IDashboardOverview[] = [
   },
   {
     name: "Total Value",
-    percentage: "+20%",
-    description: "increase from last month",
+    percentage: "-20%",
+    description: "decrease from last month",
     count: 100,
     icon: FaDollarSign,
     color: "orange.500",
   },
 ];
+
+export const tableColumns:ITableColumn[] = [
+  { label: "Image", key: "image", type: "image" },
+  { label: "ID", key: "id", type: "text" },
+  { label: "Name", key: "name", type: "text" },
+  { label: "Category", key: "category", type: "text" },
+  { label: "Price", key: "price", type: "text" },
+  { label: "Stock", key: "stock", type: "text" },
+  { label: "Status", key: "status", type: "text" },
+  { label: "Actions", key: "actions", type: "actions" },
+];
+
