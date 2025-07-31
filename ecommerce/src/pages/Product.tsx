@@ -12,7 +12,7 @@ import {
   Button,
   Icon,
 } from "@chakra-ui/react";
-import { useCallback, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { useParams } from "react-router";
 import type { ICartProduct, IProductCard } from "../interfaces";
 import { FaStar } from "react-icons/fa";
@@ -25,6 +25,7 @@ import { useFetching } from "../Hooks/useFetching";
 import { fetchProduct, fetchProductsByCategory } from "../utils/fetchingData";
 import { useAppDispatch } from "../App/store";
 import { addToCart } from "../App/features/cartSlice";
+import MButton from "../components/ui/Button";
 
 //TODO: add loading and error states
 
@@ -38,21 +39,24 @@ const Product = () => {
     queryFn: () => fetchProduct(documentId),
   });
 
-  const product: IProductCard = {
-    id: data?.id || 0,
-    documentId: data?.documentId || "",
-    title: data?.title || "",
-    price: data?.price || 0,
-    description: data?.description || "",
-    images: data?.images || [],
-    discount: data?.discount || 0,
-    stock: data?.stock || 0,
-    quantity: data?.quantity || 0,
-    rating: data?.rating || 0,
-    brand: data?.brand || "",
-    product_option: data?.product_option,
-    category: data?.category,
-  };
+  const product = useMemo(
+    () => ({
+      id: data?.id || 0,
+      documentId: data?.documentId || "",
+      title: data?.title || "",
+      price: data?.price || 0,
+      description: data?.description || "",
+      images: data?.images || [],
+      discount: data?.discount || 0,
+      stock: data?.stock || 0,
+      quantity: data?.quantity || 0,
+      rating: data?.rating || 0,
+      brand: data?.brand || "",
+      product_option: data?.product_option,
+      category: data?.category,
+    }),
+    [data]
+  );
   //!: get category title
   const categoryTitle = product.category?.title || "";
   // related-products
@@ -217,8 +221,11 @@ const Product = () => {
             >
               Add To Wishlist
             </Button>
-            <Button
+
+            <MButton
               w="full"
+              title="Add To Cart"
+              variant="solid"
               colorScheme="teal"
               size="xl"
               fontWeight="bold"
@@ -228,9 +235,7 @@ const Product = () => {
                 boxShadow: "lg",
               }}
               onClick={handelAddToCart}
-            >
-              Add To Cart
-            </Button>
+            />
           </Flex>
 
           {/* Free delivery  */}

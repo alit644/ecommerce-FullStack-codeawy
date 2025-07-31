@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Container,
   Heading,
   Text,
@@ -18,10 +17,10 @@ import { removeItem } from "../App/features/cartSlice";
 import { closeDialog } from "../App/features/globalSlice";
 import DialogAlert from "../components/ui/Dialog";
 import CartItems from "../components/CartItems";
+import MButton from "../components/ui/Button";
 
 const Cart = () => {
   const bgColor = useColorModeValue("white", "gray.800");
-  // const textColor = useColorModeValue("gray.700", "white");
   const cartItems = useAppSelector((state) => state.cart.cartData);
   const id = useAppSelector((state) => state.global.id);
   const dispatch = useAppDispatch();
@@ -72,9 +71,13 @@ const Cart = () => {
             Please add some items to your cart.
           </Text>
           <NavLink to="/shop">
-            <Button colorScheme="teal" variant="solid" size="md" mt={2}>
-              Go to Shop
-            </Button>
+            <MButton
+              title="Go to Shop"
+              variant="solid"
+              colorScheme="teal"
+              size="md"
+              mt={2}
+            />
           </NavLink>
         </Flex>
       ) : (
@@ -104,9 +107,13 @@ const Cart = () => {
                   ${calculateTotal().toFixed(2)}
                 </Text>
               </HStack>
-              <Button colorScheme="blue" size="lg" w="full">
-                Proceed to Checkout
-              </Button>
+              <MButton
+                title="Proceed to Checkout"
+                variant="solid"
+                colorScheme="blue"
+                size="lg"
+                w="full"
+              />
             </VStack>
           </Box>
         </>

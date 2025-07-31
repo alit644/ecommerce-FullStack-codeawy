@@ -3,12 +3,11 @@ import {
   VStack,
   Heading,
   Input,
-  Button,
   Field,
   Text,
 } from "@chakra-ui/react";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { NavLink } from "react-router";
+import { Link } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaRegister } from "../../schema";
 import { REGISTER_FORM } from "../../data";
@@ -16,6 +15,7 @@ import { useAppDispatch, useAppSelector } from "../../App/store";
 import { Toaster, toaster } from "../../components/ui/toaster";
 import { registerUser } from "../../App/features/registerSlice";
 import { login } from "../../App/features/authSlice";
+import MButton from "../../components/ui/Button";
 
 export interface IFormInput {
   username: string;
@@ -114,26 +114,25 @@ const Register = () => {
             }}
           >
             {renderInputForm}
-            <Button
-              type="submit"
+
+            <MButton
               colorScheme="brand"
-              w="full"
+              type="submit"
               size="lg"
-              _hover={{ bg: "brand.600" }}
-              loading={isLoading}
-            >
-              Sign Up
-            </Button>
+              title="Sign Up"
+              variant="solid"
+              isLoading={isLoading}
+            />
           </form>
 
-          <NavLink to="/login">
+          <Link to="/login">
             <Text textAlign="center">
               Already have an account?{" "}
               <Text as="span" color={"blue.500"} colorScheme="brand">
                 Sign In
               </Text>
             </Text>
-          </NavLink>
+          </Link>
         </VStack>
       </Box>
     </Box>

@@ -13,7 +13,7 @@ const Home = () => {
         <BrowseByCategory />
         <FeaturedProducts />
       </Container>
-      <HeroSummer />
+       <HeroSummer /> 
       <Container maxW="container.xl" mt={6} mb={6}>
         <DiscountsSection />
       </Container>

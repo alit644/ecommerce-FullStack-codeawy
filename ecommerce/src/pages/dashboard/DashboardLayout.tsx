@@ -4,7 +4,6 @@ import * as React from "react";
 import {
   Box,
   Flex,
-  Input,
   Avatar,
   Button,
   IconButton,
@@ -24,6 +23,7 @@ import { useAppDispatch } from "../../App/store";
 import { openDrawer } from "../../App/features/globalSlice";
 import { Tooltip } from "../../components/ui/tooltip";
 import { useAppSelector } from "../../App/store";
+import MInput from "../../components/ui/MInput";
 const renderLinks = dashboardLinks.map((link) => (
   <SidebarButton key={link.name} icon={link.icon} href={link.href}>
     {link.name}
@@ -80,7 +80,7 @@ export default function SidebarLayout() {
                   >
                     <FaSearch size={16} color="#ccc" />
                   </Box>
-                  <Input
+                  <MInput
                     type="search"
                     placeholder="Search products..."
                     pl="32px"
@@ -227,6 +227,7 @@ function SidebarButton({
         {icon && React.createElement(icon, { size: 16 })}
         {children}
       </Button>
+      
     </NavLink>
   );
 }

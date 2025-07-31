@@ -1,12 +1,14 @@
-import { Button } from "@chakra-ui/react";
+import { Button, Icon } from "@chakra-ui/react";
 interface MButtonProps extends React.ComponentProps<typeof Button> {
   colorScheme?: string;
-  size: "sm" | "md" | "lg" | "xs";
+  size: "sm" | "md" | "lg" | "xs" | "xl";
   title: string;
   variant: "ghost" | "outline" | "plain" | "solid" | "subtle" | "surface";
   type?: "button" | "submit" | "reset";
-  w?: string | number;
+  w?: "full" | "fit-content";
   isLoading?: boolean;
+  icon?: React.ReactNode;
+  
 }
 const MButton = ({
   title,
@@ -14,19 +16,22 @@ const MButton = ({
   size,
   variant = "solid",
   type = "button",
-  w,
+  w = "fit-content",
   isLoading = false,
+  icon,
+ ...props
 }: MButtonProps) => {
   return (
     <Button
-    
-    loading={isLoading}
+      loading={isLoading}
       w={w}
       colorScheme={colorScheme}
       size={size}
       variant={variant}
       type={type}
+      {...props}
     >
+      {icon && <Icon>{icon}</Icon>}
       {title}
     </Button>
   );

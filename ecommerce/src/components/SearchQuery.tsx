@@ -1,7 +1,8 @@
-import { Box, Input } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useDebouncedCallback } from "use-debounce";
+import MInput from "./ui/MInput";
 interface ISearchQuery {
   setSearchQuery: (query: string) => void;
 }
@@ -27,7 +28,7 @@ const SearchQuery = ({ setSearchQuery }: ISearchQuery) => {
       >
         <FaSearch size={16} color="#ccc" />
       </Box>
-      <Input
+      <MInput
         value={query}
         onChange={handleChange}
         type="search"

@@ -5,14 +5,13 @@ import {
   Table,
   Badge,
   IconButton,
-  Button,
   Flex,
   Menu,
 } from "@chakra-ui/react";
 import MainTitle from "../../../components/MainTitle";
 import { LuTrash2 } from "react-icons/lu";
 import { TbEdit } from "react-icons/tb";
-import { BsPlus } from "react-icons/bs";
+import { BsFilterRight, BsPlus } from "react-icons/bs";
 import { sortItems, tableColumns } from "../../../data";
 import TableComponent from "../../../components/ui/Table";
 import type { IProductCard } from "../../../interfaces";
@@ -30,6 +29,7 @@ import SearchQuery from "../../../components/SearchQuery";
 import NoResult from "../../../components/ui/NoResult";
 import Error from "../../../components/Error/Error";
 import TableSkeleton from "../../../components/ui/TableSkeleton";
+import MButton from "../../../components/ui/Button";
 
 //TODO: Add Skeleton Loader
 const ProductsDashboard = () => {
@@ -104,15 +104,16 @@ const ProductsDashboard = () => {
       <Box>
         <HStack alignItems="center" justifyContent="space-between">
           <MainTitle title="Products" isArrow={false} />
-          <Button
+
+          <MButton
             variant="solid"
             colorScheme="teal"
             bg={"teal.500"}
             _hover={{ bg: "teal.600" }}
-          >
-            <BsPlus />
-            Add Product
-          </Button>
+            size="md"
+            title="Add Product"
+            icon={<BsPlus />}
+          />
         </HStack>
         {/* Table and Sort */}
         <Box>
@@ -157,12 +158,13 @@ const ProductsDashboard = () => {
               </Menu.RadioItemGroup>
             </MenuComponent>
             {/* Filter */}
-            <Button
-              variant="outline"
-              onClick={() => dispatch(openFilterDrawer())}
-            >
-              <HiSortAscending /> Filter
-            </Button>
+            <MButton
+            variant="outline"
+            size="md"
+            title="Filter"
+            icon={<BsFilterRight />}
+            onClick={() => dispatch(openFilterDrawer())}
+          />
           </Flex>
           {/* Table */}
           {data?.data.length === 0 ? (

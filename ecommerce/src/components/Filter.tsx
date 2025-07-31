@@ -1,4 +1,4 @@
-import { Box, Accordion, Button } from "@chakra-ui/react";
+import { Box, Accordion } from "@chakra-ui/react";
 import api from "../Api/axios";
 import { useQuery } from "@tanstack/react-query";
 import type {
@@ -13,6 +13,7 @@ import AccordionComponent from "./Accordion/Accordion";
 import { useMemo } from "react";
 import Error from "./Error/Error";
 import SkeletonCard from "./ui/Skeleton";
+import MButton from "./ui/Button";
 
 //TODO: add filter price
 
@@ -105,16 +106,16 @@ const FilterSidebar = ({
         ))}
       </Accordion.Root>
 
-      <Button
-        colorScheme="blackAlpha"
-        w="full"
-        mt={4}
+      
+      <MButton
+      w="full"
+      mt={4}
+      mb={2}
+        title="Reset Filters"
         variant="outline"
         size="md"
         onClick={resetFilters}
-      >
-        Reset Filters
-      </Button>
+      /> 
     </Box>
   );
 };

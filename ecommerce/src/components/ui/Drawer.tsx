@@ -1,6 +1,7 @@
 import { Button, CloseButton, Drawer, Portal } from "@chakra-ui/react";
 import { useAppDispatch } from "../../App/store";
 import { closeDrawer } from "../../App/features/globalSlice";
+import { useCallback } from "react";
 interface DrawerProps {
  isOpenDrawer: boolean;
   children: React.ReactNode;
@@ -16,6 +17,10 @@ const DrawerComponent = ({
   action = true,
 }: DrawerProps) => {
   const dispatch = useAppDispatch();
+
+  const handleConfirm = useCallback(() => {
+    if (onConfirm) onConfirm();
+  }, [onConfirm]);
   return (
     <Drawer.Root
       open={isOpenDrawer}
@@ -37,7 +42,7 @@ const DrawerComponent = ({
                 >
                   Cancel
                 </Button>
-                <Button colorPalette="teal" onClick={onConfirm}>
+                <Button colorPalette="teal" onClick={handleConfirm}>
                   Apply
                 </Button>
               </Drawer.Footer>

@@ -3,13 +3,14 @@ import {
   Flex,
   Heading,
   Text,
-  Button,
   Stack,
   Image,
 } from "@chakra-ui/react";
+import { memo } from "react";
 import { Link } from "react-router";
+import MButton from "./Button";
 
-export default function HeroSection() {
+const HeroSection = () => {
   return (
     <Box
       position="relative"
@@ -47,18 +48,17 @@ export default function HeroSection() {
             Created to change everything for the better. For everyone{" "}
           </Text>
           <Link to="/shop">
-            <Button
-              variant={"outline"}
+            <MButton
+              title="Shop Now"
+              variant="outline"
               colorScheme="teal"
               color="white"
               px={8}
               fontWeight="bold"
               boxShadow="md"
               _hover={{ color: "black" }}
-              w={{ base: "full", md: "fit-content" }}
-            >
-              Shop Now
-            </Button>
+              size="lg"
+            />
           </Link>
         </Stack>
       </Flex>
@@ -81,4 +81,6 @@ export default function HeroSection() {
       </Box>
     </Box>
   );
-}
+};
+
+export default memo(HeroSection);

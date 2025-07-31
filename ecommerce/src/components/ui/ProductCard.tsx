@@ -1,10 +1,11 @@
-import { Box, Image, Text, Button, IconButton, Badge } from "@chakra-ui/react";
+import { Box, Image, Text, IconButton, Badge } from "@chakra-ui/react";
 import { FiHeart } from "react-icons/fi";
 import type { ICartProduct, IProductCard } from "../../interfaces";
 import { useAppDispatch } from "../../App/store";
 import { addToCart } from "../../App/features/cartSlice";
 import { Link } from "react-router";
 import { useCallback } from "react";
+import MButton from "./Button";
 
 const ProductCard = ({ data }: { data: IProductCard }) => {
   const { title, description, price, thumbnail, discount, documentId, brand } =
@@ -102,16 +103,16 @@ const ProductCard = ({ data }: { data: IProductCard }) => {
             ${price}
           </Text>
 
-          <Button
-            onClick={handelAddToCart}
+          <MButton
+            title="Add To Cart"
+            variant="solid"
             colorScheme="teal"
             size="sm"
             borderRadius={"md"}
             mt={2}
             w="full"
-          >
-            Add To Cart
-          </Button>
+            onClick={handelAddToCart}
+          />
         </Box>
       </Box>
     </Link>

@@ -1,5 +1,7 @@
-import { Box, Text, Button, VStack, Image } from "@chakra-ui/react";
+import { Box, Text, VStack, Image } from "@chakra-ui/react";
+import { memo } from "react";
 import { Link } from "react-router";
+import MButton from "./Button";
 
 const HeroSummer = () => {
   return (
@@ -43,26 +45,25 @@ const HeroSummer = () => {
           Discover our latest summer collection with exclusive deals
         </Text>
         <Link to="/shop">
-          <Button
-            variant={"outline"}
-            size="lg"
+          <MButton
+            title="Shop Now"
+            variant="outline"
             colorScheme="teal"
-            color={"white"}
+            size="lg"
             px={8}
             py={4}
+            color="white"
             _hover={{
               transform: "translateY(-2px)",
               boxShadow: "lg",
               color: "black",
             }}
             transition="all 0.3s ease"
-          >
-            Shop Now
-          </Button>
+          />
         </Link>
       </VStack>
     </Box>
   );
 };
 
-export default HeroSummer;
+export default memo(HeroSummer);

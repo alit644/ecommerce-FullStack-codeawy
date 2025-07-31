@@ -3,12 +3,11 @@ import {
   VStack,
   Heading,
   Input,
-  Button,
   Field,
   Text,
 } from "@chakra-ui/react";
 import { useForm, type SubmitHandler } from "react-hook-form";
-import { NavLink } from "react-router";
+import { Link } from "react-router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaLogin } from "../../schema";
 import { LOGIN_FORM } from "../../data";
@@ -16,6 +15,7 @@ import { useAppDispatch, useAppSelector } from "../../App/store";
 import { loginUser } from "../../App/features/loginSlice";
 import { Toaster, toaster } from "../../components/ui/toaster";
 import { login } from "../../App/features/authSlice";
+import MButton from "../../components/ui/Button";
 
 export interface IFormInput {
   identifier: string;
@@ -115,26 +115,25 @@ const Login = () => {
             }}
           >
             {renderInputForm}
-            <Button
-              type="submit"
+
+            <MButton
               colorScheme="brand"
-              w="full"
+              type="submit"
               size="lg"
-              _hover={{ bg: "brand.600" }}
-              loading={isLoading}
-            >
-              Sign In
-            </Button>
+              title="Sign In"
+              variant="solid"
+              isLoading={isLoading}
+            />
           </form>
 
-          <NavLink to="/register">
+          <Link to="/register">
             <Text textAlign="center">
               Don't have an account?{" "}
               <Text as="span" color={"blue.500"} colorScheme="brand">
                 Sign Up
               </Text>
             </Text>
-          </NavLink>
+          </Link>
         </VStack>
       </Box>
     </Box>

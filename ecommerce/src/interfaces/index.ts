@@ -114,6 +114,7 @@ export interface ICartProduct {
   id: number;
   title: string;
   description: string;
+  documentId: string;
   price: number;
   brand?: string;
   stock?: number;
