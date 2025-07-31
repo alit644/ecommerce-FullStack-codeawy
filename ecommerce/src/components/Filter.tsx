@@ -11,8 +11,8 @@ import type {
 import { brands, price } from "../data";
 import AccordionComponent from "./Accordion/Accordion";
 import { useMemo } from "react";
-import Skeleton from "./ui/Skeleton";
 import Error from "./Error/Error";
+import SkeletonCard from "./ui/Skeleton";
 
 //TODO: add filter price
 
@@ -85,7 +85,7 @@ const FilterSidebar = ({
 
   if (isLoading)
     return (
-      <Skeleton height="60px" width="full" count={accordionItems.length} />
+      <SkeletonCard count={accordionItems.length} noOfLines={2} isAction={false} height="60px" textSkeleton={false}/>
     );
   if (error) return <Error code={500} message="Error" description="Failed to fetch filters" />;
   if (!categories || !tags) return <Error code={500} message="Error" description="Filters not available" />;

@@ -28,6 +28,8 @@ import { useProducts } from "../../../Hooks/useProducts";
 import { useProductFilters } from "../../../Hooks/useProductFilters";
 import SearchQuery from "../../../components/SearchQuery";
 import NoResult from "../../../components/ui/NoResult";
+import Error from "../../../components/Error/Error";
+import TableSkeleton from "../../../components/ui/TableSkeleton";
 
 //TODO: Add Skeleton Loader
 const ProductsDashboard = () => {
@@ -96,8 +98,7 @@ const ProductsDashboard = () => {
     </Table.Row>
   ));
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error</div>;
+  if (isError) return <Error description="Something went wrong" />;
   return (
     <>
       <Box>
@@ -163,20 +164,27 @@ const ProductsDashboard = () => {
               <HiSortAscending /> Filter
             </Button>
           </Flex>
+          {/* Table */}
           {data?.data.length === 0 ? (
             <NoResult />
+          ) : isLoading ? (
+            <TableSkeleton />
           ) : (
-            <TableComponent headers={renderTableHeaders} rows={renderTableRows} />
+            <TableComponent
+              headers={renderTableHeaders}
+              rows={renderTableRows}
+            />
           )}
 
           {/* Pagination */}
-          {data?.meta.pagination.total !== undefined && data?.meta.pagination.total > 0 && (
-            <PaginationComponent
-              count={data?.meta.pagination.total || 0}
-              pageSize={pageSize}
-              page={page}
-            />
-          )}
+          {data?.meta.pagination.total !== undefined &&
+            data?.meta.pagination.total > 0 && (
+              <PaginationComponent
+                count={data?.meta.pagination.total || 0}
+                pageSize={pageSize}
+                page={page}
+              />
+            )}
         </Box>
       </Box>
       {/* Filter Drawer */}

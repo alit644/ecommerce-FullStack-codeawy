@@ -1,8 +1,8 @@
 import { Box, Grid } from "@chakra-ui/react";
 import type { JSX } from "react";
-import Skeleton from "../ui/Skeleton";
 import Error from "../Error/Error";
 import NoResult from "../ui/NoResult";
+import SkeletonCard from "../ui/Skeleton";
 
 interface ProductsGridProps {
   renderProducts: JSX.Element[];
@@ -17,7 +17,8 @@ export const ProductsGrid = ({
   isLoading,
   isError,
 }: ProductsGridProps) => {
-  if (isLoading) return <Skeleton height="220px" />;
+  if (isLoading)
+    return <SkeletonCard count={6} noOfLines={3} isAction={true} />;
   if (totalProducts === 0) return <NoResult />;
   if (isError)
     return (

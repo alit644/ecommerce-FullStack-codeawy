@@ -85,6 +85,8 @@ const Shop = () => {
         </DrawerComponent>
         {/* Products Grid and Pagination */}
         <Flex direction="column" gap={6} w="full">
+     
+
           <Box w="full" p={3}>
             <Grid gap={6} w="full">
               <ProductHeader totalProducts={total ?? 0} />

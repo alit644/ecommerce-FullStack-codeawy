@@ -1,38 +1,36 @@
-import { Box, Grid, Spinner } from "@chakra-ui/react";
-interface ISkeleton {
-  height: string;
-  width?: string;
+import {
+  Stack,
+  HStack,
+  SkeletonText,
+  Skeleton,
+  Grid,
+  Box,
+} from "@chakra-ui/react";
+interface SkeletonCardProps {
   count?: number;
+  noOfLines?: number;
+  isAction?: boolean;
+  height?: string;
+  textSkeleton?: boolean;
 }
-const Skeleton = ({ height = "180px", width, count = 6 }: ISkeleton) => {
+const SkeletonCard = ({ count =6 ,noOfLines=2 ,isAction=false ,height="140px",textSkeleton=true }: SkeletonCardProps) => {
   return (
-    <Box my={6}>
-      <Grid
-        templateColumns={{
-          base: "repeat(2, 1fr)",
-          md: "repeat(auto-fill, minmax(200px, 1fr))",
-        }}
-        gap={6}
-        mt={4}
-      >
-        {[...Array(count)].map((_, idx) => (
-          <Box
-            key={idx}
-            height={height}
-            width={width}
-            borderRadius="lg"
-            bg="gray.100"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            boxShadow="sm"
-          >
-            <Spinner size="lg" color="teal.400" />
-          </Box>
-        ))}
+    <Box p={3} w={"full"}>
+      <Grid templateColumns="repeat(auto-fill, minmax(200px, 1fr))" gap={6}>
+       {Array.from({ length: count }).map((_, idx) => (
+        <Stack  gap="2" maxW="xs" w={"200px"} key={idx}>
+          <Skeleton w="100%" h={height} />
+          <HStack width="full">
+            {textSkeleton && <SkeletonText noOfLines={noOfLines}/>}
+          </HStack>
+          {/* Buton */}
+          {isAction && <Skeleton w="100%" h="38px"/>}
+        </Stack>
+       ))}
       </Grid>
     </Box>
+    
   );
 };
 
-export default Skeleton;
+export default SkeletonCard;
