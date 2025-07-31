@@ -3,11 +3,12 @@ import api from "../Api/axios";
 export const fetchProducts = async (
   page: number,
   pageSize: number,
-  filters: string
+  filters: string,
+  value?: string
 ) => {
   try {
     const { data } = await api.get(
-      `api/products?populate=thumbnail&populate=category&pagination[page]=${page}&pagination[pageSize]=${pageSize}&${filters}`
+      `api/products?populate=thumbnail&populate=category&pagination[page]=${page}&pagination[pageSize]=${pageSize}&${filters}&sort[1]=title:${value}`
     );
     return data;
   } catch (error) {
@@ -48,7 +49,6 @@ export const fetchDiscounts = async () => {
   }
 };
 
-
 export const fetchProduct = async (documentId: string | undefined) => {
   try {
     const { data } = await api.get(`/api/products/${documentId}?populate=*`);
@@ -58,7 +58,10 @@ export const fetchProduct = async (documentId: string | undefined) => {
   }
 };
 
-export const fetchProductsByCategory = async (categoryTitle: string , documentId: string | undefined) => {
+export const fetchProductsByCategory = async (
+  categoryTitle: string,
+  documentId: string | undefined
+) => {
   try {
     const { data } = await api.get(
       `/api/products?populate=*&filters[category][title][$eq]=${categoryTitle}&filters[documentId][$ne]=${documentId}&pagination[limit]=5`

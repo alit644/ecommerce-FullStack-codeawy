@@ -14,13 +14,13 @@ interface ProductsResponse {
   };
 }
 
-export const useProducts = (filters: FilterType) => {
+export const useProducts = (filters: FilterType , valueSort?: string) => {
   const { page, pageSize } = useAppSelector((state) => state.pagination);
   const queryClient = useQueryClient();
   const filtersQuery = generateStrapiQuery(filters);
   const { data, isLoading, isError, isFetching } = useQuery<ProductsResponse>({
-    queryKey: ["products", "pagination", page, pageSize, filtersQuery],
-    queryFn: () => fetchProducts(page, pageSize, filtersQuery),
+    queryKey: ["products", "pagination", page, pageSize, filtersQuery,valueSort],
+    queryFn: () => fetchProducts(page, pageSize, filtersQuery, valueSort),
     staleTime: 1000 * 60 * 2,
     refetchInterval: 1000 * 60 * 2,
     placeholderData: (prev) => prev,
@@ -33,12 +33,12 @@ export const useProducts = (filters: FilterType) => {
   useEffect(() => {
     if (page < (pageCount ?? 0)) {
       queryClient.prefetchQuery({
-        queryKey: ["products", "pagination", page + 1],
-        queryFn: () => fetchProducts(page + 1, pageSize, filtersQuery),
+        queryKey: ["products", "pagination", page + 1, filtersQuery,valueSort],
+        queryFn: () => fetchProducts(page + 1, pageSize, filtersQuery, valueSort),
         staleTime: 1000 * 60 * 2,
       });
     }
-  }, [page, pageSize, pageCount, queryClient, filtersQuery]);
+  }, [page, pageSize, pageCount, queryClient, filtersQuery,valueSort]);
 
   return {
     data,

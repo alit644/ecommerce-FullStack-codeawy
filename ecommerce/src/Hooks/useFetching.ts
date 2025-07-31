@@ -1,15 +1,15 @@
 import { useQuery, type UseQueryOptions } from "@tanstack/react-query";
 interface IFetching<T> {
-  queryKey: string[];
+  queryKey: (string | number)[];
   queryFn: () => Promise<T>;
-  options?: UseQueryOptions<T, Error, T, string[]>;
+  options?: UseQueryOptions<T, Error, T, (string | number)[]>;
 }
 export const useFetching = <T>({
   queryKey,
   queryFn,
   options,
 }: IFetching<T>) => {
-  return useQuery<T, Error, T, string[]>({
+  return useQuery<T, Error, T, (string | number)[]>({
     queryKey,
     queryFn,
     refetchOnWindowFocus: false,

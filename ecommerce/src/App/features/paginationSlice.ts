@@ -9,7 +9,7 @@ export interface paginationSliceState {
 
 const initialState: paginationSliceState = {
   page: 1,
-  pageSize: 2,
+  pageSize: 5,
   count: 0,
 };
 

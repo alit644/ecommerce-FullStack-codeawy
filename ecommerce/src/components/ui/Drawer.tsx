@@ -1,19 +1,20 @@
 import { Button, CloseButton, Drawer, Portal } from "@chakra-ui/react";
-import { useAppSelector, useAppDispatch } from "../../App/store";
+import { useAppDispatch } from "../../App/store";
 import { closeDrawer } from "../../App/features/globalSlice";
 interface DrawerProps {
+ isOpenDrawer: boolean;
   children: React.ReactNode;
   title: string;
-  onConfirm: () => void;
+  onConfirm?: () => void;
   action?: boolean;
 }
 const DrawerComponent = ({
+  isOpenDrawer,
   children,
   title,
   onConfirm,
   action = true,
 }: DrawerProps) => {
-  const isOpenDrawer = useAppSelector((state) => state.global.isOpenDrawer);
   const dispatch = useAppDispatch();
   return (
     <Drawer.Root
@@ -23,7 +24,7 @@ const DrawerComponent = ({
       <Portal>
         <Drawer.Backdrop />
         <Drawer.Positioner>
-          <Drawer.Content >
+          <Drawer.Content>
             <Drawer.Header>
               <Drawer.Title>{title}</Drawer.Title>
             </Drawer.Header>

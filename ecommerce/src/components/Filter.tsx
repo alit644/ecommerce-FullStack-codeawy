@@ -91,7 +91,7 @@ const FilterSidebar = ({
   if (!categories || !tags) return <Error code={500} message="Error" description="Filters not available" />;
 
  return (
-    <Box w="full" maxW="280px" p={2} borderRight="1px solid #e2e8f0">
+    <Box w="full" maxW="280px" p={2} borderRight={{base:"0", md:"1px solid #e2e8f0"}} h="full">
       <Accordion.Root collapsible defaultValue={[""]}>
         {accordionItems.map((item) => (
           <AccordionComponent

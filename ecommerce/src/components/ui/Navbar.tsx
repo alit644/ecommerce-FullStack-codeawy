@@ -9,15 +9,21 @@ import {
   Text,
   Spacer,
   Badge,
+  Avatar,
+  Menu,
+  Button,
 } from "@chakra-ui/react";
 import { FaStore } from "react-icons/fa";
 import { RxHamburgerMenu } from "react-icons/rx";
 import { IoIosClose } from "react-icons/io";
 import MButton from "./Button";
 import { Link as RouterLink } from "react-router";
-import { useAppSelector } from "../../App/store";
+import { useAppDispatch, useAppSelector } from "../../App/store";
 import { cartSelector } from "../../App/features/cartSlice";
 import MenuComponent from "./Menu";
+import cookieManager from "../../utils/cookieManager";
+import type { IUserInfo } from "../../interfaces";
+import { logout } from "../../App/features/authSlice";
 
 const Links = [
   { name: "Home", href: "/" },
@@ -48,8 +54,11 @@ const NavLink = ({
 );
 
 export default function Navbar() {
+  const userInfo = cookieManager.get<IUserInfo>("user");
+
   const { open, onOpen, onClose } = useDisclosure();
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const dispatch = useAppDispatch();
   const { cartData } = useAppSelector(cartSelector);
   return (
     <Box
@@ -139,7 +148,39 @@ export default function Navbar() {
 
           {isAuthenticated ? (
             <>
-              <MenuComponent />
+              <MenuComponent
+                menuTrigger={
+                  <Avatar.Root size="sm" colorPalette="teal">
+                    <Avatar.Fallback name={userInfo?.username} />
+                  </Avatar.Root>
+                }
+                children={
+                  <>
+                    <Menu.Item value="account" fontSize="md">
+                      Account
+                    </Menu.Item>
+                    <Menu.Item value="settings" fontSize="md">
+                      Settings
+                    </Menu.Item>
+                    <Menu.Item value="orders" fontSize="md">
+                      Orders
+                    </Menu.Item>
+                    <Menu.Separator />
+                    <Menu.Item value="logout" fontSize="md">
+                      <Button
+                        size="md"
+                        variant="outline"
+                        onClick={() => {
+                          dispatch(logout());
+                          window.location.reload();
+                        }}
+                      >
+                        Logout
+                      </Button>
+                    </Menu.Item>
+                  </>
+                }
+              />
             </>
           ) : (
             <>

@@ -21,8 +21,9 @@ import type { IconType } from "react-icons/lib";
 import { RiMenu4Fill } from "react-icons/ri";
 import DrawerComponent from "../../components/ui/Drawer";
 import { useAppDispatch } from "../../App/store";
-import { closeDrawer, openDrawer } from "../../App/features/globalSlice";
+import { openDrawer } from "../../App/features/globalSlice";
 import { Tooltip } from "../../components/ui/tooltip";
+import { useAppSelector } from "../../App/store";
 const renderLinks = dashboardLinks.map((link) => (
   <SidebarButton key={link.name} icon={link.icon} href={link.href}>
     {link.name}
@@ -30,100 +31,102 @@ const renderLinks = dashboardLinks.map((link) => (
 ));
 export default function SidebarLayout() {
   const dispatch = useAppDispatch();
+  const isOpenDrawer = useAppSelector((state) => state.global.isOpenDrawer);
   return (
-    <Flex h="100vh">
-      <Box
-        display={{ base: "none", md: "block" }}
-        borderRight={"1px solid #e4e4e7"}
-        w="260px"
-        bg="white"
-        // bg="gray.800"
-        color="gray.500"
-      >
-        <AppSidebar />
-      </Box>
-      {/* Drawer for mobile */}
+    <>
+      <Flex h="100vh">
+        <Box
+          display={{ base: "none", md: "block" }}
+          borderRight={"1px solid #e4e4e7"}
+          w="260px"
+          bg="white"
+          // bg="gray.800"
+          color="gray.500"
+        >
+          <AppSidebar />
+        </Box>
 
+        {/* Main content and Outlet */}
+        <Flex direction="column" flex="1" overflow="auto">
+          <Flex
+            as="header"
+            h="60px"
+            align="center"
+            gap={4}
+            p={4}
+            borderColor="gray.200"
+            bg="white"
+            borderBottom="1px solid #e4e4e7"
+            px={{ base: 4, lg: 6 }}
+          >
+            <IconButton
+              color="gray.500"
+              size="sm"
+              aria-label="Open sidebar"
+              as={RiMenu4Fill}
+              display={{ base: "inline-flex", md: "none" }}
+              onClick={() => dispatch(openDrawer())}
+              variant="ghost"
+            />
+            <Box flex="1">
+              <form>
+                <Box position="relative" w="100%">
+                  <Box
+                    position="absolute"
+                    left="10px"
+                    top="50%"
+                    transform="translateY(-50%)"
+                    zIndex={1}
+                  >
+                    <FaSearch size={16} color="#ccc" />
+                  </Box>
+                  <Input
+                    type="search"
+                    placeholder="Search products..."
+                    pl="32px"
+                    bg="white"
+                    maxW={{ md: "66%", lg: "33%" }}
+                    _placeholder={{ color: "gray.500" }}
+                    borderColor="gray.200"
+                    _focus={{
+                      shadow: "0 0 4px 0 rgb(0, 128, 128)",
+                      borderColor: "teal.500",
+                    }}
+                    borderRadius="md"
+                  />
+                </Box>
+              </form>
+            </Box>
+            <Link to="/">
+              <Tooltip content="Store">
+                <IconButton
+                  variant={"outline"}
+                  color={"gray.500"}
+                  _hover={{ color: "teal.500" }}
+                  size={"md"}
+                >
+                  <FaStore size={16} />
+                </IconButton>
+              </Tooltip>
+            </Link>
+            <Avatar.Root size="sm">
+              <Avatar.Fallback name="JD" />
+              <Avatar.Image src="/placeholder.svg?height=32&width=32" />
+            </Avatar.Root>
+          </Flex>
+          <Box as="main" flex="1" p={{ base: 4, md: 6 }}>
+            <Outlet />
+          </Box>
+        </Flex>
+      </Flex>
+      {/* Drawer for mobile */}
       <DrawerComponent
+        isOpenDrawer={isOpenDrawer}
         title="Dashboard Menu"
-        onConfirm={() => dispatch(closeDrawer())}
         children={<AppSidebar />}
         action={false}
       />
-
-      {/* Main content and Outlet */}
-      <Flex direction="column" flex="1" overflow="auto">
-        <Flex
-          as="header"
-          h="60px"
-          align="center"
-          gap={4}
-          p={4}
-          borderColor="gray.200"
-          bg="white"
-          borderBottom="1px solid #e4e4e7"
-          px={{ base: 4, lg: 6 }}
-        >
-          <IconButton
-            color="gray.500"
-            size="sm"
-            aria-label="Open sidebar"
-            as={RiMenu4Fill}
-            display={{ base: "inline-flex", md: "none" }}
-            onClick={() => dispatch(openDrawer())}
-            variant="ghost"
-          />
-          <Box flex="1">
-            <form>
-              <Box position="relative" w="100%">
-                <Box
-                  position="absolute"
-                  left="10px"
-                  top="50%"
-                  transform="translateY(-50%)"
-                  zIndex={1}
-                >
-                  <FaSearch size={16} color="#ccc" />
-                </Box>
-                <Input
-                  type="search"
-                  placeholder="Search products..."
-                  pl="32px"
-                  bg="white"
-                  maxW={{ md: "66%", lg: "33%" }}
-                  _placeholder={{ color: "gray.500" }}
-                  borderColor="gray.200"
-                  _focus={{
-                    shadow: "0 0 4px 0 rgb(0, 128, 128)",
-                    borderColor: "teal.500",
-                  }}
-                  borderRadius="md"
-                />
-              </Box>
-            </form>
-          </Box>
-          <Link to="/">
-            <Tooltip content="Store">
-              <IconButton
-                variant={"outline"}
-                color={"gray.500"}
-                _hover={{ color: "teal.500" }}
-                size={"md"}
-              >
-                <FaStore size={16} />
-              </IconButton>
-            </Tooltip>
-          </Link>
-          <Avatar.Root size="sm">
-            <Avatar.Fallback name="JD" />
-            <Avatar.Image src="/placeholder.svg?height=32&width=32" />
-          </Avatar.Root>
-        </Flex>
-        <Box as="main" flex="1" p={{ base: 4, md: 6 }}>
-          <Outlet />
-        </Box>
-      </Flex>
-    </Flex>
+    </>
   );
 }
 

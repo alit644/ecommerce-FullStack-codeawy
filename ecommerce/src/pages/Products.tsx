@@ -7,38 +7,27 @@ import { ProductsGrid } from "../components/products/ProductsGrid";
 import { useProducts } from "../Hooks/useProducts";
 import Filter from "../components/Filter";
 import type { IProductCard } from "../interfaces";
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { setPage } from "../App/features/paginationSlice";
-import { resetFilter, setFilter } from "../App/features/filtersSlice";
+import { setFilter } from "../App/features/filtersSlice";
 import DrawerComponent from "../components/ui/Drawer";
 import { closeDrawer } from "../App/features/globalSlice";
+import { useProductFilters } from "../Hooks/useProductFilters";
 const Shop = () => {
   const { page, pageSize } = useAppSelector((state) => state.pagination);
   const dispatch = useAppDispatch();
   const filtersSlice = useAppSelector((state) => state.filters);
+  const globalSlice = useAppSelector(
+    (state) => state.global.isFilterDrawerOpen
+  );
   const [localFilters, setLocalFilters] = useState(filtersSlice);
 
-  const handleFilterChange = useCallback(
-    (filter: string, value: string[]) => {
-      // TODO: Generate Path From Filters
+  const { handleFilterChange, resetFilters } = useProductFilters();
 
-      dispatch(
-        setFilter({
-          ...filtersSlice,
-          [filter]: value,
-        })
-      );
-
-      dispatch(setPage(1));
-      // TODO: Generate Path From Filters
-      // const newPath = generateStrapiQuery({
-      //   ...filtersSlice,
-      //   [filter]: value,
-      // });
-      // navigate(newPath, { replace: true });
-    },
-    [dispatch, filtersSlice]
-  );
+  //setPage
+  useEffect(() => {
+    dispatch(setPage(1));
+  }, [dispatch]);
 
   const handleLocalFilterChange = useCallback(
     (filter: string, value: string[]) => {
@@ -50,26 +39,12 @@ const Shop = () => {
     [setLocalFilters]
   );
 
-  const { data, isLoading, isError } = useProducts(filtersSlice);
+  const { data, isLoading, isError } = useProducts(filtersSlice, "asc");
   const total = data?.meta.pagination.total;
-
-  //!: Handler
-  const resetFilters = useCallback(() => {
-    setLocalFilters(filtersSlice);
-    dispatch(resetFilter());
-    // TODO: Generate Path From Filters
-    // const path = generateStrapiQuery(filtersSlice);
-    // navigate(path, { replace: true });
-    dispatch(setPage(1));
-  }, [dispatch, filtersSlice]);
 
   const onConfirmDrawer = () => {
     dispatch(closeDrawer());
-    // filter change
     dispatch(setPage(1));
-    // TODO: Generate Path From Filters
-    // const path = generateStrapiQuery(filtersSlice);
-    // navigate(path, { replace: true });
     dispatch(
       setFilter({
         ...filtersSlice,
@@ -97,7 +72,11 @@ const Shop = () => {
           />
         </Box>
         {/* Drawer Filter */}
-        <DrawerComponent title="Filter" onConfirm={onConfirmDrawer}>
+        <DrawerComponent
+          title="Filter"
+          onConfirm={onConfirmDrawer}
+          isOpenDrawer={globalSlice}
+        >
           <Filter
             filters={localFilters}
             handleFilterChange={handleLocalFilterChange}
@@ -109,7 +88,6 @@ const Shop = () => {
           <Box w="full" p={3}>
             <Grid gap={6} w="full">
               <ProductHeader totalProducts={total ?? 0} />
-              {/* sort By */}
             </Grid>
             {/* Products Grid */}
             <ProductsGrid

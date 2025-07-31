@@ -161,3 +161,7 @@ export const tableColumns:ITableColumn[] = [
   { label: "Actions", key: "actions", type: "actions" },
 ];
 
+export const sortItems = [
+ { label: "Ascending", value: "asc" },
+ { label: "Descending", value: "desc" },
+]

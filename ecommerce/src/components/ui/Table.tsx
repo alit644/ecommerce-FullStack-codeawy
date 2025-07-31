@@ -8,7 +8,7 @@ const TableComponent = ({ headers, rows }: ITable) => {
   return (
     <Table.ScrollArea maxW="100%" overflow="auto">
       <Table.Root
-        // variant="outline"
+        interactive
         rounded={"md"}
         border="1px solid #e4e4e7"
         p={2}
