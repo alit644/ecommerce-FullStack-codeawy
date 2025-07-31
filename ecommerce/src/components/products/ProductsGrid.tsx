@@ -1,8 +1,8 @@
-import { Box, Grid, Text, Center, VStack, Icon } from "@chakra-ui/react";
+import { Box, Grid } from "@chakra-ui/react";
 import type { JSX } from "react";
 import Skeleton from "../ui/Skeleton";
-import { FaBoxOpen } from "react-icons/fa";
 import Error from "../Error/Error";
+import NoResult from "../ui/NoResult";
 
 interface ProductsGridProps {
   renderProducts: JSX.Element[];
@@ -18,21 +18,11 @@ export const ProductsGrid = ({
   isError,
 }: ProductsGridProps) => {
   if (isLoading) return <Skeleton height="220px" />;
-  if (totalProducts === 0)
+  if (totalProducts === 0) return <NoResult />;
+  if (isError)
     return (
-      <Center h="200px">
-        <VStack spaceY={4}>
-          <Icon as={FaBoxOpen} boxSize={12} color="gray.300" />
-          <Text fontSize="xl" fontWeight="bold" color="gray.600">
-            No Products Found
-          </Text>
-          <Text color="gray.500">
-            Try adjusting your filters or search criteria
-          </Text>
-        </VStack>
-      </Center>
+      <Error code={500} message="Error" description="Something went wrong" />
     );
-  if (isError) return <Error code={500} message="Error" description="Something went wrong" />;
 
   return (
     <Box w="full" p={3}>

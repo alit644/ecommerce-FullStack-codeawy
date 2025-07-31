@@ -39,7 +39,7 @@ const Shop = () => {
     [setLocalFilters]
   );
 
-  const { data, isLoading, isError } = useProducts(filtersSlice, "asc");
+  const { data, isLoading, isError } = useProducts(filtersSlice, "asc", "");
   const total = data?.meta.pagination.total;
 
   const onConfirmDrawer = () => {

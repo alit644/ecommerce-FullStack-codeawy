@@ -7,7 +7,6 @@ import {
   IconButton,
   Button,
   Flex,
-  Input,
   Menu,
 } from "@chakra-ui/react";
 import MainTitle from "../../../components/MainTitle";
@@ -20,7 +19,6 @@ import type { IProductCard } from "../../../interfaces";
 import PaginationComponent from "../../../components/ui/Pagination";
 import { useAppDispatch, useAppSelector } from "../../../App/store";
 import { HiSortAscending } from "react-icons/hi";
-import { FaSearch } from "react-icons/fa";
 import MenuComponent from "../../../components/ui/Menu";
 import { useState } from "react";
 import DrawerComponent from "../../../components/ui/Drawer";
@@ -28,12 +26,13 @@ import FilterSidebar from "../../../components/Filter";
 import { openFilterDrawer } from "../../../App/features/globalSlice";
 import { useProducts } from "../../../Hooks/useProducts";
 import { useProductFilters } from "../../../Hooks/useProductFilters";
+import SearchQuery from "../../../components/SearchQuery";
+import NoResult from "../../../components/ui/NoResult";
 
-//TODO: Add Search Functionality
 //TODO: Add Skeleton Loader
-//TODO: refactor code use qs
 const ProductsDashboard = () => {
   const [value, setValue] = useState("asc");
+  const [searchQuery, setSearchQuery] = useState("");
   const dispatch = useAppDispatch();
   const { page, pageSize } = useAppSelector((state) => state.pagination);
   const filtersSlice = useAppSelector((state) => state.filters);
@@ -44,7 +43,11 @@ const ProductsDashboard = () => {
   const { handleFilterChange, resetFilters } = useProductFilters();
 
   //! Get Data
-  const { data, isLoading, isError } = useProducts(filtersSlice, value);
+  const { data, isLoading, isError } = useProducts(
+    filtersSlice,
+    value,
+    searchQuery
+  );
 
   //! Render
   const renderTableHeaders = tableColumns.map((header) => (
@@ -118,39 +121,26 @@ const ProductsDashboard = () => {
             alignItems="center"
             gap={4}
           >
-            <form style={{ width: "100%" }}>
-              <Box position="relative" w={"full"}>
-                <Box
-                  position="absolute"
-                  left="10px"
-                  top="50%"
-                  transform="translateY(-50%)"
-                  zIndex={1}
-                >
-                  <FaSearch size={16} color="#ccc" />
-                </Box>
-                <Input
-                  type="search"
-                  placeholder="Search products..."
-                  pl="32px"
-                  bg="white"
-                  maxW={{ md: "86%", lg: "37%" }}
-                  _placeholder={{ color: "gray.500" }}
-                  borderColor="gray.200"
-                  _focus={{
-                    shadow: "0 0 4px 0 rgb(0, 128, 128)",
-                    borderColor: "teal.500",
-                  }}
-                  borderRadius="md"
-                />
-              </Box>
-            </form>
+            {/* Search Query */}
+            <SearchQuery setSearchQuery={setSearchQuery} />
             {/* Sort */}
             <MenuComponent
               menuTrigger={
-                <>
-                  <HiSortAscending /> Sort
-                </>
+                //
+                <Flex
+                  alignItems="center"
+                  fontWeight={"medium"}
+                  color={"gray.800"}
+                  _hover={{ bg: "gray.100" }}
+                  gap={2}
+                  cursor="pointer"
+                  bg="white"
+                  border={"1px solid #e4e4e7"}
+                  p={"7px 15px"}
+                  borderRadius="md"
+                >
+                  <HiSortAscending size={20} /> Sort
+                </Flex>
               }
             >
               <Menu.RadioItemGroup
@@ -173,16 +163,23 @@ const ProductsDashboard = () => {
               <HiSortAscending /> Filter
             </Button>
           </Flex>
-          <TableComponent headers={renderTableHeaders} rows={renderTableRows} />
+          {data?.data.length === 0 ? (
+            <NoResult />
+          ) : (
+            <TableComponent headers={renderTableHeaders} rows={renderTableRows} />
+          )}
 
           {/* Pagination */}
-          <PaginationComponent
-            count={data?.meta.pagination.total || 0}
-            pageSize={pageSize}
-            page={page}
-          />
+          {data?.meta.pagination.total !== undefined && data?.meta.pagination.total > 0 && (
+            <PaginationComponent
+              count={data?.meta.pagination.total || 0}
+              pageSize={pageSize}
+              page={page}
+            />
+          )}
         </Box>
       </Box>
+      {/* Filter Drawer */}
       <DrawerComponent
         title="Filter"
         action={false}

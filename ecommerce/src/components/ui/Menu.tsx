@@ -1,6 +1,5 @@
 import { Menu, Portal } from "@chakra-ui/react";
 import type { ReactNode } from "react";
-import { Button } from "@chakra-ui/react";
 interface IMenuComponent {
   menuTrigger: ReactNode;
   children: ReactNode;
@@ -8,10 +7,8 @@ interface IMenuComponent {
 const MenuComponent = ({ menuTrigger, children }: IMenuComponent) => {
   return (
     <Menu.Root positioning={{ placement: "right-end" }}>
-      <Menu.Trigger rounded="full" focusRing="outside">
-       <Button variant="outline">
+      <Menu.Trigger rounded="full" >
         {menuTrigger}
-       </Button>
       </Menu.Trigger>
       <Portal>
         <Menu.Positioner>
