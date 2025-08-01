@@ -34,7 +34,7 @@ export default function SidebarLayout() {
   const isOpenDrawer = useAppSelector((state) => state.global.isOpenDrawer);
   return (
     <>
-      <Flex h="100vh">
+      <Flex h="100vh" position="sticky" top={0} bottom={0} overflow="hidden">
         <Box
           display={{ base: "none", md: "block" }}
           borderRight={"1px solid #e4e4e7"}
@@ -132,7 +132,7 @@ export default function SidebarLayout() {
 
 function AppSidebar() {
   return (
-    <Flex direction="column" h="100%">
+    <Flex direction="column" h="100%" >
       {/* Header */}
       <Flex align="center" gap={2} px={4} py={3}>
         <Flex

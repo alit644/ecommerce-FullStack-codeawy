@@ -30,6 +30,7 @@ import NoResult from "../../../components/ui/NoResult";
 import Error from "../../../components/Error/Error";
 import TableSkeleton from "../../../components/ui/TableSkeleton";
 import MButton from "../../../components/ui/Button";
+import { Link } from "react-router";
 
 //TODO: Add Skeleton Loader
 const ProductsDashboard = () => {
@@ -104,8 +105,8 @@ const ProductsDashboard = () => {
       <Box>
         <HStack alignItems="center" justifyContent="space-between">
           <MainTitle title="Products" isArrow={false} />
-
-          <MButton
+        <Link to="/dashboard/products/create">
+        <MButton
             variant="solid"
             colorScheme="teal"
             bg={"teal.500"}
@@ -114,7 +115,8 @@ const ProductsDashboard = () => {
             title="Add Product"
             icon={<BsPlus />}
           />
-        </HStack>
+        </Link>
+         </HStack>
         {/* Table and Sort */}
         <Box>
           <Flex
