@@ -192,3 +192,31 @@ export interface ITableColumn {
   key: string;
   type: "image" | "text" | "actions";
 }
+
+export interface IFormInput {
+  title: string;
+  rating: number;
+  description: string;
+  price: number;
+  discount: number;
+  stock: number;
+  category: string[];
+  tags: string[];
+  brand: string[];
+}
+
+export interface IPricingSectionInputsData {
+  id: string;
+  name: "price" | "discount" | "stock" | "title" | "rating";
+  type: "text" | "email" | "password" | "number" | "tel" | "url" | "search";
+  placeholder: string;
+  label: string;
+  validation: {
+    required?: boolean;
+    pattern?: RegExp;
+    minLength?: number;
+    maxLength?: number;
+    min?: number;
+    max?: number;
+  };
+}

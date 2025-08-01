@@ -2,6 +2,7 @@ import type {
   IDashboardLink,
   IDashboardOverview,
   ILoginInput,
+  IPricingSectionInputsData,
   IRegisterInput,
   ITableColumn,
 } from "../interfaces";
@@ -150,7 +151,7 @@ export const dashboardOverview: IDashboardOverview[] = [
   },
 ];
 
-export const tableColumns:ITableColumn[] = [
+export const tableColumns: ITableColumn[] = [
   { label: "Image", key: "image", type: "image" },
   { label: "ID", key: "id", type: "text" },
   { label: "Name", key: "name", type: "text" },
@@ -162,6 +163,73 @@ export const tableColumns:ITableColumn[] = [
 ];
 
 export const sortItems = [
- { label: "Ascending", value: "asc" },
- { label: "Descending", value: "desc" },
-]
+  { label: "Ascending", value: "asc" },
+  { label: "Descending", value: "desc" },
+];
+
+export const PricingSectionInputsData: IPricingSectionInputsData[] = [
+  {
+    id: "price",
+    name: "price",
+    type: "number",
+    placeholder: "Enter Product Price",
+    label: "Product Price *",
+    validation: {
+      required: true,
+      min: 1,
+      max: 1000000,
+    },
+  },
+  {
+    id: "discount",
+    name: "discount",
+    type: "number",
+    placeholder: "Enter Product Discount",
+    label: "Product Discount *",
+    validation: {
+      required: true,
+      min: 1,
+      max: 100,
+    },
+  },
+  {
+    id: "stock",
+    name: "stock",
+    type: "number",
+    placeholder: "Enter Product Stock",
+    label: "Product Stock *",
+    validation: {
+      required: true,
+      min: 1,
+      max: 100,
+    },
+  },
+];
+
+export const mainInputsData: IPricingSectionInputsData[] = [
+ {
+   id: "title",
+   name: "title",
+   type: "text",
+   placeholder: "Enter Product Name",
+   label: "Product Name *",
+   validation: {
+     required: true,
+     min: 1,
+     max: 1000000,
+   },
+ },
+ {
+   id: "rating",
+   name: "rating",
+   type: "number",
+   placeholder: "Enter Product Rating",
+   label: "Product Rating *",
+   validation: {
+     required: true,
+     min: 1,
+     max: 5,
+   },
+ },
+ 
+];

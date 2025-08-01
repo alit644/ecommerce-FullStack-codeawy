@@ -1,17 +1,18 @@
 import { Input, type InputProps } from "@chakra-ui/react";
-import { forwardRef } from "react";
-interface IMInput extends InputProps {
-  type: string;
+import { forwardRef, type ForwardedRef } from "react";
+
+interface IMInput extends Omit<InputProps, "ref"> {
+  type?: "text" | "email" | "password" | "number" | "tel" | "url" | "search";
   variant?: "outline" | "subtle" | "flushed";
   size?: "xs" | "sm" | "md" | "lg";
 }
-const MInput = forwardRef<InputProps, IMInput>(({
-  type = "text",
-  variant = "outline",
-  size = "md",
-  ...props
-}: IMInput) => {
-  return <Input type={type} variant={variant} size={size} {...props} />;
-});
+
+const MInput = forwardRef<HTMLInputElement, IMInput>(
+  ({ type = "text", variant = "outline", size = "md", ...props }, ref: ForwardedRef<HTMLInputElement>) => {
+    return <Input w={"full"} ref={ref} type={type} variant={variant} size={size} {...props} />;
+  }
+);
+
+MInput.displayName = "MInput";
 
 export default MInput;
