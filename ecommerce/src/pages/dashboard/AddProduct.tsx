@@ -6,7 +6,7 @@ import MFileUpload from "../../components/ui/FileUpload";
 import MButton from "../../components/ui/Button";
 import { FaPlus } from "react-icons/fa";
 import FormGroup from "../../components/ui/form/FormGroup";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { schemaAddProduct } from "../../schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import PricingSectionInputs from "../../components/PricingSectionInputs";
@@ -26,7 +26,7 @@ const AddProduct = () => {
     resolver: yupResolver(schemaAddProduct),
   });
   const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
-
+  console.log(errors);
 
   //! render
   const renderMainInputs = mainInputsData.map((input) => {
@@ -65,7 +65,7 @@ const AddProduct = () => {
         <Box spaceY={2}>
           {/* Name and Rating */}
           <Stack w={"full"} direction={{ base: "column", md: "row" }} gap={2}>
-          {renderMainInputs}
+            {renderMainInputs}
           </Stack>
           {/* Description and Image */}
           <Stack w={"full"} direction={{ base: "column", md: "row" }} gap={2}>
@@ -89,10 +89,27 @@ const AddProduct = () => {
               label="Main Thumbnail *"
               htmlFor="image"
             >
-              <MFileUpload
-                maxFiles={1}
-                height={"100px"}
-                label="Upload Main Thumbnail"
+              <Controller
+                name="image"
+                control={control}
+                rules={{
+                  required: true,
+                  validate: (value) => {
+                    if (!value) {
+                      return "Image is required";
+                    }
+                    return true;
+                  },
+                }}
+                render={({ field }) => (
+                  <MFileUpload
+                    maxFiles={1}
+                    height={"100px"}
+                    label="Upload Main Thumbnail"
+                    value={field.value || []}
+                    onChange={field.onChange}
+                  />
+                )}
               />
             </FormGroup>
           </Stack>
@@ -107,9 +124,29 @@ const AddProduct = () => {
             <FormGroup
               error={undefined}
               label="Product Gallery Images *"
-              htmlFor="image"
+              htmlFor="images"
             >
-              <MFileUpload maxFiles={5} label="Upload Gallery Images" />
+              <Controller
+                name="images"
+                control={control}
+                rules={{
+                  required: true,
+                  validate: (value) => {
+                    if (!value) {
+                      return "Images are required";
+                    }
+                    return true;
+                  },
+                }}
+                render={({ field }) => (
+                  <MFileUpload
+                    maxFiles={5}
+                    label="Upload Gallery Images"
+                    value={field.value}
+                    onChange={field.onChange}
+                  />
+                )}
+              />
             </FormGroup>
           </Stack>
         </Box>

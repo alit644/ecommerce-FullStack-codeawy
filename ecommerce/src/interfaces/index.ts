@@ -203,6 +203,8 @@ export interface IFormInput {
   category: string[];
   tags: string[];
   brand: string[];
+  image: FileList | File[] | (File | string)[] ;
+  images: FileList | File[] | (File | string)[]
 }
 
 export interface IPricingSectionInputsData {
