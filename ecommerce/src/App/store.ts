@@ -9,6 +9,7 @@ import cartSlice from "./features/cartSlice";
 import globalSlice from "./features/globalSlice";
 import paginationSlice from "./features/paginationSlice";
 import filtersSlice from "./features/filtersSlice";
+import { creteProductApi } from "./services/createProductApi";
 
 const persistConfig = {
   key: "cart",
@@ -25,7 +26,10 @@ export const store = configureStore({
     global: globalSlice,
     pagination: paginationSlice,
     filters: filtersSlice,
+    [creteProductApi.reducerPath]: creteProductApi.reducer
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(creteProductApi.middleware),
 });
 
 //! Define RootState and AppDispatch types

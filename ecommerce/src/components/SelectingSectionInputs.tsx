@@ -2,7 +2,10 @@ import { Box, Flex } from "@chakra-ui/react";
 import { Controller, type Control, type FieldErrors } from "react-hook-form";
 import MSelect from "./ui/Select";
 import ErrorMsg from "./Error/ErrorMsg";
-import type { IFormInput } from "../interfaces";
+import type { ICategory, IFormInput, ITag } from "../interfaces";
+import api from "../Api/axios";
+import { useQuery } from "@tanstack/react-query";
+import Error from "./Error/Error";
 
 interface ISelectingSectionInputs {
   control: Control<IFormInput> | undefined;
@@ -17,6 +20,42 @@ const SelectingSectionInputs = ({
   control,
   errors,
 }: ISelectingSectionInputs) => {
+  //  Get categories from strapi and Tags
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const fetchFilters = async (): Promise<any> => {
+    const [catRes, tagRes] = await Promise.all([
+      api.get("/api/categories?fields=title"),
+      api.get("/api/tags?fields=tag"),
+    ]);
+    return {
+      categories: catRes.data,
+      tags: tagRes.data,
+    };
+  };
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["filters"],
+    queryFn: fetchFilters,
+    staleTime: 1000 * 60 * 2,
+    refetchInterval: 1000 * 60 * 2,
+    placeholderData: (prev) => prev,
+  });
+  const categoryOptions = data?.categories?.data.map((category:ICategory) => ({
+   value: String(category.id),
+   label: category.title
+ }));
+ 
+ const tagOptions = data?.tags?.data.map((tag:ITag) => ({
+   value: String(tag.id),
+   label: tag.tag
+ }));
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error)
+    return (
+      <Error code={500} message="Error" description="Failed to fetch filters" />
+    );
+
   return (
     <Flex
       h={"full"}
@@ -40,7 +79,7 @@ const SelectingSectionInputs = ({
               label="Select Product Category *"
               value={Array.isArray(field.value) ? field.value : []}
               onChange={(value) => field.onChange(value)}
-              options={options}
+              options={categoryOptions}
             />
           )}
         />
@@ -63,7 +102,7 @@ const SelectingSectionInputs = ({
               label="Select Product Tags *"
               value={Array.isArray(field.value) ? field.value : []}
               onChange={(value) => field.onChange(value)}
-              options={options}
+              options={tagOptions}
               multiple
             />
           )}

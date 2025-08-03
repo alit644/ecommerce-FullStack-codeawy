@@ -26,7 +26,7 @@ export const schemaAddProduct = yup
     category: yup.array().of(yup.string().required()).required(),
     tags: yup.array().of(yup.string().required()).required().min(2).max(15),
     brand: yup.array().of(yup.string().required()).required(),
-    image: yup
+    thumbnail: yup
       .mixed<FileList | File[] | (File | string)[]>()
       .test("required", "Image is required", (value) => Array.isArray(value) && value.length > 0)
       .required(),

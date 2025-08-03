@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Button,
   FileUpload,
@@ -49,7 +50,6 @@ const MFileUpload = ({
   value,
   onChange,
  }: IFileUpload) => {
- console.log(value)
  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   const files = e.target.files;
   if (files) {

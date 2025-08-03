@@ -13,10 +13,11 @@ import PricingSectionInputs from "../../components/PricingSectionInputs";
 import SelectingSectionInputs from "../../components/SelectingSectionInputs";
 import type { IFormInput } from "../../interfaces";
 import { mainInputsData } from "../../data";
+import cookieManager from "../../utils/cookieManager";
+import api from "../../Api/axios";
 
 const AddProduct = () => {
-  //TODO: add schema validation
-  //TODO: refactoring (Inputs)
+  const token = cookieManager.get("jwtToken");
   const {
     register,
     handleSubmit,
@@ -25,13 +26,34 @@ const AddProduct = () => {
   } = useForm<IFormInput>({
     resolver: yupResolver(schemaAddProduct),
   });
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
-  console.log(errors);
+
+  // create product use Mutation
+
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+    try {
+      const formData = new FormData();
+      formData.append("files", data.thumbnail[0]);
+
+      const uploadResponse = await api.post("/api/upload", formData, {
+       withCredentials: true,
+        headers: {
+         
+          Authorization: `Bearer ${token}`,
+        },
+      });
+     const imageID = uploadResponse.data[0].id;
+      delete imageID.thumbnail;
+      console.log("Product data with uploaded image:", imageID);
+    } catch (error) {
+      console.error("Error uploading image or creating product:", error);
+    }
+  };
 
   //! render
   const renderMainInputs = mainInputsData.map((input) => {
     return (
       <FormGroup
+        key={input.name}
         error={errors[input.name]?.message}
         label={input.label}
         htmlFor={input.name}
@@ -87,10 +109,10 @@ const AddProduct = () => {
             <FormGroup
               error={undefined}
               label="Main Thumbnail *"
-              htmlFor="image"
+              htmlFor="thumbnail"
             >
               <Controller
-                name="image"
+                name="thumbnail"
                 control={control}
                 rules={{
                   required: true,

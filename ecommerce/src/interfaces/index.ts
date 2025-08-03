@@ -40,6 +40,7 @@ export interface IProductCard {
 }
 
 export interface ICategory {
+  id?: string;
   title: string;
   thumbnail?: {
     formats?: {
@@ -51,6 +52,7 @@ export interface ICategory {
 }
 
 export interface ITag {
+  id?: string;
   tag: string;
 }
 
@@ -203,8 +205,8 @@ export interface IFormInput {
   category: string[];
   tags: string[];
   brand: string[];
-  image: FileList | File[] | (File | string)[] ;
-  images: FileList | File[] | (File | string)[]
+  thumbnail: FileList | File[] | (File | string)[];
+  images: FileList | File[] | (File | string)[];
 }
 
 export interface IPricingSectionInputsData {
@@ -222,3 +224,30 @@ export interface IPricingSectionInputsData {
     max?: number;
   };
 }
+
+
+// try {
+    //   const uploadResponse = await uploadImage(data.thumbnail).unwrap();
+    //   const uploadedImageId = uploadResponse[0].id; // Assuming the API returns an array of uploaded files
+    //   console.log(uploadedImageId)
+    // } catch (error) {
+    //   console.log(error)
+      
+    // }
+    // try {
+    //   const formData = new FormData();
+    //   formData.append("files", data.thumbnail[0]); // رفع أول صورة فقط
+    
+    //   const uploadRes = await api.post("/api/upload", formData, {
+    //     withCredentials: true,
+    //     headers: {
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   });
+    //   const uploadedImage = uploadRes.data[0].id; // الصورة المرفوعة (نأخذ الـ ID)
+    //   console.log(uploadedImage)
+    
+    //   console.log("Image Uploaded:", uploadedImage);
+    // } catch (error) {
+    //   console.error("Error adding product:", error);
+    // }
