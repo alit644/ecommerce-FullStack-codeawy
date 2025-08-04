@@ -1,0 +1,51 @@
+{
+  "kind": "collectionType",
+  "collectionName": "product_options",
+  "info": {
+    "singularName": "product-option",
+    "pluralName": "product-options",
+    "displayName": "Product Option"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "color": {
+      "type": "enumeration",
+      "enum": [
+        "Red ",
+        "Green ",
+        "Black",
+        "Gray",
+        "Blue"
+      ]
+    },
+    "storage": {
+      "type": "enumeration",
+      "enum": [
+        "S 128 GB",
+        "S 256 GB",
+        "S 512 GB",
+        "T 1 TB"
+      ]
+    },
+    "size": {
+      "type": "enumeration",
+      "enum": [
+        "XS",
+        "S",
+        "M",
+        "L",
+        "XL",
+        "Xll"
+      ]
+    },
+    "dimensions": {
+      "type": "string"
+    },
+    "material": {
+      "type": "string"
+    }
+  }
+}

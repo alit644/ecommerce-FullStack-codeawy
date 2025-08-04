@@ -40,6 +40,44 @@
       "relation": "manyToOne",
       "target": "api::category.category",
       "inversedBy": "products"
+    },
+    "brand": {
+      "type": "enumeration",
+      "required": false,
+      "enum": [
+        "Apple",
+        "Samsung",
+        "Poco"
+      ]
+    },
+    "discount": {
+      "type": "integer",
+      "required": true,
+      "default": 0
+    },
+    "tags": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tag.tag",
+      "mappedBy": "products"
+    },
+    "images": {
+      "type": "media",
+      "multiple": true,
+      "required": true,
+      "allowedTypes": [
+        "images",
+        "videos"
+      ]
+    },
+    "rating": {
+      "type": "integer",
+      "required": true
+    },
+    "product_option": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::product-option.product-option"
     }
   }
 }

@@ -11,11 +11,7 @@ interface ISelectingSectionInputs {
   control: Control<IFormInput> | undefined;
   errors: FieldErrors<IFormInput>;
 }
-const options = [
-  { value: "1", label: "Option 1" },
-  { value: "2", label: "Option 2" },
-  { value: "3", label: "Option 3" },
-];
+
 const SelectingSectionInputs = ({
   control,
   errors,
@@ -41,12 +37,12 @@ const SelectingSectionInputs = ({
     placeholderData: (prev) => prev,
   });
   const categoryOptions = data?.categories?.data.map((category:ICategory) => ({
-   value: String(category.id),
+   value: String(category.documentId),
    label: category.title
  }));
  
  const tagOptions = data?.tags?.data.map((tag:ITag) => ({
-   value: String(tag.id),
+   value: String(tag.documentId),
    label: tag.tag
  }));
 
@@ -110,24 +106,7 @@ const SelectingSectionInputs = ({
 
         {errors.tags?.message && <ErrorMsg message={errors.tags?.message} />}
       </Box>
-      <Box w={"full"} spaceY={2}>
-        <Controller
-          control={control}
-          name="brand"
-          rules={{
-            required: "Product brand is required",
-          }}
-          render={({ field }) => (
-            <MSelect
-              label="Select Product Brand *"
-              value={Array.isArray(field.value) ? field.value : []}
-              onChange={(value) => field.onChange(value)}
-              options={options}
-            />
-          )}
-        />
-        {errors.brand?.message && <ErrorMsg message={errors.brand?.message} />}
-      </Box>
+      
     </Flex>
   );
 };

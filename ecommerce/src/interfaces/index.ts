@@ -40,6 +40,7 @@ export interface IProductCard {
 }
 
 export interface ICategory {
+ documentId?:string
   id?: string;
   title: string;
   thumbnail?: {
@@ -52,7 +53,8 @@ export interface ICategory {
 }
 
 export interface ITag {
-  id?: string;
+ documentId?:string
+   id?: string;
   tag: string;
 }
 
@@ -204,7 +206,7 @@ export interface IFormInput {
   stock: number;
   category: string[];
   tags: string[];
-  brand: string[];
+  brand: string;
   thumbnail: FileList | File[] | (File | string)[];
   images: FileList | File[] | (File | string)[];
 }

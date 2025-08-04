@@ -25,7 +25,7 @@ export const schemaAddProduct = yup
     stock: yup.number().required().min(1).max(300),
     category: yup.array().of(yup.string().required()).required(),
     tags: yup.array().of(yup.string().required()).required().min(2).max(15),
-    brand: yup.array().of(yup.string().required()).required(),
+    brand: yup.string().required(),
     thumbnail: yup
       .mixed<FileList | File[] | (File | string)[]>()
       .test("required", "Image is required", (value) => Array.isArray(value) && value.length > 0)

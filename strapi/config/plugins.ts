@@ -1,1 +1,3 @@
-export default () => ({});
+// path: config/plugins.js
+
+module.exports = {};

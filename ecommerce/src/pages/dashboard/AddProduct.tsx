@@ -13,37 +13,62 @@ import PricingSectionInputs from "../../components/PricingSectionInputs";
 import SelectingSectionInputs from "../../components/SelectingSectionInputs";
 import type { IFormInput } from "../../interfaces";
 import { mainInputsData } from "../../data";
-import cookieManager from "../../utils/cookieManager";
-import api from "../../Api/axios";
+import {
+  useUploadImageMutation,
+  useUploadProductMutation,
+} from "../../App/services/createProductApi";
+import { toaster } from "../../components/ui/toaster";
+import { useNavigate } from "react-router";
 
 const AddProduct = () => {
-  const token = cookieManager.get("jwtToken");
+  const [uploadImage] = useUploadImageMutation();
+  const [uploadProduct] = useUploadProductMutation();
+  const nav = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors },
     control,
+    reset,
   } = useForm<IFormInput>({
     resolver: yupResolver(schemaAddProduct),
   });
 
-  // create product use Mutation
-
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
-      const formData = new FormData();
-      formData.append("files", data.thumbnail[0]);
+      //! RTk Query
+      const uploadResponse = await uploadImage({
+        thumbnail: data.thumbnail[0],
+        images: data.images,
+      }).unwrap();
+      const imageID = uploadResponse[0].id;
+      const imagesIDs = uploadResponse.map((image: { id: string }) => image.id);
 
-      const uploadResponse = await api.post("/api/upload", formData, {
-       withCredentials: true,
-        headers: {
-         
-          Authorization: `Bearer ${token}`,
+      const productData = {
+        data: {
+          title: data.title,
+          description: data.description,
+          rating: data.rating,
+          price: data.price,
+          discount: data.discount,
+          stock: data.stock,
+          thumbnail: imageID,
+          images: imagesIDs,
+          category: data.category,
+          brand: data.brand,
+          tags: data.tags,
         },
+      };
+      const uploadProductResponse = await uploadProduct(productData).unwrap();
+      console.log("uploadProductResponse RTK Query", uploadProductResponse);
+      toaster.success({
+        title: "Product Created",
+        description: "Product created successfully",
+        duration: 2000,
+        type: "success",
       });
-     const imageID = uploadResponse.data[0].id;
-      delete imageID.thumbnail;
-      console.log("Product data with uploaded image:", imageID);
+      reset();
+      nav("/dashboard/products");
     } catch (error) {
       console.error("Error uploading image or creating product:", error);
     }
@@ -140,6 +165,21 @@ const AddProduct = () => {
             <PricingSectionInputs register={register} errors={errors} />
 
             <SelectingSectionInputs control={control} errors={errors} />
+            <FormGroup
+              error={errors.brand?.message}
+              label="Product Brand *"
+              htmlFor="brand"
+            >
+              <MInput
+                {...register("brand", {
+                  required: true,
+                  minLength: 10,
+                  maxLength: 400,
+                })}
+                id="brand"
+                placeholder="Enter Product Brand"
+              />
+            </FormGroup>
           </Stack>
           {/* Images */}
           <Stack w={"full"} direction={{ base: "column", md: "row" }} gap={2}>
