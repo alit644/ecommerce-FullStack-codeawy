@@ -1,3 +1,11 @@
+interface IFileUpload {
+  maxFiles: number;
+  value: FileList | File[] | (File | string)[];
+  onChange: (value: (File | FileList | string)[]) => void;
+  height?: string;
+  label?: string;
+  imageIsLoading: boolean;
+}
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Button,
@@ -5,11 +13,18 @@ import {
   Float,
   Text,
   useFileUploadContext,
+  Spinner,
+  Box,
+  Center,
 } from "@chakra-ui/react";
 import { HiUpload } from "react-icons/hi";
 import { LuX } from "react-icons/lu";
 
-const FileUploadList = () => {
+const FileUploadList = ({
+  imageIsLoading,
+}: {
+  imageIsLoading: boolean;
+}) => {
   // watch files use react-hook-form
 
   const fileUpload = useFileUploadContext();
@@ -19,6 +34,7 @@ const FileUploadList = () => {
     <FileUpload.ItemGroup display="flex" alignItems="center" flexDir="row">
       {files.map((file) => (
         <FileUpload.Item
+          position="relative"
           w="auto"
           boxSize="24"
           p="2"
@@ -26,8 +42,21 @@ const FileUploadList = () => {
           key={file.name}
         >
           <FileUpload.ItemPreviewImage />
+          {imageIsLoading && (
+            <Box pos="absolute" inset="0" bg="bg/80">
+              <Center h="full">
+                <Spinner color="teal.500" />
+              </Center>
+            </Box>
+          )}
+
           <Float placement="top-end">
-            <FileUpload.ItemDeleteTrigger boxSize="4" layerStyle="fill.solid">
+            <FileUpload.ItemDeleteTrigger
+              disabled={imageIsLoading}
+              _disabled={{ cursor: "not-allowed", opacity: 0.5 }}
+              boxSize="4"
+              layerStyle="fill.solid"
+            >
               <LuX />
             </FileUpload.ItemDeleteTrigger>
           </Float>
@@ -36,32 +65,25 @@ const FileUploadList = () => {
     </FileUpload.ItemGroup>
   );
 };
-interface IFileUpload {
-  maxFiles: number;
-  value: FileList | File[] | (File | string)[];
-  onChange: (value: (File | FileList | string)[]) => void;
-  height?: string;
-  label?: string;
-}
+
 const MFileUpload = ({
   maxFiles = 1,
   height,
   label,
   value,
+  imageIsLoading,
   onChange,
- }: IFileUpload) => {
- const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const files = e.target.files;
-  if (files) {
-    const fileArray = Array.from(files);
-    onChange(fileArray);
-  }
-};
+}: IFileUpload) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      const fileArray = Array.from(files);
+      onChange(fileArray);
+    }
+  };
   return (
     <FileUpload.Root accept={["image/*"]} maxFiles={maxFiles}>
-      <FileUpload.HiddenInput
-        onChange={handleChange}
-      />
+      <FileUpload.HiddenInput onChange={handleChange} />
       <FileUpload.Trigger
         bg={"gray.50"}
         _hover={{
@@ -84,7 +106,7 @@ const MFileUpload = ({
           )}
         </Button>
       </FileUpload.Trigger>
-      <FileUploadList />
+      <FileUploadList imageIsLoading={imageIsLoading} />
     </FileUpload.Root>
   );
 };

@@ -19,10 +19,13 @@ import {
 } from "../../App/services/createProductApi";
 import { toaster } from "../../components/ui/toaster";
 import { useNavigate } from "react-router";
+import { useCallback } from "react";
 
 const AddProduct = () => {
-  const [uploadImage] = useUploadImageMutation();
-  const [uploadProduct] = useUploadProductMutation();
+  const [uploadImage, { isLoading: imageLoading }] =
+    useUploadImageMutation();
+  const [uploadProduct, { isLoading, error: productError }] =
+    useUploadProductMutation();
   const nav = useNavigate();
   const {
     register,
@@ -61,6 +64,7 @@ const AddProduct = () => {
       };
       const uploadProductResponse = await uploadProduct(productData).unwrap();
       console.log("uploadProductResponse RTK Query", uploadProductResponse);
+      //? Toaster
       toaster.success({
         title: "Product Created",
         description: "Product created successfully",
@@ -69,10 +73,41 @@ const AddProduct = () => {
       });
       reset();
       nav("/dashboard/products");
-    } catch (error) {
-      console.error("Error uploading image or creating product:", error);
+      //? Error Toaster
+      if (productError) {
+        toaster.error({
+          title: "Product Failed",
+          description: "Product failed to create",
+          duration: 2000,
+          type: "error",
+        });
+      }
+    } catch (error: any) {
+     console.error("API Error:", error);
+
+     if (error.status === 403) {
+       toaster.error({
+         title: "Unauthorized",
+         description: "You don't have permission to perform this action.",
+       });
+     } else if (error.status === 400) {
+       toaster.error({
+         title: "Validation Error",
+         description: "Please check your input fields.",
+       });
+     } else {
+       toaster.error({
+         title: "Unknown Error",
+         description: "Something went wrong. Try again later.",
+       });
+     }
     }
   };
+
+  //! Handle Reset
+  const handelReset = useCallback(() => {
+    reset();
+  }, []);
 
   //! render
   const renderMainInputs = mainInputsData.map((input) => {
@@ -155,6 +190,7 @@ const AddProduct = () => {
                     label="Upload Main Thumbnail"
                     value={field.value || []}
                     onChange={field.onChange}
+                    imageIsLoading={imageLoading}
                   />
                 )}
               />
@@ -163,23 +199,11 @@ const AddProduct = () => {
           {/* price and discount and stock  */}
           <Stack w={"full"} direction={{ base: "column", md: "row" }} gap={2}>
             <PricingSectionInputs register={register} errors={errors} />
-
-            <SelectingSectionInputs control={control} errors={errors} />
-            <FormGroup
-              error={errors.brand?.message}
-              label="Product Brand *"
-              htmlFor="brand"
-            >
-              <MInput
-                {...register("brand", {
-                  required: true,
-                  minLength: 10,
-                  maxLength: 400,
-                })}
-                id="brand"
-                placeholder="Enter Product Brand"
-              />
-            </FormGroup>
+            <SelectingSectionInputs
+              control={control}
+              errors={errors}
+              register={register}
+            />
           </Stack>
           {/* Images */}
           <Stack w={"full"} direction={{ base: "column", md: "row" }} gap={2}>
@@ -206,6 +230,7 @@ const AddProduct = () => {
                     label="Upload Gallery Images"
                     value={field.value}
                     onChange={field.onChange}
+                    imageIsLoading={imageLoading}
                   />
                 )}
               />
@@ -219,8 +244,11 @@ const AddProduct = () => {
             size="sm"
             title="Reset"
             w={"fit-content"}
+            onClick={handelReset}
           />
           <MButton
+            isLoading={isLoading || imageLoading}
+            loadingText="Uploading Product..."
             variant="solid"
             size="sm"
             bg="teal.500"

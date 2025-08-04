@@ -1,13 +1,16 @@
 import { Box, Flex } from "@chakra-ui/react";
-import { Controller, type Control, type FieldErrors } from "react-hook-form";
+import { Controller, type Control, type FieldErrors, type UseFormRegister } from "react-hook-form";
 import MSelect from "./ui/Select";
 import ErrorMsg from "./Error/ErrorMsg";
 import type { ICategory, IFormInput, ITag } from "../interfaces";
 import api from "../Api/axios";
 import { useQuery } from "@tanstack/react-query";
 import Error from "./Error/Error";
+import FormGroup from "./ui/form/FormGroup";
+import MInput from "./ui/MInput";
 
 interface ISelectingSectionInputs {
+   register: UseFormRegister<IFormInput>;
   control: Control<IFormInput> | undefined;
   errors: FieldErrors<IFormInput>;
 }
@@ -15,6 +18,7 @@ interface ISelectingSectionInputs {
 const SelectingSectionInputs = ({
   control,
   errors,
+  register,
 }: ISelectingSectionInputs) => {
   //  Get categories from strapi and Tags
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -36,15 +40,15 @@ const SelectingSectionInputs = ({
     refetchInterval: 1000 * 60 * 2,
     placeholderData: (prev) => prev,
   });
-  const categoryOptions = data?.categories?.data.map((category:ICategory) => ({
-   value: String(category.documentId),
-   label: category.title
- }));
- 
- const tagOptions = data?.tags?.data.map((tag:ITag) => ({
-   value: String(tag.documentId),
-   label: tag.tag
- }));
+  const categoryOptions = data?.categories?.data.map((category: ICategory) => ({
+    value: String(category.documentId),
+    label: category.title,
+  }));
+
+  const tagOptions = data?.tags?.data.map((tag: ITag) => ({
+    value: String(tag.documentId),
+    label: tag.tag,
+  }));
 
   if (isLoading) return <div>Loading...</div>;
   if (error)
@@ -106,7 +110,21 @@ const SelectingSectionInputs = ({
 
         {errors.tags?.message && <ErrorMsg message={errors.tags?.message} />}
       </Box>
-      
+      <FormGroup
+        error={errors.brand?.message}
+        label="Product Brand *"
+        htmlFor="brand"
+      >
+        <MInput
+          {...register("brand", {
+            required: true,
+            minLength: 10,
+            maxLength: 400,
+          })}
+          id="brand"
+          placeholder="Enter Product Brand"
+        />
+      </FormGroup>
     </Flex>
   );
 };

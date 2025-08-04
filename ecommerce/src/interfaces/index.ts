@@ -40,7 +40,7 @@ export interface IProductCard {
 }
 
 export interface ICategory {
- documentId?:string
+  documentId?: string;
   id?: string;
   title: string;
   thumbnail?: {
@@ -53,8 +53,8 @@ export interface ICategory {
 }
 
 export interface ITag {
- documentId?:string
-   id?: string;
+  documentId?: string;
+  id?: string;
   tag: string;
 }
 
@@ -92,6 +92,7 @@ export interface IRegisterInput {
 }
 
 export interface IError {
+ 
   error: {
     message?: string;
   };
@@ -227,29 +228,28 @@ export interface IPricingSectionInputsData {
   };
 }
 
-
 // try {
-    //   const uploadResponse = await uploadImage(data.thumbnail).unwrap();
-    //   const uploadedImageId = uploadResponse[0].id; // Assuming the API returns an array of uploaded files
-    //   console.log(uploadedImageId)
-    // } catch (error) {
-    //   console.log(error)
-      
-    // }
-    // try {
-    //   const formData = new FormData();
-    //   formData.append("files", data.thumbnail[0]); // رفع أول صورة فقط
-    
-    //   const uploadRes = await api.post("/api/upload", formData, {
-    //     withCredentials: true,
-    //     headers: {
-    //       Authorization: `Bearer ${token}`,
-    //     },
-    //   });
-    //   const uploadedImage = uploadRes.data[0].id; // الصورة المرفوعة (نأخذ الـ ID)
-    //   console.log(uploadedImage)
-    
-    //   console.log("Image Uploaded:", uploadedImage);
-    // } catch (error) {
-    //   console.error("Error adding product:", error);
-    // }
+//   const uploadResponse = await uploadImage(data.thumbnail).unwrap();
+//   const uploadedImageId = uploadResponse[0].id; // Assuming the API returns an array of uploaded files
+//   console.log(uploadedImageId)
+// } catch (error) {
+//   console.log(error)
+
+// }
+// try {
+//   const formData = new FormData();
+//   formData.append("files", data.thumbnail[0]); // رفع أول صورة فقط
+
+//   const uploadRes = await api.post("/api/upload", formData, {
+//     withCredentials: true,
+//     headers: {
+//       Authorization: `Bearer ${token}`,
+//     },
+//   });
+//   const uploadedImage = uploadRes.data[0].id; // الصورة المرفوعة (نأخذ الـ ID)
+//   console.log(uploadedImage)
+
+//   console.log("Image Uploaded:", uploadedImage);
+// } catch (error) {
+//   console.error("Error adding product:", error);
+// }
