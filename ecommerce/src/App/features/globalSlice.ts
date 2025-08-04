@@ -4,7 +4,7 @@ export type dialogType = "delete" | "confirm" | "edit";
 
 export interface globalSliceState {
   isOpenDialog: boolean;
-  id: number | null;
+  id: number | string | null;
   //! Drawer sidebar
   isOpenDrawer: boolean;
   //! Drawer filter
@@ -24,7 +24,7 @@ export const globalSlice = createSlice({
   initialState,
   reducers: {
     //! Dialog
-    openDialog: (state, actions: PayloadAction<number>) => {
+    openDialog: (state, actions: PayloadAction<number | string>) => {
       state.isOpenDialog = true;
       state.id = actions.payload;
     },

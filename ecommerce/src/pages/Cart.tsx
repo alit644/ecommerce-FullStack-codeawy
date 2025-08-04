@@ -36,7 +36,7 @@ const Cart = () => {
 
   const handelConfirm = () => {
     if (id !== null) {
-      dispatch(removeItem(id));
+      dispatch(removeItem(id as number));
     }
     dispatch(closeDialog());
   };

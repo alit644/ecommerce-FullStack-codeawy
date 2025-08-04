@@ -8,6 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import Error from "./Error/Error";
 import FormGroup from "./ui/form/FormGroup";
 import MInput from "./ui/MInput";
+import SkeletonCard from "./ui/Skeleton";
 
 interface ISelectingSectionInputs {
    register: UseFormRegister<IFormInput>;
@@ -50,7 +51,7 @@ const SelectingSectionInputs = ({
     label: tag.tag,
   }));
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <SkeletonCard height="30px" noOfLines={0} count={6}/>
   if (error)
     return (
       <Error code={500} message="Error" description="Failed to fetch filters" />

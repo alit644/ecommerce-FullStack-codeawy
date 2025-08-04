@@ -1,23 +1,23 @@
 import { Box, Flex, Stack } from "@chakra-ui/react";
-import MainTitle from "../../components/MainTitle";
-import MInput from "../../components/ui/MInput";
-import MTextarea from "../../components/ui/Textarea ";
-import MFileUpload from "../../components/ui/FileUpload";
-import MButton from "../../components/ui/Button";
+import MainTitle from "../../../components/MainTitle";
+import MInput from "../../../components/ui/MInput";
+import MTextarea from "../../../components/ui/Textarea ";
+import MFileUpload from "../../../components/ui/FileUpload";
+import MButton from "../../../components/ui/Button";
 import { FaPlus } from "react-icons/fa";
-import FormGroup from "../../components/ui/form/FormGroup";
+import FormGroup from "../../../components/ui/form/FormGroup";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
-import { schemaAddProduct } from "../../schema";
+import { schemaAddProduct } from "../../../schema";
 import { yupResolver } from "@hookform/resolvers/yup";
-import PricingSectionInputs from "../../components/PricingSectionInputs";
-import SelectingSectionInputs from "../../components/SelectingSectionInputs";
-import type { IFormInput } from "../../interfaces";
-import { mainInputsData } from "../../data";
+import PricingSectionInputs from "../../../components/PricingSectionInputs";
+import SelectingSectionInputs from "../../../components/SelectingSectionInputs";
+import type { IFormInput } from "../../../interfaces";
+import { mainInputsData } from "../../../data";
 import {
   useUploadImageMutation,
   useUploadProductMutation,
-} from "../../App/services/createProductApi";
-import { toaster } from "../../components/ui/toaster";
+} from "../../../App/services/createProductApi";
+import { toaster } from "../../../components/ui/toaster";
 import { useNavigate } from "react-router";
 import { useCallback } from "react";
 

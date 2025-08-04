@@ -228,28 +228,12 @@ export interface IPricingSectionInputsData {
   };
 }
 
-// try {
-//   const uploadResponse = await uploadImage(data.thumbnail).unwrap();
-//   const uploadedImageId = uploadResponse[0].id; // Assuming the API returns an array of uploaded files
-//   console.log(uploadedImageId)
-// } catch (error) {
-//   console.log(error)
-
-// }
-// try {
-//   const formData = new FormData();
-//   formData.append("files", data.thumbnail[0]); // رفع أول صورة فقط
-
-//   const uploadRes = await api.post("/api/upload", formData, {
-//     withCredentials: true,
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-//   const uploadedImage = uploadRes.data[0].id; // الصورة المرفوعة (نأخذ الـ ID)
-//   console.log(uploadedImage)
-
-//   console.log("Image Uploaded:", uploadedImage);
-// } catch (error) {
-//   console.error("Error adding product:", error);
-// }
+export interface ProductsResponse {
+  data: IProductCard[];
+  meta: {
+    pagination: {
+      total: number;
+      pageCount: number;
+    };
+  };
+}

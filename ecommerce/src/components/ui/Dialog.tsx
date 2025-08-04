@@ -6,8 +6,9 @@ interface DialogAlertProps {
   title: string;
   action: string;
   onConfirm: () => void;
+  loading?: boolean;
 }
-const DialogAlert = ({ children, title, action, onConfirm }: DialogAlertProps) => {
+const DialogAlert = ({ children, title, action, onConfirm , loading}: DialogAlertProps) => {
   const { isOpenDialog } = useAppSelector((state) => state.global);
   const dispatch = useAppDispatch();
   return (
@@ -28,7 +29,7 @@ const DialogAlert = ({ children, title, action, onConfirm }: DialogAlertProps) =
               <Dialog.ActionTrigger asChild>
                 <Button variant="outline">Cancel</Button>
               </Dialog.ActionTrigger>
-              <Button colorPalette="red" onClick={onConfirm}>{action}</Button>
+              <Button colorPalette="red" loading={loading} onClick={onConfirm}>{action}</Button>
             </Dialog.Footer>
             <Dialog.CloseTrigger asChild>
               <CloseButton size="sm" />

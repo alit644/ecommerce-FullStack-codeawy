@@ -2,17 +2,9 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAppSelector } from "../App/store";
 import { useEffect } from "react";
 import { fetchProducts } from "../utils/fetchingData";
-import type { FilterType, IProductCard } from "../interfaces";
+import type { FilterType, ProductsResponse } from "../interfaces";
 import { generateStrapiQuery } from "../utils/generateStrapiQuery";
-interface ProductsResponse {
-  data: IProductCard[];
-  meta: {
-    pagination: {
-      total: number;
-      pageCount: number;
-    };
-  };
-}
+
 
 export const useProducts = (filters: FilterType , valueSort?: string ,query?: string) => {
   const { page, pageSize } = useAppSelector((state) => state.pagination);

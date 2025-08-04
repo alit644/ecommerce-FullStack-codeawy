@@ -5,14 +5,10 @@ import {
   VStack,
   Badge,
   Grid,
-  Field,
-  Input,
-  Button,
 } from "@chakra-ui/react";
 import ProductInformationCard from "../../components/ui/ProductInformationCard";
 import { dashboardOverview } from "../../data";
 import RecentProductsCard from "../../components/ui/RecentProductsCard";
-import { useState } from "react";
 const Index = () => {
   const renderProductInformationCard = dashboardOverview.map((item) => (
     <ProductInformationCard
@@ -37,32 +33,8 @@ const Index = () => {
       color={item.color}
     />
   ));
-  const [file, setFile] = useState<File | null>(null);
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setFile(file);
-    }
-  };
-  const handelSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (file) {
-      console.log(file);
-      try {
-       const formData = new FormData();
-      formData.append("files", file);
-       const response = await fetch("http://localhost:1337/api/upload", {
-         method: "POST",
-         body: formData,
-       });
-       const data = await response.json();
-       console.log(data);
-      } catch (error) {
-       console.log(error)
-       
-      }
-    }
-  };
+
+
   return (
     <Box>
       <VStack alignItems="start" mb={4}>
@@ -106,21 +78,6 @@ const Index = () => {
           <RecentProductsCard />
           <RecentProductsCard />
         </Box>
-        {/* File Upload */}
-        <form action="" onSubmit={handelSubmit}>
-          <Field.Root required>
-            <Field.Label>
-              Image <Field.RequiredIndicator />
-            </Field.Label>
-            <Input
-              type="file"
-              placeholder="Upload Image"
-              onChange={handleFileChange}
-            />
-            <Field.HelperText>Upload product image</Field.HelperText>
-            <Button type="submit">Upload</Button>
-          </Field.Root>
-        </form>
       </VStack>
     </Box>
   );

@@ -11,7 +11,7 @@ import Product from "../pages/Product";
 import DashboardLayout from "../pages/dashboard/DashboardLayout";
 import DashboardHome from "../pages/dashboard/Home";
 import ProductsDashboard from "../pages/dashboard/products/ProductsDashboard";
-import AddProduct from "../pages/dashboard/AddProduct";
+import AddProduct from "../pages/dashboard/products/AddProduct";
 export const router = createBrowserRouter([
   {
     path: "/",
