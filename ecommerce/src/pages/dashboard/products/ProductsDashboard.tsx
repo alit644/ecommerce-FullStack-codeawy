@@ -60,9 +60,9 @@ const ProductsDashboard = () => {
   );
   //! Handlers
   const { handleFilterChange, resetFilters } = useProductFilters();
-  
+
   //! get data RTX Query =
-  const { data, isLoading, isError , isFetching } = useGetDashboardProductsQuery(
+  const { data, isLoading, isError, isFetching } = useGetDashboardProductsQuery(
     {
       page,
       pageSize,
@@ -79,59 +79,50 @@ const ProductsDashboard = () => {
   //** Prefetch
   const prefetch = createProductApi.usePrefetch("getDashboardProducts");
   useEffect(() => {
-   if (page < (pageCount ?? 0)) {
-    prefetch(
-      {
-        page: page + 1,
-        pageSize,
-        filters: filtersSlice,
-        valueSort: value,
-        query: searchQuery,
-      },
-      { ifOlderThan: 300 }
-    );
-  }
-    // prev page 
-    if (page > 1) {
-     prefetch(
-       { page: page - 1, pageSize, filters: filtersSlice, valueSort: value, query: searchQuery },
-       { ifOlderThan: 300 }
-     );
-   }
+    if (page < (pageCount ?? 0)) {
+      prefetch(
+        {
+          page: page + 1,
+          pageSize,
+          filters: filtersSlice,
+          valueSort: value,
+          query: searchQuery,
+        },
+        { ifOlderThan: 300 }
+      );
+    }
   }, [page, pageSize, filtersSlice, value, searchQuery]);
 
   const handleOpenDialog = (id: string) => {
-   dispatch(openDialog(id));
- };
+    dispatch(openDialog(id));
+  };
 
- const handleDeleteProduct = async () => {
-   try {
-     const result = await deleteProduct(documentId as string).unwrap();
-     console.log("data", result);
-     //? Toaster
-     if (isProductDeleted) {
-       toaster.success({
-         title: "Product Deleted",
-         description: "Product deleted successfully",
-         duration: 2000,
-         type: "success",
-       });
+  const handleDeleteProduct = async () => {
+    try {
+      const result = await deleteProduct(documentId as string).unwrap();
+      console.log("data", result);
+      //? Toaster
+      if (isProductDeleted) {
+        toaster.success({
+          title: "Product Deleted",
+          description: "Product deleted successfully",
+          duration: 2000,
+          type: "success",
+        });
       }
       dispatch(closeDialog());
       dispatch(setPage(1));
-   } catch (error) {
-     console.log("error", error);
-     dispatch(closeDialog())
-     toaster.error({
-       title: "Product Delete Failed",
-       description: "Product deleted failed",
-       duration: 2000,
-       type: "error",
-     });
-
-   }
- };
-
+    } catch (error) {
+      console.log("error", error);
+      dispatch(closeDialog());
+      toaster.error({
+        title: "Product Delete Failed",
+        description: "Product deleted failed",
+        duration: 2000,
+        type: "error",
+      });
+    }
+  };
 
   //! Render
   const renderTableHeaders = tableColumns.map((header) => (
@@ -169,9 +160,11 @@ const ProductsDashboard = () => {
       </Table.Cell>
       <Table.Cell>
         <HStack>
-          <IconButton aria-label="Edit" variant="ghost" colorScheme="blue">
-            <TbEdit />
-          </IconButton>
+          <Link to={`/dashboard/products/create/${product.documentId}`}>
+            <IconButton aria-label="Edit" variant="ghost" colorScheme="blue">
+              <TbEdit />
+            </IconButton>
+          </Link>
           <IconButton
             onClick={() => handleOpenDialog(product.documentId)}
             aria-label="Delete"

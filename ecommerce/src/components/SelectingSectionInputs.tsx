@@ -78,7 +78,7 @@ const SelectingSectionInputs = ({
           render={({ field }) => (
             <MSelect
               label="Select Product Category *"
-              value={Array.isArray(field.value) ? field.value : []}
+              value={field.value}
               onChange={(value) => field.onChange(value)}
               options={categoryOptions}
             />

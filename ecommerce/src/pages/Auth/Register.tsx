@@ -16,6 +16,7 @@ import { Toaster, toaster } from "../../components/ui/toaster";
 import { registerUser } from "../../App/features/registerSlice";
 import { login } from "../../App/features/authSlice";
 import MButton from "../../components/ui/Button";
+import cookieManager from "../../utils/cookieManager";
 
 export interface IFormInput {
   username: string;
@@ -41,7 +42,11 @@ const Register = () => {
 
     //! Toaster
     if (registerUser.fulfilled.match(resultAction)) {
-      dispatch(login(resultAction.payload)); //تحديث حالة المصادقة
+      // dispatch(login(resultAction.payload)); //تحديث حالة المصادقة
+      cookieManager.set("jwt", resultAction.payload.jwt, {
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3),
+      });
+      cookieManager.set("user", resultAction.payload.user);
       toaster.success({
         title: "Login successful",
         description: "You have successfully logged in",

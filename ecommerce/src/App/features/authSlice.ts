@@ -7,7 +7,8 @@ export interface AuthState {
 }
 
 const initialState: AuthState = {
-  isAuthenticated: !!cookieManager.get("jwtToken") && !!cookieManager.get("user"),
+  isAuthenticated: !!cookieManager.get("jwt") && !!cookieManager.get("user"),
+  // isAuthenticated: !!cookieManager.get("jwtToken") && !!cookieManager.get("user"),
 };
 
 export const authSlice = createSlice({
@@ -31,7 +32,8 @@ export const authSlice = createSlice({
     },
     logout: (state) => {
       state.isAuthenticated = false;
-      cookieManager.remove("jwtToken");
+      // cookieManager.remove("jwtToken");
+      cookieManager.remove("jwt");
       cookieManager.remove("user");
     },
   },

@@ -23,15 +23,15 @@ export const schemaAddProduct = yup
     price: yup.number().required().min(1).max(1000000),
     discount: yup.number().required().min(0).max(100),
     stock: yup.number().required().min(1).max(300),
-    category: yup.array().of(yup.string().required()).required(),
+    category: yup.string().required(),
     tags: yup.array().of(yup.string().required()).required().min(2).max(15),
     brand: yup.string().required(),
     thumbnail: yup
-      .mixed<FileList | File[] | (File | string)[]>()
+      .mixed<FileList | File[] | (File | string)[] | string>()
       .test("required", "Image is required", (value) => Array.isArray(value) && value.length > 0)
       .required(),
     images: yup
-      .mixed<FileList | File[] | (File | string)[]>()
+      .mixed<FileList | File[] | (File | string)[] | string>()
       .test("required", "Images are required", (value) => Array.isArray(value) && value.length > 0)
       .required(),
   })

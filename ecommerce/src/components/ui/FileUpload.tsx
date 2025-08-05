@@ -1,6 +1,6 @@
 interface IFileUpload {
   maxFiles: number;
-  value: FileList | File[] | (File | string)[];
+  value: FileList | File[] | (File | string)[] | string;
   onChange: (value: (File | FileList | string)[]) => void;
   height?: string;
   label?: string;
@@ -16,22 +16,27 @@ import {
   Spinner,
   Box,
   Center,
+  Image,
+  Stack,
+  Badge,
 } from "@chakra-ui/react";
+import { useCallback } from "react";
 import { HiUpload } from "react-icons/hi";
 import { LuX } from "react-icons/lu";
 
-const FileUploadList = ({
-  imageIsLoading,
-}: {
-  imageIsLoading: boolean;
-}) => {
+const FileUploadList = ({ imageIsLoading }: { imageIsLoading: boolean }) => {
   // watch files use react-hook-form
-
   const fileUpload = useFileUploadContext();
   const files = fileUpload.acceptedFiles;
   if (files.length === 0) return null;
   return (
-    <FileUpload.ItemGroup display="flex" alignItems="center" flexDir="row">
+    <FileUpload.ItemGroup
+      w={"fit-content"}
+      display="flex"
+      alignItems="center"
+      flexWrap="wrap"
+      flexDir="row"
+    >
       {files.map((file) => (
         <FileUpload.Item
           position="relative"
@@ -74,13 +79,42 @@ const MFileUpload = ({
   imageIsLoading,
   onChange,
 }: IFileUpload) => {
+  // Handle different value types
+  const existingImagesValue = (() => {
+    if (!value) return [];
+    if (Array.isArray(value)) {
+      return value.filter((item) => typeof item === "string") as string[];
+    }
+    if (typeof value === "string") {
+      return [value];
+    }
+    // Convert FileList to array
+    if (value instanceof FileList) {
+      return Array.from(value).filter(
+        (file) => typeof file === "string"
+      ) as string[];
+    }
+    return [];
+  })();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files) {
       const fileArray = Array.from(files);
-      onChange(fileArray);
-    }
-  };
+      if(maxFiles === 1){
+       onChange([fileArray[0]]);
+      }else{
+        onChange([...existingImagesValue, ...fileArray]);
+      }
+     }
+    };
+
+  const handleDelete = useCallback((index: number | string) => {
+    const updatedImages = [...existingImagesValue];
+    updatedImages.splice(index as number, 1);
+    onChange(updatedImages);
+  }, [existingImagesValue])
+
   return (
     <FileUpload.Root accept={["image/*"]} maxFiles={maxFiles}>
       <FileUpload.HiddenInput onChange={handleChange} />
@@ -106,7 +140,64 @@ const MFileUpload = ({
           )}
         </Button>
       </FileUpload.Trigger>
-      <FileUploadList imageIsLoading={imageIsLoading} />
+      <Stack direction={"row"} w={"full"} gap={3} flexWrap={"wrap"} >
+        <FileUploadList imageIsLoading={imageIsLoading} />
+        <Stack w={"fit-content"} direction={"row"} flexWrap={"wrap"}>
+          {existingImagesValue.length !== 0 ? (existingImagesValue.join(" ").split(" ") || []).map((image) => (
+            <Box
+              key={image}
+              bg="gray.50"
+              borderRadius="xl"
+              position="relative"
+              transition="transform 0.2s"
+              w="auto"
+              boxSize="24"
+              p="2"
+              border="2px solid #e4e4e7"
+            >
+              <Box pos="absolute" top="0" left="0">
+                <Center h="full">
+                  <Badge
+                    colorScheme="blue"
+                    fontSize="xs"
+                    colorPalette={"green"}
+                  >
+                    Current Image
+                  </Badge>
+                </Center>
+              </Box>
+              <Image
+                loading="lazy"
+                src={`${import.meta.env.VITE_BASE_URL}${image}`}
+                alt="Existing Image"
+                w="100%"
+                h="100%"
+                objectFit="cover"
+                bg="gray.100"
+              />
+              {/* delete button */}
+              <Box position="absolute" top="-3" right="-2" onClick={() => handleDelete(image)}>
+                <Button
+                unstyled
+                  disabled={imageIsLoading}
+                  p={0}
+                  _disabled={{ cursor: "not-allowed", opacity: 0.5 }}
+                  variant="solid"
+                  bg={'black'}
+                  colorScheme="red"
+                  color={'white'}
+                  boxSize={4}
+                  cursor={"pointer"}
+                >
+                 <Center>
+                  <LuX size={12}/>
+                </Center>
+                </Button>
+              </Box>
+            </Box>
+          )) : null}
+        </Stack>
+      </Stack>
     </FileUpload.Root>
   );
 };

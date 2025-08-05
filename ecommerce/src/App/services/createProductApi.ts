@@ -11,7 +11,7 @@ export const createProductApi = createApi({
     baseUrl: `${import.meta.env.VITE_BASE_URL}/api`,
     credentials: "include",
     prepareHeaders: (headers) => {
-      const token = cookieManager.get<string>("jwtToken");
+      const token = cookieManager.get<string>("jwt");
       if (token) {
         headers.set("Authorization", `Bearer ${token}`);
       }
@@ -79,7 +79,7 @@ export const createProductApi = createApi({
     uploadImage: builder.mutation({
       query: (files: {
         thumbnail: File | string;
-        images: FileList | File[] | (string | File)[];
+        images: FileList | File[] | (string | File)[] | string;
       }) => {
         const formData = new FormData();
         formData.append("files", files.thumbnail);

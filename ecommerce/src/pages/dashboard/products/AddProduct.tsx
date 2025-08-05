@@ -11,19 +11,27 @@ import { schemaAddProduct } from "../../../schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import PricingSectionInputs from "../../../components/PricingSectionInputs";
 import SelectingSectionInputs from "../../../components/SelectingSectionInputs";
-import type { IFormInput } from "../../../interfaces";
+import type {
+  IFormInput,
+  IProductCard,
+} from "../../../interfaces";
 import { mainInputsData } from "../../../data";
 import {
   useUploadImageMutation,
   useUploadProductMutation,
 } from "../../../App/services/createProductApi";
 import { toaster } from "../../../components/ui/toaster";
-import { useNavigate } from "react-router";
-import { useCallback } from "react";
+import { Link, useNavigate, useParams } from "react-router";
+import { useCallback, useEffect } from "react";
+import { fetchProduct } from "../../../utils/fetchingData";
+import { useQuery } from "@tanstack/react-query";
+import SkeletonCard from "../../../components/ui/Skeleton";
+import Error from "../../../components/Error/Error";
 
 const AddProduct = () => {
-  const [uploadImage, { isLoading: imageLoading }] =
-    useUploadImageMutation();
+  const { editProductId } = useParams<{ editProductId: string | undefined }>();
+  const isEdit = !!editProductId;
+  const [uploadImage, { isLoading: imageLoading }] = useUploadImageMutation();
   const [uploadProduct, { isLoading, error: productError }] =
     useUploadProductMutation();
   const nav = useNavigate();
@@ -33,8 +41,22 @@ const AddProduct = () => {
     formState: { errors },
     control,
     reset,
+    setValue,
   } = useForm<IFormInput>({
     resolver: yupResolver(schemaAddProduct),
+  });
+
+  //  edit data
+  const {
+    data: editProductData,
+    isLoading: editProductLoading,
+    error: editProductError,
+  } = useQuery<IProductCard>({
+    queryKey: editProductId
+      ? ["getProductById", editProductId]
+      : ["getProductById", ""],
+    queryFn: () => fetchProduct(editProductId || ""),
+    enabled: isEdit,
   });
 
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
@@ -83,26 +105,56 @@ const AddProduct = () => {
         });
       }
     } catch (error: any) {
-     console.error("API Error:", error);
+      console.error("API Error:", error);
 
-     if (error.status === 403) {
-       toaster.error({
-         title: "Unauthorized",
-         description: "You don't have permission to perform this action.",
-       });
-     } else if (error.status === 400) {
-       toaster.error({
-         title: "Validation Error",
-         description: "Please check your input fields.",
-       });
-     } else {
-       toaster.error({
-         title: "Unknown Error",
-         description: "Something went wrong. Try again later.",
-       });
-     }
+      if (error.status === 403) {
+        toaster.error({
+          title: "Unauthorized",
+          description: "You don't have permission to perform this action.",
+        });
+      } else if (error.status === 400) {
+        toaster.error({
+          title: "Validation Error",
+          description: "Please check your input fields.",
+        });
+      } else {
+        toaster.error({
+          title: "Unknown Error",
+          description: "Something went wrong. Try again later.",
+        });
+      }
     }
   };
+
+  //! Set default values for edit
+  useEffect(() => {
+    if (isEdit && editProductData) {
+      const editData = editProductData;
+      reset({
+        title: editData.title,
+        description: editData.description,
+        rating: editData.rating,
+        price: editData.price,
+        discount: editData.discount,
+        stock: editData.stock,
+        brand: editData.brand,
+      });
+      setValue("category", editData.category?.documentId || "");
+      setValue(
+        "tags",
+        editData.tags
+          ? editData.tags.map((tagObj) => tagObj.documentId || "")
+          : []
+      );
+      setValue("thumbnail", editData.thumbnail?.formats.small.url || "");
+      setValue(
+        "images",
+        editData.images?.map(
+          (imageObj) => imageObj.formats?.small?.url || ""
+        ) || []
+      );
+    }
+  }, [editProductData, isEdit, reset, setValue]);
 
   //! Handle Reset
   const handelReset = useCallback(() => {
@@ -131,6 +183,21 @@ const AddProduct = () => {
       </FormGroup>
     );
   });
+
+  if (editProductLoading) {
+    return (
+      <SkeletonCard
+        count={12}
+        height={"40px"}
+        textSkeleton={false}
+        isAction={false}
+      />
+    );
+  }
+  if (editProductError) {
+    return <Error message="Error" description="Error fetching product" />;
+  }
+
   return (
     <Box
       w={"full"}
@@ -141,7 +208,10 @@ const AddProduct = () => {
       borderRadius="md"
       boxShadow="md"
     >
-      <MainTitle title="Add New Product" isArrow={false} />
+      <MainTitle
+        title={isEdit ? "Edit Product" : "Add New Product"}
+        isArrow={false}
+      />
       {/* Form */}
       <form onSubmit={handleSubmit(onSubmit)}>
         <Box spaceY={2}>
@@ -188,8 +258,14 @@ const AddProduct = () => {
                     maxFiles={1}
                     height={"100px"}
                     label="Upload Main Thumbnail"
-                    value={field.value || []}
-                    onChange={field.onChange}
+                    value={
+                      field.value ||
+                      editProductData?.thumbnail?.formats?.small?.url ||
+                      ""
+                    }
+                    onChange={(newValue) => {
+                      field.onChange(newValue);
+                    }}
                     imageIsLoading={imageLoading}
                   />
                 )}
@@ -239,20 +315,33 @@ const AddProduct = () => {
         </Box>
         {/* Actions */}
         <Flex justifyContent="flex-end" gap={2} mt={4}>
-          <MButton
-            variant="outline"
-            size="sm"
-            title="Reset"
-            w={"fit-content"}
-            onClick={handelReset}
-          />
+          {isEdit === false && (
+            <MButton
+              variant="outline"
+              size="sm"
+              title="Reset"
+              w={"fit-content"}
+              onClick={handelReset}
+            />
+          )}
+          {isEdit && (
+            <Link to="/dashboard/products">
+              <MButton
+                variant="outline"
+                size="sm"
+                title="Cancel"
+                w={"fit-content"}
+              />
+            </Link>
+          )}
+
           <MButton
             isLoading={isLoading || imageLoading}
             loadingText="Uploading Product..."
             variant="solid"
             size="sm"
             bg="teal.500"
-            title="Add Product"
+            title={isEdit ? "Update Product" : "Add Product"}
             w={"fit-content"}
             _hover={{ bg: "teal.600" }}
             icon={<FaPlus />}

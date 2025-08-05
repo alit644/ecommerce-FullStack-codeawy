@@ -32,9 +32,8 @@ export interface IProductCard {
       };
     };
   };
-  category?: {
-    title: string;
-  };
+  category?: ICategory;
+  tags?: ITag[];
   quantity: number;
   rating?: number;
 }
@@ -205,11 +204,11 @@ export interface IFormInput {
   price: number;
   discount: number;
   stock: number;
-  category: string[];
+  category: string;
   tags: string[];
   brand: string;
-  thumbnail: FileList | File[] | (File | string)[];
-  images: FileList | File[] | (File | string)[];
+  thumbnail: FileList | File[] | (File | string)[] | string;
+  images: FileList | File[] | (File | string)[] | string;
 }
 
 export interface IPricingSectionInputsData {

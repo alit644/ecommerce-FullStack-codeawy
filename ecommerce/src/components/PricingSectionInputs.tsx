@@ -12,6 +12,7 @@ const PricingSectionInputs = ({ register, errors }: IPricingSectionInputs) => {
  const renderInputs = PricingSectionInputsData.map((input) => {
   return (
     <FormGroup
+    key={input.name}
       error={errors?.[input.name]?.message || ""}
       label={input.label}
       htmlFor={input.name}

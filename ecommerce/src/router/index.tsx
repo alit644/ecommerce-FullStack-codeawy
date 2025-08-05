@@ -60,7 +60,7 @@ export const router = createBrowserRouter([
         Component: ProductsDashboard,
       },
       {
-        path: "products/create",
+        path: "products/create/:editProductId?",
         Component: AddProduct,
       },
     ],
