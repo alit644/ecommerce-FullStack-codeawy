@@ -1,9 +1,9 @@
+import { lazy, Suspense, useCallback, useEffect, useState } from "react";
 import { Box, Grid, Icon, Text } from "@chakra-ui/react";
 import { FaBoxOpen } from "react-icons/fa";
-import CategoryCard from "./ui/CategoryCard";
+const CategoryCard = lazy(() => import("./ui/CategoryCard"));
 import MainTitle from "./MainTitle";
 import type { ICategory } from "../interfaces";
-import { useCallback, useEffect, useState } from "react";
 import { useBrowseByCategory } from "../Hooks/useBrowseByCategory";
 import { useQueryClient } from "@tanstack/react-query";
 import { fetchCategory } from "../utils/fetchingData";
@@ -48,30 +48,31 @@ const BrowseByCategory = () => {
   //! ============== Render ==============
   //! Render Categories Data
   const renderCategory = data?.data.map((item: ICategory) => (
-    <CategoryCard
-      key={item.title}
-      title={item.title}
-      thumbnail={{
-        formats: {
-          small: {
-            url: `${import.meta.env.VITE_BASE_URL}${
-              item.thumbnail?.formats?.small?.url
-            }`,
+    <Suspense key={item.id} fallback={<SkeletonCard height="140px" />}>
+      <CategoryCard
+        title={item.title}
+        thumbnail={{
+          formats: {
+            small: {
+              url: `${import.meta.env.VITE_BASE_URL}${
+                item.thumbnail?.formats?.small?.url
+              }`,
+            },
           },
-        },
-      }}
-    />
+        }}
+      />
+    </Suspense>
   ));
 
   if (isLoading || isFetching)
     return (
-     <SkeletonCard
-     count={6}
-     noOfLines={1}
-     isAction={false}
-     height="140px"
-     textSkeleton={true}
-   />
+      <SkeletonCard
+        count={6}
+        noOfLines={1}
+        isAction={false}
+        height="140px"
+        textSkeleton={true}
+      />
     );
   if (error)
     return (
@@ -117,7 +118,6 @@ const BrowseByCategory = () => {
     );
   return (
     <Box my={6}>
-     
       <MainTitle
         title="Browse By Category"
         onNext={onNext}

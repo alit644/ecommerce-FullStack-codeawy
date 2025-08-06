@@ -8,7 +8,8 @@ const HeroSummer = () => {
     <Box position="relative" overflow="hidden" h="350px" my={4}>
       {/* Background Image */}
       <Image
-        src="../../../public/Banner2.png"
+        loading="lazy"
+        src="../../../public/Banner2Web.webp"
         alt="Summer Collection"
         position="absolute"
         top={0}

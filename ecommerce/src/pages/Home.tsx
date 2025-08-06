@@ -1,9 +1,44 @@
-import { Container } from "@chakra-ui/react";
+import { lazy, Suspense, useEffect, useRef, useState } from "react";
+import { Box, Container } from "@chakra-ui/react";
 import HeroSection from "../components/ui/HeroSection";
 import BrowseByCategory from "../components/BrowseByCategory";
-import FeaturedProducts from "../components/tabsProducts/FeaturedProducts";
-import HeroSummer from "../components/ui/HeroSummer";
-import DiscountsSection from "../components/DiscountsSection";
+const FeaturedProducts = lazy(
+  () => import("../components/tabsProducts/FeaturedProducts")
+);
+const HeroSummer = lazy(() => import("../components/ui/HeroSummer"));
+const DiscountsSection = lazy(() => import("../components/DiscountsSection"));
+import SkeletonCard from "../components/ui/Skeleton";
+
+interface LazyLoadOnViewProps {
+  children: React.ReactNode;
+  height?: string;
+}
+
+function LazyLoadOnView({ children, height = "200px" }: LazyLoadOnViewProps) {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    if (ref.current) observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <Box ref={ref} minH={height}>
+      {isVisible ? children : <SkeletonCard height={height} />}
+    </Box>
+  );
+}
+// Dynamic import لمكتبة كبيرة (مثلاً moment.js)
 
 const Home = () => {
   return (
@@ -11,12 +46,35 @@ const Home = () => {
       <HeroSection />
       <Container maxW="container.xl" mt={6} mb={6}>
         <BrowseByCategory />
-        <FeaturedProducts />
+        <LazyLoadOnView>
+          <Suspense fallback={<div>Loading...</div>}>
+            <FeaturedProducts />
+          </Suspense>
+        </LazyLoadOnView>
       </Container>
-       <HeroSummer /> 
-      <Container maxW="container.xl" mt={6} mb={6}>
-        <DiscountsSection />
-      </Container>
+      <LazyLoadOnView>
+        <Suspense
+          fallback={
+            <SkeletonCard
+              height="200px"
+              count={1}
+              isAction={false}
+              textSkeleton={false}
+            />
+          }
+        >
+          <HeroSummer />
+        </Suspense>
+      </LazyLoadOnView>
+      <LazyLoadOnView>
+        <Suspense
+          fallback={<SkeletonCard count={5} noOfLines={3} isAction={true} />}
+        >
+          <Container maxW="container.xl" mt={6} mb={6}>
+            <DiscountsSection />
+          </Container>
+        </Suspense>
+      </LazyLoadOnView>
     </>
   );
 };

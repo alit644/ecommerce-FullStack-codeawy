@@ -1,17 +1,28 @@
+import { lazy, Suspense, type LazyExoticComponent } from "react";
 import { createBrowserRouter } from "react-router";
 import RootLayout from "../pages/layout/RootLayout";
 import Home from "../pages/Home";
-import Login from "../pages/Auth/Login";
+const Login = lazy(() => import("../pages/Auth/Login"));
+const Register = lazy(() => import("../pages/Auth/Register"));
 import ProtectedRoute from "../components/ProtectedRoute";
-import Register from "../pages/Auth/Register";
-import Cart from "../pages/Cart";
-import Shop from "../pages/Products";
+const Cart = lazy(() => import("../pages/Cart"));
+const Shop = lazy(() => import("../pages/Products"));
 import Error from "../components/Error/Error";
-import Product from "../pages/Product";
-import DashboardLayout from "../pages/dashboard/DashboardLayout";
+const Product = lazy(() => import("../pages/Product"));
+const DashboardLayout = lazy(
+  () => import("../pages/dashboard/DashboardLayout")
+);
 import DashboardHome from "../pages/dashboard/Home";
-import ProductsDashboard from "../pages/dashboard/products/ProductsDashboard";
-import AddProduct from "../pages/dashboard/products/AddProduct";
+const ProductsDashboard = lazy(
+  () => import("../pages/dashboard/products/ProductsDashboard")
+);
+const AddProduct = lazy(() => import("../pages/dashboard/products/AddProduct"));
+import PageLoader from "../components/ui/PageLoader";
+import type { JSX } from "react/jsx-runtime";
+
+const withSuspense = (Component: LazyExoticComponent<() => JSX.Element>) => (
+  <Suspense fallback={<PageLoader />}>{<Component />}</Suspense>
+);
 export const router = createBrowserRouter([
   {
     path: "/",
@@ -26,30 +37,37 @@ export const router = createBrowserRouter([
       },
       {
         path: "/shop/*",
-        Component: Shop,
+        Component: () => withSuspense(Shop),
       },
       {
         path: "/:brand/:documentId",
-        Component: Product,
+        Component: () => withSuspense(Product),
       },
       {
         path: "/cart",
-        Component: Cart,
+        Component: () => withSuspense(Cart),
       },
       {
         path: "/login",
-        element: <ProtectedRoute reverse path="/" children={<Login />} />,
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <ProtectedRoute reverse path="/" children={<Login />} />
+          </Suspense>
+        ),
       },
       {
         path: "/register",
-        element: <ProtectedRoute reverse path="/" children={<Register />} />,
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <ProtectedRoute reverse path="/" children={<Register />} />
+          </Suspense>
+        ),
       },
     ],
-
   },
   {
     path: "/dashboard",
-    Component: DashboardLayout,
+    Component: () => withSuspense(DashboardLayout),
     children: [
       {
         index: true,
@@ -57,13 +75,12 @@ export const router = createBrowserRouter([
       },
       {
         path: "products",
-        Component: ProductsDashboard,
+        Component: () => withSuspense(ProductsDashboard),
       },
       {
         path: "products/create/:editProductId?",
-        Component: AddProduct,
+        Component: () => withSuspense(AddProduct),
       },
     ],
   },
 ]);
-

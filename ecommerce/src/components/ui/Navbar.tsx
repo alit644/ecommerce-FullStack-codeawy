@@ -1,4 +1,4 @@
-import React from "react";
+import React, { lazy } from "react";
 import {
   Box,
   Flex,
@@ -13,8 +13,14 @@ import {
   Menu,
   Button,
 } from "@chakra-ui/react";
-import { FaStore } from "react-icons/fa";
-import { RxHamburgerMenu } from "react-icons/rx";
+const FaStore = lazy(() =>
+  import("react-icons/fa").then((module) => ({ default: module.FaStore }))
+);
+const RxHamburgerMenu = lazy(() =>
+  import("react-icons/rx").then((module) => ({
+    default: module.RxHamburgerMenu,
+  }))
+);
 import { IoIosClose } from "react-icons/io";
 import MButton from "./Button";
 import { Link as RouterLink } from "react-router";
@@ -38,9 +44,8 @@ const NavLink = ({
   href: string;
   children: React.ReactNode;
 }) => (
-  <RouterLink to={href} >
+  <RouterLink to={href}>
     <Box
-
       px={2}
       py={1}
       rounded="md"

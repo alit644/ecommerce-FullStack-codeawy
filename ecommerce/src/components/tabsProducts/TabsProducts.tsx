@@ -1,10 +1,11 @@
 import { Box, Grid, Tabs } from "@chakra-ui/react";
-import { useState } from "react";
-import ProductCard from "../ui/ProductCard";
+import { lazy, Suspense, useState } from "react";
+const ProductCard = lazy(() => import("../ui/ProductCard"));
 import type { IProductCard } from "../../interfaces";
 import { tabs } from "../../data";
 import { useProductsByTag } from "../../Hooks/useProductsByTag";
 import ProductListWrapper from "../ProductListWrapper";
+import SkeletonCard from "../ui/Skeleton";
 
 const TabsProducts = () => {
   const [value, setValue] = useState<string | null>("featured");
@@ -45,9 +46,12 @@ const TabsProducts = () => {
                 mt={6}
               >
                 {data?.data?.map((product: IProductCard) => {
-                  return <ProductCard key={product.id} data={product} />;
+                  return (
+                    <Suspense key={product.id} fallback={<SkeletonCard count={5} noOfLines={3} isAction={true} />}>
+                      <ProductCard  data={product} />
+                    </Suspense>
+                  );
                 })}
-                
               </Grid>
             </ProductListWrapper>
           </Tabs.Content>

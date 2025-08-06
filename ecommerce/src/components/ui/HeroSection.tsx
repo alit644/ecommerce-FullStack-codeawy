@@ -6,7 +6,7 @@ import {
   Stack,
   Image,
 } from "@chakra-ui/react";
-import { memo } from "react";
+import { memo  } from "react";
 import { Link } from "react-router";
 import MButton from "./Button";
 
@@ -73,10 +73,12 @@ const HeroSection = () => {
         bgGradient="linear(to-r, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7))"
       >
         <Image
-          src="src/assets/images/Iphone Image.svg"
+          loading="lazy"
+          src="../../../public/Iphone Image.webp"
           w={{ base: "70%", md: "100%" }}
           h={{ base: "70%", md: "100%" }}
           mx={"auto"}
+          
         />
       </Box>
     </Box>
