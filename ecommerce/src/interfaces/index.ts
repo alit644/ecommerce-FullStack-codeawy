@@ -10,6 +10,7 @@ export interface IProductCard {
   stock?: number;
   discount?: number;
   images?: {
+   id?: string;
     url?: string;
     formats?: {
       small?: {
@@ -23,6 +24,7 @@ export interface IProductCard {
     size?: string;
   };
   thumbnail?: {
+   id?: string;
     url?: string;
     alternativeText?: string;
     caption?: string;
@@ -207,7 +209,8 @@ export interface IFormInput {
   category: string;
   tags: string[];
   brand: string;
-  thumbnail: FileList | File[] | (File | string)[] | string;
+  // thumbnail: File | string ;
+  thumbnail: FileList | File[] | (File | string)[] | string ;
   images: FileList | File[] | (File | string)[] | string;
 }
 

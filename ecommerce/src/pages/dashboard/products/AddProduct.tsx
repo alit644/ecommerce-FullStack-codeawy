@@ -1,4 +1,4 @@
-import { Box, Flex, Stack } from "@chakra-ui/react";
+import { Box, Center, Flex, Spinner, Stack } from "@chakra-ui/react";
 import MainTitle from "../../../components/MainTitle";
 import MInput from "../../../components/ui/MInput";
 import MTextarea from "../../../components/ui/Textarea ";
@@ -11,12 +11,10 @@ import { schemaAddProduct } from "../../../schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import PricingSectionInputs from "../../../components/PricingSectionInputs";
 import SelectingSectionInputs from "../../../components/SelectingSectionInputs";
-import type {
-  IFormInput,
-  IProductCard,
-} from "../../../interfaces";
+import type { IFormInput, IProductCard } from "../../../interfaces";
 import { mainInputsData } from "../../../data";
 import {
+  useUpdateProductMutation,
   useUploadImageMutation,
   useUploadProductMutation,
 } from "../../../App/services/createProductApi";
@@ -27,14 +25,17 @@ import { fetchProduct } from "../../../utils/fetchingData";
 import { useQuery } from "@tanstack/react-query";
 import SkeletonCard from "../../../components/ui/Skeleton";
 import Error from "../../../components/Error/Error";
+import { mapUrlsToIds } from "../../../utils/mapUrlsToIds";
 
 const AddProduct = () => {
+  const nav = useNavigate();
   const { editProductId } = useParams<{ editProductId: string | undefined }>();
   const isEdit = !!editProductId;
   const [uploadImage, { isLoading: imageLoading }] = useUploadImageMutation();
+  const [updateProduct, { isLoading: updateLoading }] =
+    useUpdateProductMutation();
   const [uploadProduct, { isLoading, error: productError }] =
     useUploadProductMutation();
-  const nav = useNavigate();
   const {
     register,
     handleSubmit,
@@ -59,15 +60,92 @@ const AddProduct = () => {
     enabled: isEdit,
   });
 
+  //! Set default values for edit
+  useEffect(() => {
+    if (isEdit && editProductData) {
+      const editData = editProductData;
+      reset({
+        title: editData.title,
+        description: editData.description,
+        rating: editData.rating,
+        price: editData.price,
+        discount: editData.discount,
+        stock: editData.stock,
+        brand: editData.brand,
+
+        thumbnail: editData.thumbnail?.formats.small.url || "",
+        images:
+          editData.images?.map(
+            (imageObj) => imageObj.formats?.small?.url || ""
+          ) || [],
+      });
+      setValue("category", editData.category?.documentId || "");
+      setValue(
+        "tags",
+        editData.tags
+          ? editData.tags.map((tagObj) => tagObj.documentId || "")
+          : []
+      );
+    }
+  }, [editProductData, isEdit, reset, setValue]);
+
+  //TODO : delete image for database
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
       //! RTk Query
-      const uploadResponse = await uploadImage({
-        thumbnail: data.thumbnail[0],
-        images: data.images,
-      }).unwrap();
-      const imageID = uploadResponse[0].id;
-      const imagesIDs = uploadResponse.map((image: { id: string }) => image.id);
+      let imageID = "";
+      let imagesIDs: (string | number | undefined)[] = [];
+
+      //! File رقع الصور في حالة كانت
+      const isThumbnailFile = Array.isArray(data.thumbnail);
+      //* Filter existing thumbnail (Strings or Numbers)
+      const isThumbnailID =
+        typeof data.thumbnail === "string" ||
+        typeof data.thumbnail === "number";
+
+      const newImages = (Array.isArray(data.images) ? data.images : []).filter(
+        (image) => image instanceof File
+      ) as File[];
+
+      const oldImageUrls = (
+        Array.isArray(data.images) ? data.images : []
+      ).filter((img) => typeof img === "string") as string[];
+
+      //! رفع الصور الجديدة (الصورة الرئيسية وصور المعرض) إذا تم اختيارها من قبل المستخدم
+      let uploadResponse: { id: string; type: string }[] = [];
+      if (isThumbnailFile || newImages.length > 0) {
+        uploadResponse = await uploadImage({
+          thumbnail: data.thumbnail[0],
+          images: newImages,
+        }).unwrap();
+      }
+
+      // ترجم روابط الصور القديمة إلى IDs
+      const existingImageIDs = mapUrlsToIds(
+        oldImageUrls,
+        editProductData?.images
+      );
+
+      //! معالجة الصور بعد الرفع أو في حالة عدم رفع صور جديدة
+      if (uploadResponse.length > 0) {
+        if (isThumbnailFile && uploadResponse[0]?.id) {
+          imageID = uploadResponse[0].id;
+        } else {
+          imageID = editProductData?.thumbnail?.id || "";
+        }
+        //* دمج الصور الجديدة مع الصور القديمة
+        imagesIDs = [
+          ...existingImageIDs,
+          ...uploadResponse.slice(isThumbnailFile ? 1 : 0).map((img) => img.id),
+        ];
+      } else {
+        // إذا لم يتم رفع صور جديدة، استخدم معرفات الصور القديمة فقط
+        imagesIDs = existingImageIDs;
+        if (!imageID && isThumbnailID) {
+          imageID = editProductData?.thumbnail?.id || "";
+        }
+      }
+      imagesIDs = imagesIDs.filter(Boolean);
 
       const productData = {
         data: {
@@ -84,26 +162,43 @@ const AddProduct = () => {
           tags: data.tags,
         },
       };
-      const uploadProductResponse = await uploadProduct(productData).unwrap();
-      console.log("uploadProductResponse RTK Query", uploadProductResponse);
-      //? Toaster
-      toaster.success({
-        title: "Product Created",
-        description: "Product created successfully",
-        duration: 2000,
-        type: "success",
-      });
+
+      if (isEdit) {
+        const updateProductResponse = await updateProduct({
+          productData,
+          documentId: editProductId || "",
+        }).unwrap();
+        console.log("updateProductResponse RTK Query", updateProductResponse);
+        //? Toaster
+        toaster.success({
+          title: "Product Updated",
+          description: "Product updated successfully",
+          duration: 2000,
+          type: "success",
+        });
+      } else {
+        const uploadProductResponse = await uploadProduct(productData).unwrap();
+        console.log("uploadProductResponse RTK Query", uploadProductResponse);
+        //? Toaster
+        toaster.success({
+          title: "Product Created",
+          description: "Product created successfully",
+          duration: 2000,
+          type: "success",
+        });
+        //? Error Toaster
+        if (productError) {
+          toaster.error({
+            title: "Product Failed",
+            description: "Product failed to create",
+            duration: 2000,
+            type: "error",
+          });
+        }
+      }
+
       reset();
       nav("/dashboard/products");
-      //? Error Toaster
-      if (productError) {
-        toaster.error({
-          title: "Product Failed",
-          description: "Product failed to create",
-          duration: 2000,
-          type: "error",
-        });
-      }
     } catch (error: any) {
       console.error("API Error:", error);
 
@@ -125,36 +220,6 @@ const AddProduct = () => {
       }
     }
   };
-
-  //! Set default values for edit
-  useEffect(() => {
-    if (isEdit && editProductData) {
-      const editData = editProductData;
-      reset({
-        title: editData.title,
-        description: editData.description,
-        rating: editData.rating,
-        price: editData.price,
-        discount: editData.discount,
-        stock: editData.stock,
-        brand: editData.brand,
-      });
-      setValue("category", editData.category?.documentId || "");
-      setValue(
-        "tags",
-        editData.tags
-          ? editData.tags.map((tagObj) => tagObj.documentId || "")
-          : []
-      );
-      setValue("thumbnail", editData.thumbnail?.formats.small.url || "");
-      setValue(
-        "images",
-        editData.images?.map(
-          (imageObj) => imageObj.formats?.small?.url || ""
-        ) || []
-      );
-    }
-  }, [editProductData, isEdit, reset, setValue]);
 
   //! Handle Reset
   const handelReset = useCallback(() => {
@@ -244,6 +309,9 @@ const AddProduct = () => {
               <Controller
                 name="thumbnail"
                 control={control}
+                defaultValue={
+                  editProductData?.thumbnail?.formats?.small?.url || ""
+                }
                 rules={{
                   required: true,
                   validate: (value) => {
@@ -255,18 +323,25 @@ const AddProduct = () => {
                 }}
                 render={({ field }) => (
                   <MFileUpload
+                    multiple={false}
                     maxFiles={1}
                     height={"100px"}
                     label="Upload Main Thumbnail"
                     value={
-                      field.value ||
-                      editProductData?.thumbnail?.formats?.small?.url ||
-                      ""
+                      field.value instanceof File
+                        ? field.value
+                        : field.value ||
+                          editProductData?.thumbnail?.formats?.small?.url ||
+                          ""
                     }
                     onChange={(newValue) => {
-                      field.onChange(newValue);
+                      if (newValue instanceof FileList) {
+                        field.onChange(newValue[0]); // Single File
+                      } else {
+                        field.onChange(newValue);
+                      }
                     }}
-                    imageIsLoading={imageLoading}
+                    imageIsLoading={imageLoading || updateLoading}
                   />
                 )}
               />
@@ -297,16 +372,18 @@ const AddProduct = () => {
                     if (!value) {
                       return "Images are required";
                     }
+
                     return true;
                   },
                 }}
                 render={({ field }) => (
                   <MFileUpload
+                    multiple={true}
                     maxFiles={5}
                     label="Upload Gallery Images"
-                    value={field.value}
+                    value={field.value || []}
                     onChange={field.onChange}
-                    imageIsLoading={imageLoading}
+                    imageIsLoading={imageLoading || updateLoading}
                   />
                 )}
               />
@@ -336,7 +413,7 @@ const AddProduct = () => {
           )}
 
           <MButton
-            isLoading={isLoading || imageLoading}
+            isLoading={isLoading || imageLoading || updateLoading}
             loadingText="Uploading Product..."
             variant="solid"
             size="sm"
@@ -348,7 +425,9 @@ const AddProduct = () => {
             type="submit"
           />
         </Flex>
+        
       </form>
+    
     </Box>
   );
 };

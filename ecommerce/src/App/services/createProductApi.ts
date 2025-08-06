@@ -103,6 +103,16 @@ export const createProductApi = createApi({
       },
       invalidatesTags: ["products"],
     }),
+    updateProduct: builder.mutation({
+      query: ({ productData, documentId }: { productData: any; documentId: string }) => {
+        return {
+          url: `/products/${documentId}`,
+          method: "PUT",
+          body: productData,
+        };
+      },
+      invalidatesTags: ["products"],
+    }),
     deleteProduct: builder.mutation({
       query: (documentId) => {
         return {
@@ -119,4 +129,5 @@ export const {
   useUploadProductMutation,
   useDeleteProductMutation,
   useGetDashboardProductsQuery,
+  useUpdateProductMutation
 } = createProductApi;

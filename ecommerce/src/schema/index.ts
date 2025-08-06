@@ -28,11 +28,19 @@ export const schemaAddProduct = yup
     brand: yup.string().required(),
     thumbnail: yup
       .mixed<FileList | File[] | (File | string)[] | string>()
-      .test("required", "Image is required", (value) => Array.isArray(value) && value.length > 0)
+      .test("thumbnail-required", "Thumbnail is required", (value) => {
+       if (Array.isArray(value)) {
+         return value.length > 0;
+       }
+       if (!value) return false;
+       if (typeof value === "string" && value.trim() !== "") return true;
+       if (value instanceof File) return true;
+       return false;
+     })
       .required(),
     images: yup
       .mixed<FileList | File[] | (File | string)[] | string>()
-      .test("required", "Images are required", (value) => Array.isArray(value) && value.length > 0)
+      .test("images-required", "Images are required", (value) => Array.isArray(value) && value.length > 0)
       .required(),
   })
   .required();
