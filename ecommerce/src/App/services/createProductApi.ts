@@ -43,36 +43,38 @@ export const createProductApi = createApi({
         );
         const filtersQuery = generateStrapiQuery(filters ?? {});
         const searchQuery = qs.stringify({
-         filters: {
-          $or: [
-            {
-              title: {
-                $contains: query,
-              },
-            },
-            {
-              category: {
+          filters: {
+            $or: [
+              {
                 title: {
                   $contains: query,
                 },
               },
-            },
-          ],
-         }
-        })
+              {
+                category: {
+                  title: {
+                    $contains: query,
+                  },
+                },
+              },
+            ],
+          },
+        });
         return {
           url: `/products?${queryString}&${filtersQuery}&${searchQuery}`,
           method: "GET",
         };
-        
       },
       providesTags: (result) =>
-       result
-         ? [
-             ...result.data.map(({ id }) => ({ type: 'products' as const, id })),
-             { type: 'products', id: 'LIST' },
-           ]
-         : [{ type: 'products', id: 'LIST' }], 
+        result
+          ? [
+              ...result.data.map(({ id }) => ({
+                type: "products" as const,
+                id,
+              })),
+              { type: "products", id: "LIST" },
+            ]
+          : [{ type: "products", id: "LIST" }],
 
       keepUnusedDataFor: 300,
     }),
@@ -93,6 +95,15 @@ export const createProductApi = createApi({
         };
       },
     }),
+    deleteImage: builder.mutation({
+      query: (documentId: (string | number | undefined)[]) => {
+        return {
+          url: `/upload/files/${documentId}`,
+          method: "DELETE",
+        };
+      },
+      invalidatesTags: ["products"],
+    }),
     uploadProduct: builder.mutation({
       query: (productData) => {
         return {
@@ -104,7 +115,13 @@ export const createProductApi = createApi({
       invalidatesTags: ["products"],
     }),
     updateProduct: builder.mutation({
-      query: ({ productData, documentId }: { productData: any; documentId: string }) => {
+      query: ({
+        productData,
+        documentId,
+      }: {
+        productData: any;
+        documentId: string;
+      }) => {
         return {
           url: `/products/${documentId}`,
           method: "PUT",
@@ -129,5 +146,6 @@ export const {
   useUploadProductMutation,
   useDeleteProductMutation,
   useGetDashboardProductsQuery,
-  useUpdateProductMutation
+  useUpdateProductMutation,
+  useDeleteImageMutation,
 } = createProductApi;

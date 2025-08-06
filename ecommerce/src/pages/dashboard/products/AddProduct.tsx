@@ -1,4 +1,4 @@
-import { Box, Center, Flex, Spinner, Stack } from "@chakra-ui/react";
+import { Box, Flex, Stack } from "@chakra-ui/react";
 import MainTitle from "../../../components/MainTitle";
 import MInput from "../../../components/ui/MInput";
 import MTextarea from "../../../components/ui/Textarea ";
@@ -14,6 +14,7 @@ import SelectingSectionInputs from "../../../components/SelectingSectionInputs";
 import type { IFormInput, IProductCard } from "../../../interfaces";
 import { mainInputsData } from "../../../data";
 import {
+  useDeleteImageMutation,
   useUpdateProductMutation,
   useUploadImageMutation,
   useUploadProductMutation,
@@ -36,6 +37,7 @@ const AddProduct = () => {
     useUpdateProductMutation();
   const [uploadProduct, { isLoading, error: productError }] =
     useUploadProductMutation();
+  const [deleteImage] = useDeleteImageMutation();
   const {
     register,
     handleSubmit,
@@ -95,6 +97,10 @@ const AddProduct = () => {
       //! RTk Query
       let imageID = "";
       let imagesIDs: (string | number | undefined)[] = [];
+      //! Get initial image IDs for comparison (to delete old images)
+      const initialImageIDs = (editProductData?.images || []).map(
+        (img) => img.id
+      );
 
       //! File رقع الصور في حالة كانت
       const isThumbnailFile = Array.isArray(data.thumbnail);
@@ -147,6 +153,12 @@ const AddProduct = () => {
       }
       imagesIDs = imagesIDs.filter(Boolean);
 
+      //! تحديد الصور التي يجب حذفها
+      //! الصور التي كانت موجودة في المنتج الأصلي ولكن لم تعد موجودة في المنتج الجديد
+      const imagesToDelete = initialImageIDs.filter(
+        (oldId) => !imagesIDs.includes(oldId)
+      );
+
       const productData = {
         data: {
           title: data.title,
@@ -169,7 +181,14 @@ const AddProduct = () => {
           documentId: editProductId || "",
         }).unwrap();
         console.log("updateProductResponse RTK Query", updateProductResponse);
+        if (imagesToDelete.length > 0) {
+          const deleteImageResponse = await Promise.all(
+            imagesToDelete.map((id) => deleteImage([id]).unwrap())
+          );
+          console.log("deleteImageResponse RTK Query", deleteImageResponse);
+        }
         //? Toaster
+
         toaster.success({
           title: "Product Updated",
           description: "Product updated successfully",
@@ -404,6 +423,8 @@ const AddProduct = () => {
           {isEdit && (
             <Link to="/dashboard/products">
               <MButton
+                disabled={isLoading || imageLoading || updateLoading}
+                _disabled={{ opacity: 0.5 }}
                 variant="outline"
                 size="sm"
                 title="Cancel"
@@ -425,9 +446,7 @@ const AddProduct = () => {
             type="submit"
           />
         </Flex>
-        
       </form>
-    
     </Box>
   );
 };
