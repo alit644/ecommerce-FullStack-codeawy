@@ -10,6 +10,7 @@ import globalSlice from "./features/globalSlice";
 import paginationSlice from "./features/paginationSlice";
 import filtersSlice from "./features/filtersSlice";
 import { createProductApi } from "./services/createProductApi";
+import { createCategoryApi } from "./services/createCategoryApi";
 
 const persistConfig = {
   key: "cart",
@@ -26,10 +27,14 @@ export const store = configureStore({
     global: globalSlice,
     pagination: paginationSlice,
     filters: filtersSlice,
-    [createProductApi.reducerPath]: createProductApi.reducer
+    [createProductApi.reducerPath]: createProductApi.reducer,
+    [createCategoryApi.reducerPath]: createCategoryApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(createProductApi.middleware),
+    getDefaultMiddleware().concat(
+      createProductApi.middleware,
+      createCategoryApi.middleware
+    ),
 });
 
 //! Define RootState and AppDispatch types

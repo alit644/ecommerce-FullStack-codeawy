@@ -152,7 +152,7 @@ export const dashboardOverview: IDashboardOverview[] = [
 ];
 
 export const tableColumns: ITableColumn[] = [
-  { label: "Image", key: "image", type: "image" },
+  { label: "Image", key: "thumbanil", type: "image" },
   { label: "ID", key: "id", type: "text" },
   { label: "Name", key: "name", type: "text" },
   { label: "Category", key: "category", type: "text" },
@@ -160,6 +160,29 @@ export const tableColumns: ITableColumn[] = [
   { label: "Stock", key: "stock", type: "text" },
   { label: "Status", key: "status", type: "text" },
   { label: "Actions", key: "actions", type: "actions" },
+];
+
+export const tableCategoryColumns: ITableColumn[] = [
+  {
+    label: "Image",
+    key: "thumbanil",
+    type: "image",
+  },
+  {
+    label: "ID",
+    key: "id",
+    type: "text",
+  },
+  {
+    label: "Name",
+    key: "title",
+    type: "text",
+  },
+  {
+    label: "Actions",
+    key: "actions",
+    type: "actions",
+  },
 ];
 
 export const sortItems = [
@@ -207,29 +230,28 @@ export const PricingSectionInputsData: IPricingSectionInputsData[] = [
 ];
 
 export const mainInputsData: IPricingSectionInputsData[] = [
- {
-   id: "title",
-   name: "title",
-   type: "text",
-   placeholder: "Enter Product Name",
-   label: "Product Name *",
-   validation: {
-     required: true,
-     min: 1,
-     max: 1000000,
-   },
- },
- {
-   id: "rating",
-   name: "rating",
-   type: "number",
-   placeholder: "Enter Product Rating",
-   label: "Product Rating *",
-   validation: {
-     required: true,
-     min: 1,
-     max: 5,
-   },
- },
- 
+  {
+    id: "title",
+    name: "title",
+    type: "text",
+    placeholder: "Enter Product Name",
+    label: "Product Name *",
+    validation: {
+      required: true,
+      min: 1,
+      max: 1000000,
+    },
+  },
+  {
+    id: "rating",
+    name: "rating",
+    type: "number",
+    placeholder: "Enter Product Rating",
+    label: "Product Rating *",
+    validation: {
+      required: true,
+      min: 1,
+      max: 5,
+    },
+  },
 ];

@@ -1,4 +1,5 @@
 import { lazy, Suspense, type LazyExoticComponent } from "react";
+import type { JSX } from "react/jsx-runtime";
 import { createBrowserRouter } from "react-router";
 import RootLayout from "../pages/layout/RootLayout";
 import Home from "../pages/Home";
@@ -16,9 +17,12 @@ import DashboardHome from "../pages/dashboard/Home";
 const ProductsDashboard = lazy(
   () => import("../pages/dashboard/products/ProductsDashboard")
 );
+const CategoriesDashboard = lazy(
+  () => import("../pages/dashboard/categories/categoriesDashboard")
+);
 const AddProduct = lazy(() => import("../pages/dashboard/products/AddProduct"));
+const AddCategory = lazy(() => import("../pages/dashboard/categories/AddCategory"));
 import PageLoader from "../components/ui/PageLoader";
-import type { JSX } from "react/jsx-runtime";
 
 const withSuspense = (Component: LazyExoticComponent<() => JSX.Element>) => (
   <Suspense fallback={<PageLoader />}>{<Component />}</Suspense>
@@ -81,6 +85,14 @@ export const router = createBrowserRouter([
         path: "products/create/:editProductId?",
         Component: () => withSuspense(AddProduct),
       },
+      {
+        path: "categories",
+        Component: () => withSuspense(CategoriesDashboard),
+      },
+      {
+        path: "categories/create/:editCategoryId?",
+        Component: () => withSuspense(AddCategory),
+      }
     ],
   },
 ]);
