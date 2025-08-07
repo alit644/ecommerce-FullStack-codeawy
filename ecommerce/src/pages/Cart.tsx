@@ -22,6 +22,7 @@ import MButton from "../components/ui/Button";
 const Cart = () => {
   const bgColor = useColorModeValue("white", "gray.800");
   const cartItems = useAppSelector((state) => state.cart.cartData);
+  console.log(cartItems)
   const id = useAppSelector((state) => state.global.id);
   const dispatch = useAppDispatch();
 

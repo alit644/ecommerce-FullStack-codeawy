@@ -6,6 +6,7 @@ import { addToCart } from "../../App/features/cartSlice";
 import { Link } from "react-router";
 import { useCallback } from "react";
 import MButton from "./Button";
+import cookieManager from "../../utils/cookieManager";
 
 const ProductCard = ({ data }: { data: IProductCard }) => {
   const { title, description, price, thumbnail, discount, documentId, brand } =

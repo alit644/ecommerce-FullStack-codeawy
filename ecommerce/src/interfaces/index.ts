@@ -40,6 +40,20 @@ export interface IProductCard {
   rating?: number;
 }
 
+export interface IOrder {
+  id: number;
+  documentId: string;
+  createdAt: string;
+  totalPrice: number;
+  statuss: "pending" | "confirmed" | "shipped " | "delivered";
+  items: {
+    id: number;
+    quantity: number;
+    product: IProductCard;
+  }[];
+  user: IUserInfo;
+}
+
 export interface ICategory {
   documentId?: string;
   id?: string;
@@ -116,6 +130,7 @@ export interface AuthData {
 }
 
 export interface ICartProduct {
+  userId?: number;
   id: number;
   title: string;
   description: string;
@@ -236,6 +251,16 @@ export interface IPricingSectionInputsData {
 
 export interface ProductsResponse {
   data: IProductCard[];
+  meta: {
+    pagination: {
+      total: number;
+      pageCount: number;
+    };
+  };
+}
+
+export interface OrdersResponse {
+  data: IOrder[];
   meta: {
     pagination: {
       total: number;

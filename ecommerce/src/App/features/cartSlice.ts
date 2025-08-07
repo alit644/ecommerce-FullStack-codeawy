@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { ICartProduct } from "../../interfaces";
+import type { ICartProduct, IUserInfo } from "../../interfaces";
 import { toaster } from "../../components/ui/toaster";
+import cookieManager from "../../utils/cookieManager";
 export interface cartSlice {
   cartData: ICartProduct[];
 }
@@ -27,8 +28,9 @@ export const cartSlice = createSlice({
           duration: 2000,
           type: "success",
         });
+        
       } else {
-        state.cartData.push({ ...actions.payload, quantity: 1 });
+        state.cartData.push({ ...actions.payload, quantity: 1 , userId: cookieManager.get<IUserInfo>("user")?.id});
         toaster.success({
           title: "Product added to cart",
           description: "Product added to cart successfully",

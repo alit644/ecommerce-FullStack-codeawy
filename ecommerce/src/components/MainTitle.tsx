@@ -17,7 +17,7 @@ const MainTitle = ({
   isArrow = true,
 }: MainTitleProps) => {
   return (
-    <HStack justifyContent={"space-between"} alignItems={"center"}>
+    <HStack justifyContent={"space-between"} alignItems={"center"} w={"full"}>
       <Text
         as="h2"
         fontSize="2xl"

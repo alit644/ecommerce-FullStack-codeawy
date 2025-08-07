@@ -13,7 +13,6 @@ export const handleFilterChange = (dispatch: any, filtersSlice: any, filter: str
   );
 
   dispatch(setPage(1));
-  // TODO: Generate Path From Filters
   // const newPath = generateStrapiQuery({
   //   ...filtersSlice,
   //   [filter]: value,

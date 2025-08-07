@@ -11,6 +11,7 @@ import paginationSlice from "./features/paginationSlice";
 import filtersSlice from "./features/filtersSlice";
 import { createProductApi } from "./services/createProductApi";
 import { createCategoryApi } from "./services/createCategoryApi";
+import { createOrderApi } from "./services/createOrderApi";
 
 const persistConfig = {
   key: "cart",
@@ -29,11 +30,13 @@ export const store = configureStore({
     filters: filtersSlice,
     [createProductApi.reducerPath]: createProductApi.reducer,
     [createCategoryApi.reducerPath]: createCategoryApi.reducer,
+    [createOrderApi.reducerPath]: createOrderApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       createProductApi.middleware,
-      createCategoryApi.middleware
+      createCategoryApi.middleware,
+      createOrderApi.middleware
     ),
 });
 

@@ -185,6 +185,17 @@ export const tableCategoryColumns: ITableColumn[] = [
   },
 ];
 
+export const tableOrderColumns: ITableColumn[] = [
+ { label: "ID", key: "id", type: "text" },
+ {label: "Image", key: "image", type: "image"},
+ { label: "Created At", key: "createdAt", type: "text" },
+ { label: "Status", key: "status", type: "text" },
+ { label: "Total", key: "total", type: "text" },
+ {label: "Product Count", key: "productCount", type: "text"},
+ {label: "User", key: "user", type: "text"},
+ { label: "Actions", key: "actions", type: "actions" },
+];
+
 export const sortItems = [
   { label: "Ascending", value: "asc" },
   { label: "Descending", value: "desc" },

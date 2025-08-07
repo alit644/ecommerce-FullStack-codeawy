@@ -14,7 +14,6 @@ import { REGISTER_FORM } from "../../data";
 import { useAppDispatch, useAppSelector } from "../../App/store";
 import { Toaster, toaster } from "../../components/ui/toaster";
 import { registerUser } from "../../App/features/registerSlice";
-import { login } from "../../App/features/authSlice";
 import MButton from "../../components/ui/Button";
 import cookieManager from "../../utils/cookieManager";
 
@@ -24,7 +23,6 @@ export interface IFormInput {
   password: string;
 }
 
-//TODO : في حال اضافة ايميل موجودمن قبل يقوم باضافة توكن داخل الكوكيز
 const Register = () => {
   const dispatch = useAppDispatch();
   const { isLoading } = useAppSelector((state) => state.register);
