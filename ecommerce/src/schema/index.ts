@@ -29,18 +29,40 @@ export const schemaAddProduct = yup
     thumbnail: yup
       .mixed<FileList | File[] | (File | string)[] | string>()
       .test("thumbnail-required", "Thumbnail is required", (value) => {
-       if (Array.isArray(value)) {
-         return value.length > 0;
-       }
-       if (!value) return false;
-       if (typeof value === "string" && value.trim() !== "") return true;
-       if (value instanceof File) return true;
-       return false;
-     })
+        if (Array.isArray(value)) {
+          return value.length > 0;
+        }
+        if (!value) return false;
+        if (typeof value === "string" && value.trim() !== "") return true;
+        if (value instanceof File) return true;
+        return false;
+      })
       .required(),
     images: yup
       .mixed<FileList | File[] | (File | string)[] | string>()
-      .test("images-required", "Images are required", (value) => Array.isArray(value) && value.length > 0)
+      .test(
+        "images-required",
+        "Images are required",
+        (value) => Array.isArray(value) && value.length > 0
+      )
+      .required(),
+  })
+  .required();
+
+export const schemaAddCategory = yup
+  .object({
+    title: yup.string().required().min(2).max(30),
+    thumbnail: yup
+      .mixed<FileList | File[] | (File | string)[] | string>()
+      .test("thumbnail-required", "Thumbnail is required", (value) => {
+        if (Array.isArray(value)) {
+          return value.length > 0;
+        }
+        if (!value) return false;
+        if (typeof value === "string" && value.trim() !== "") return true;
+        if (value instanceof File) return true;
+        return false;
+      })
       .required(),
   })
   .required();

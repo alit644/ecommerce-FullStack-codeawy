@@ -47,6 +47,15 @@ export const fetchCategory = async (page: number, pageSize: number) => {
   }
 };
 
+export const fetchCategoryById = async (documentId: string | undefined) => {
+  try {
+    const { data } = await api.get(`/api/categories/${documentId}?populate=*`);
+    return data.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const fetchProductsByTag = async (tag: string) => {
   try {
     const queryString = qs.stringify(

@@ -70,13 +70,9 @@ export const createCategoryApi = createApi({
     uploadImage: builder.mutation({
       query: (files: {
         thumbnail: File | string;
-        images: FileList | File[] | (string | File)[] | string;
       }) => {
         const formData = new FormData();
         formData.append("files", files.thumbnail);
-        Array.from(files.images).forEach((image) => {
-          formData.append("files", image);
-        });
         return {
           url: "/upload",
           method: "POST",
@@ -85,7 +81,7 @@ export const createCategoryApi = createApi({
       },
     }),
     deleteImage: builder.mutation({
-      query: (documentId: (string | number | undefined)[]) => {
+      query: (documentId: string) => {
         return {
           url: `/upload/files/${documentId}`,
           method: "DELETE",
@@ -93,28 +89,28 @@ export const createCategoryApi = createApi({
       },
       invalidatesTags: ["categories"],
     }),
-    uploadProduct: builder.mutation({
-      query: (productData) => {
+    uploadCategory: builder.mutation({
+      query: (categoryData) => {
         return {
           url: "/categories/?populate=*",
           method: "POST",
-          body: productData,
+          body: categoryData,
         };
       },
       invalidatesTags: ["categories"],
     }),
-    updateProduct: builder.mutation({
+    updateCategory: builder.mutation({
       query: ({
-        productData,
+        categoryData,
         documentId,
       }: {
-        productData: any;
+        categoryData: any;
         documentId: string;
       }) => {
         return {
           url: `/categories/${documentId}`,
           method: "PUT",
-          body: productData,
+          body: categoryData,
         };
       },
       invalidatesTags: ["categories"],
@@ -132,9 +128,9 @@ export const createCategoryApi = createApi({
 });
 export const {
   useUploadImageMutation,
-  useUploadProductMutation,
+  useUploadCategoryMutation,
   useDeleteCategoryMutation,
   useGetDashboardCategoriesQuery,
-  useUpdateProductMutation,
+  useUpdateCategoryMutation,
   useDeleteImageMutation,
 } = createCategoryApi;
