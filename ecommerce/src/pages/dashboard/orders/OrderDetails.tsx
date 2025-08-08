@@ -44,7 +44,13 @@ const OrderDetails = () => {
       <VStack alignItems={"start"}>
         <HStack alignItems={"center"} gap={2}>
           <MainTitle title={`Order ID : #${order?.id}`} isArrow={false} />
-          <Badge colorPalette={order?.statuss === "pending" ? "red" : "green"}>
+          <Badge colorPalette={order?.statuss === "pending"
+              ? "red"
+              : order?.statuss === "shipped"
+              ? "blue"
+              : order?.statuss === "delivered"
+              ? "green"
+              : "orange"}>
             {order?.statuss}
           </Badge>
         </HStack>

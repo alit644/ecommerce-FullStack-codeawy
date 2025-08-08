@@ -26,8 +26,9 @@ const AddCategory = lazy(
 );
 const Orders = lazy(() => import("../pages/dashboard/orders/orders"));
 const OrderDetails = lazy(
-  () => import("../pages/dashboard/orders/OrderDetails")
+ () => import("../pages/dashboard/orders/OrderDetails")
 );
+const Checkout = lazy(() => import("../pages/Checkout"));
 import PageLoader from "../components/ui/PageLoader";
 
 const withSuspense = (Component: LazyExoticComponent<() => JSX.Element>) => (
@@ -72,6 +73,15 @@ export const router = createBrowserRouter([
             <ProtectedRoute reverse path="/" children={<Register />} />
           </Suspense>
         ),
+      },
+      {
+        path: "/checkout",
+        Component: () => withSuspense(Checkout),
+       //  element: (
+       //   <Suspense fallback={<PageLoader />}>
+       //     <ProtectedRoute  path="/login" children={<Checkout />} />
+       //   </Suspense>
+       // ),
       },
     ],
   },

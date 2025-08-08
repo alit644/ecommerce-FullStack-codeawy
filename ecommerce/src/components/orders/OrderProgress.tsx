@@ -14,7 +14,7 @@ interface IOrderProgress {
 }
 const OrderProgress = ({ statuss, updatedAt }: IOrderProgress) => {
   const { documentId } = useParams();
-  const [status, setStatus] = useState<TStatuss | null>(null);
+  const [status, setStatus] = useState<TStatuss | "">("");
   const [updateOrderStatus, { isLoading }] = useUpdateOrderStatusMutation();
 
   const handleUpdateStatus = async (e: React.FormEvent) => {
@@ -34,7 +34,7 @@ const OrderProgress = ({ statuss, updatedAt }: IOrderProgress) => {
         duration: 3000,
         closable: true,
       });
-      setStatus(null);
+      setStatus("");
     } catch (error) {
       toaster.error({
         closable: true,
@@ -90,7 +90,6 @@ const OrderProgress = ({ statuss, updatedAt }: IOrderProgress) => {
           <MSelect
             options={orderOptions}
             w={"full"}
-            value={status || ""}
             onChange={(e) => setStatus(e as TStatuss)}
           />
           <Button

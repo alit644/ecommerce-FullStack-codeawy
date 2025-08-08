@@ -1,10 +1,11 @@
-import { Box, Flex, HStack, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Flex, HStack, Text, VStack } from "@chakra-ui/react";
 import MAvatar from "../ui/MAvatar";
 import { FaPhoneAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import OrderAddress from "./OrderAddress";
 import OrderProgress from "./OrderProgress";
 import type { IUserInfo, TStatuss } from "../../interfaces";
+import { Link } from "react-router";
 interface ICustomerInfo {
   user: IUserInfo;
   statuss: TStatuss;
@@ -18,6 +19,18 @@ interface ICustomerInfo {
   };
 }
 const CustomerInfo = ({ user, statuss, updatedAt, address }: ICustomerInfo) => {
+  const handleSendEmail = () => {
+    const email = user?.email;
+    const subject = "Support Request";
+    const body = "Hello, I need help with...";
+
+    const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(
+      subject
+    )}&body=${encodeURIComponent(body)}`;
+
+    window.open(gmailLink, "_blank");
+  };
+
   return (
     <Box
       mt={4}
@@ -54,31 +67,35 @@ const CustomerInfo = ({ user, statuss, updatedAt, address }: ICustomerInfo) => {
 
           {/*  */}
           <HStack>
-            <HStack
+            <Link to={`https://wa.me/905365663918`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+              <Button
+                w={"fit-content"}
+                borderRadius="md"
+                variant="outline"
+                size="sm"
+                p={1}
+                gap={2}
+              >
+                <FaPhoneAlt size={14} color="#27272a" />
+                <Text fontSize={"sm"} color={"gray.800"} fontWeight={"medium"}>
+                  +536 566 73 88
+                </Text>
+              </Button>
+            </Link>
+            <Button
+              variant="outline"
               w={"fit-content"}
-              border="1px solid #e4e4e7"
               borderRadius="md"
+              size="sm"
               p={1}
               gap={2}
-            >
-              <FaPhoneAlt size={14} color="#27272a" />
-              <Text fontSize={"sm"} color={"gray.800"} fontWeight={"medium"}>
-                +536 566 73 88
-              </Text>
-            </HStack>
-            <HStack
-              w={"fit-content"}
-              border="1px solid #e4e4e7"
-              borderRadius="md"
-              p={1}
-              gap={2}
+              onClick={handleSendEmail}
             >
               <MdEmail size={14} color="#27272a" />
-
               <Text fontSize={"sm"} color={"gray.800"} fontWeight={"medium"}>
                 Send Email
               </Text>
-            </HStack>
+            </Button>
           </HStack>
         </Flex>
       </Box>

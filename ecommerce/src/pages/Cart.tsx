@@ -12,7 +12,7 @@ import {
 import { useColorModeValue } from "../components/ui/color-mode";
 import { useAppDispatch, useAppSelector } from "../App/store";
 import { LuShoppingBag } from "react-icons/lu";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import { removeItem } from "../App/features/cartSlice";
 import { closeDialog } from "../App/features/globalSlice";
 import DialogAlert from "../components/ui/Dialog";
@@ -22,7 +22,6 @@ import MButton from "../components/ui/Button";
 const Cart = () => {
   const bgColor = useColorModeValue("white", "gray.800");
   const cartItems = useAppSelector((state) => state.cart.cartData);
-  console.log(cartItems)
   const id = useAppSelector((state) => state.global.id);
   const dispatch = useAppDispatch();
 
@@ -108,13 +107,15 @@ const Cart = () => {
                   ${calculateTotal().toFixed(2)}
                 </Text>
               </HStack>
-              <MButton
-                title="Proceed to Checkout"
-                variant="solid"
-                colorScheme="blue"
-                size="lg"
-                w="full"
-              />
+              <Link to="/checkout">
+                <MButton
+                  title="Proceed to Checkout"
+                  variant="solid"
+                  colorScheme="blue"
+                  size="lg"
+                  w="full"
+                />
+              </Link>
             </VStack>
           </Box>
         </>

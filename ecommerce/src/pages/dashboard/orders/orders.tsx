@@ -63,7 +63,7 @@ const Orders = () => {
           colorPalette={
             order.statuss === "pending"
               ? "red"
-              : order.statuss === "shipped "
+              : order.statuss === "confirmed"
               ? "blue"
               : order.statuss === "delivered"
               ? "green"

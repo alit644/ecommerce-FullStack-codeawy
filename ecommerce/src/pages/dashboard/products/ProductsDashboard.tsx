@@ -20,7 +20,7 @@ import PaginationComponent from "../../../components/ui/Pagination";
 import { useAppDispatch, useAppSelector } from "../../../App/store";
 import { HiSortAscending } from "react-icons/hi";
 import MenuComponent from "../../../components/ui/Menu";
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import DrawerComponent from "../../../components/ui/Drawer";
 import FilterSidebar from "../../../components/Filter";
 import {
@@ -35,7 +35,7 @@ import Error from "../../../components/Error/Error";
 import TableSkeleton from "../../../components/ui/TableSkeleton";
 import MButton from "../../../components/ui/Button";
 import { Link } from "react-router";
-import DialogAlert from "../../../components/ui/Dialog";
+const DialogAlert = lazy(() => import("../../../components/ui/Dialog"));
 import {
   createProductApi,
   useDeleteProductMutation,
@@ -285,16 +285,18 @@ const ProductsDashboard = () => {
       </DrawerComponent>
 
       {/* Dialog Alert */}
-      <DialogAlert
-        title="Delete Product"
-        action="Yes, Delete"
-        onConfirm={handleDeleteProduct}
-        loading={isDeletingProduct}
-      >
-        <Text fontSize={"md"}>
-          Are you sure you want to delete this product?
-        </Text>
-      </DialogAlert>
+      <Suspense fallback={<div>Loading...</div>}>
+        <DialogAlert
+          title="Delete Product"
+          action="Yes, Delete"
+          onConfirm={handleDeleteProduct}
+          loading={isDeletingProduct}
+        >
+          <Text fontSize={"md"}>
+            Are you sure you want to delete this product?
+          </Text>
+        </DialogAlert>
+      </Suspense>
     </>
   );
 };
