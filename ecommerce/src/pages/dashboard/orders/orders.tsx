@@ -23,6 +23,7 @@ import TableSkeleton from "../../../components/ui/TableSkeleton";
 import { useGetDashboardOrdersQuery } from "../../../App/services/createOrderApi";
 import type { IOrder } from "../../../interfaces";
 import { TbFileSearch } from "react-icons/tb";
+import { Link } from "react-router";
 
 const Orders = () => {
   const [value, setValue] = useState("asc");
@@ -42,6 +43,7 @@ const Orders = () => {
       refetchOnMountOrArgChange: false,
     }
   );
+  console.log(data?.data)
 
   //! Render
   const renderTableHeaders = tableOrderColumns.map((header) => (
@@ -87,9 +89,11 @@ const Orders = () => {
 
       <Table.Cell>
         <HStack>
-          <IconButton aria-label="Edit" variant="ghost" colorScheme="blue">
-            <TbFileSearch />
-          </IconButton>
+          <Link to={`/dashboard/orders/${order.id}`}>
+            <IconButton aria-label="Edit" variant="ghost" colorScheme="blue">
+              <TbFileSearch />
+            </IconButton>
+          </Link>
         </HStack>
       </Table.Cell>
     </Table.Row>

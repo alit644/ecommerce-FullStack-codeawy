@@ -3,11 +3,13 @@ import type { ReactNode } from "react";
 interface ITable {
   headers: ReactNode;
   rows: ReactNode;
+  showColumnBorder?: boolean;
 }
-const TableComponent = ({ headers, rows }: ITable) => {
+const TableComponent = ({ headers, rows , showColumnBorder = false }: ITable) => {
   return (
       <Table.ScrollArea maxW="100%" overflow="auto">
         <Table.Root
+        showColumnBorder={showColumnBorder}
           interactive
           rounded={"md"}
           border="1px solid #e4e4e7"
@@ -19,7 +21,9 @@ const TableComponent = ({ headers, rows }: ITable) => {
             <Table.Row>{headers}</Table.Row>
           </Table.Header>
           <Table.Body>{rows}</Table.Body>
+          
         </Table.Root>
+
       </Table.ScrollArea>
   );
 };

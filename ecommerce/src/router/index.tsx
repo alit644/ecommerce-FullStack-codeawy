@@ -23,6 +23,7 @@ const CategoriesDashboard = lazy(
 const AddProduct = lazy(() => import("../pages/dashboard/products/AddProduct"));
 const AddCategory = lazy(() => import("../pages/dashboard/categories/AddCategory"));
 const Orders = lazy(() => import("../pages/dashboard/orders/orders"));
+const OrderDetails = lazy(() => import("../pages/dashboard/orders/OrderDetails"));
 import PageLoader from "../components/ui/PageLoader";
 
 const withSuspense = (Component: LazyExoticComponent<() => JSX.Element>) => (
@@ -97,6 +98,10 @@ export const router = createBrowserRouter([
       {
         path: "orders",
         Component: () => withSuspense(Orders),
+      }, 
+      {
+        path: "orders/:documentId",
+        Component: () => withSuspense(OrderDetails),
       }
     ],
   },

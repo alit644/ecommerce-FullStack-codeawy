@@ -33,7 +33,7 @@ export const createOrderApi = createApi({
              items: {
               populate: {
                 product: {
-                  populate: ["images","category","thumbnail"] 
+                  populate: ["thumbnail"] 
                 }
               }
             },

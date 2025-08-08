@@ -30,6 +30,7 @@ import MenuComponent from "./Menu";
 import cookieManager from "../../utils/cookieManager";
 import type { IUserInfo } from "../../interfaces";
 import { logout } from "../../App/features/authSlice";
+import MAvatar from "./MAvatar";
 
 const Links = [
   { name: "Home", href: "/" },
@@ -156,9 +157,7 @@ export default function Navbar() {
             <>
               <MenuComponent
                 menuTrigger={
-                  <Avatar.Root size="sm" colorPalette="teal">
-                    <Avatar.Fallback name={userInfo?.username} />
-                  </Avatar.Root>
+                  <MAvatar colorPalette="teal" border="2px solid #14b8a6" size="sm" name={userInfo?.username || ""} />
                 }
                 children={
                   <>

@@ -6,6 +6,7 @@ interface ISelect {
   value?: string | string[];
   onChange?: (value: string | string[]) => void;
   multiple?: boolean;
+  w?: string | number;
 }
 
 const MSelect = ({
@@ -14,12 +15,14 @@ const MSelect = ({
   value,
   onChange,
   multiple,
+   w,
   ...props
 }: ISelect) => {
   const collection = createListCollection({ items: options || [] });
 
   return (
     <Select.Root
+     w={w}
       value={Array.isArray(value) ? value : value ? [value] : undefined}
       onValueChange={(e) => {
         const newValue = e.value;
