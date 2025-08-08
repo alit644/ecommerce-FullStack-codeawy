@@ -187,7 +187,7 @@ export const tableCategoryColumns: ITableColumn[] = [
 
 export const tableOrderColumns: ITableColumn[] = [
  { label: "ID", key: "id", type: "text" },
- {label: "Image", key: "image", type: "image"},
+ { label: "SKU", key: "sku", type: "text" },
  { label: "Created At", key: "createdAt", type: "text" },
  { label: "Status", key: "status", type: "text" },
  { label: "Total", key: "total", type: "text" },
@@ -273,3 +273,6 @@ export const mainInputsData: IPricingSectionInputsData[] = [
     },
   },
 ];
+
+
+export const orderStatus = ["pending", "confirmed", "shipped", "delivered"];

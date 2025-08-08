@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import cookieManager from "../../utils/cookieManager";
-import type { OrdersResponse } from "../../interfaces";
+import type { IOrder, OrdersResponse } from "../../interfaces";
 import qs from "qs";
 export const createOrderApi = createApi({
   reducerPath: "createOrderApi",
@@ -30,13 +30,14 @@ export const createOrderApi = createApi({
         const queryString = qs.stringify(
           {
             populate: {
-             items: {
-              populate: {
-                product: {
-                  populate: ["thumbnail"] 
-                }
-              }
-            },
+              // items: {
+              //   populate: {
+              //     product: {
+              //       populate: ["thumbnail"],
+              //     },
+              //   },
+              // },
+              items: true,
               user: true,
             },
             pagination: {
@@ -59,7 +60,7 @@ export const createOrderApi = createApi({
                 statuss: {
                   $contains: query,
                 },
-              }
+              },
             ],
           },
         });
@@ -81,6 +82,56 @@ export const createOrderApi = createApi({
 
       keepUnusedDataFor: 300,
     }),
+    getOrderById: builder.query<{ data: IOrder }, string>({
+      query: (documentId: string) => {
+        const queryString = qs.stringify(
+          {
+            populate: {
+              items: {
+                populate: {
+                  product: {
+                    populate: ["thumbnail"],
+                  },
+                },
+              },
+              user: true,
+            },
+          },
+          { encodeValuesOnly: true }
+        );
+        return {
+          url: `/orders/${documentId}?${queryString}`,
+          method: "GET",
+        };
+      },
+      providesTags: (result) => [
+        { type: "orders", id: result?.data?.documentId },
+      ],
+    }),
+    updateOrderStatus: builder.mutation({
+      query: ({
+        documentId,
+        statuss,
+      }: {
+        documentId: string;
+        statuss: string;
+      }) => ({
+        url: `/orders/${documentId}`,
+        method: "PUT",
+        body: {
+          data: {
+            statuss,
+          },
+        },
+      }),
+      invalidatesTags: (result) => [
+        { type: "orders", id: result?.data?.documentId },
+      ],
+    }),
   }),
 });
-export const { useGetDashboardOrdersQuery } = createOrderApi;
+export const {
+  useGetDashboardOrdersQuery,
+  useGetOrderByIdQuery,
+  useUpdateOrderStatusMutation,
+} = createOrderApi;

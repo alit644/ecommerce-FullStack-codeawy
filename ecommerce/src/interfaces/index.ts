@@ -40,19 +40,30 @@ export interface IProductCard {
   rating?: number;
 }
 
+export type TStatuss = "pending" | "confirmed" | "shipped" | "delivered";
+
 export interface IOrder {
   id: number;
   documentId: string;
   createdAt: string;
+  updatedAt?: string;
   totalPrice: number;
-  statuss: "pending" | "confirmed" | "shipped " | "delivered";
+  statuss: TStatuss
   items: {
     id: number;
     quantity: number;
     product: IProductCard;
   }[];
   user: IUserInfo;
+  address: {
+    street?: string;
+    city?: string;
+    state?: string;
+    zipCode?: string
+    country?: string;
+  }
 }
+
 
 export interface ICategory {
   documentId?: string;

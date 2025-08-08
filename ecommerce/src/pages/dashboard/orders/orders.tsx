@@ -15,7 +15,7 @@ import PaginationComponent from "../../../components/ui/Pagination";
 import { useAppSelector } from "../../../App/store";
 import { HiSortAscending } from "react-icons/hi";
 import MenuComponent from "../../../components/ui/Menu";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import SearchQuery from "../../../components/SearchQuery";
 import NoResult from "../../../components/ui/NoResult";
 import Error from "../../../components/Error/Error";
@@ -43,7 +43,8 @@ const Orders = () => {
       refetchOnMountOrArgChange: false,
     }
   );
-  console.log(data?.data)
+
+ 
 
   //! Render
   const renderTableHeaders = tableOrderColumns.map((header) => (
@@ -54,19 +55,8 @@ const Orders = () => {
 
   const renderTableRows = data?.data.map((order: IOrder) => (
     <Table.Row key={order.id}>
-      <Table.Cell>
-        <Image
-          loading="lazy"
-          src={`${import.meta.env.VITE_BASE_URL}${
-            order.items[0].product.thumbnail?.formats.small.url
-          }`}
-          alt={order.items[0].product.title}
-          borderRadius="md"
-          w={"50px"}
-          h={"50px"}
-        />
-      </Table.Cell>
       <Table.Cell>{order.id}</Table.Cell>
+      <Table.Cell>21Hnxs</Table.Cell>
       <Table.Cell>{order.createdAt.split("T")[0]}</Table.Cell>
       <Table.Cell>
         <Badge
@@ -89,7 +79,7 @@ const Orders = () => {
 
       <Table.Cell>
         <HStack>
-          <Link to={`/dashboard/orders/${order.id}`}>
+          <Link to={`/dashboard/orders/${order.documentId}`}>
             <IconButton aria-label="Edit" variant="ghost" colorScheme="blue">
               <TbFileSearch />
             </IconButton>

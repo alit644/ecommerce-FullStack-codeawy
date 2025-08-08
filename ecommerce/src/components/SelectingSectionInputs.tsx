@@ -9,6 +9,7 @@ import Error from "./Error/Error";
 import FormGroup from "./ui/form/FormGroup";
 import MInput from "./ui/MInput";
 import SkeletonCard from "./ui/Skeleton";
+import { useMemo } from "react";
 
 interface ISelectingSectionInputs {
    register: UseFormRegister<IFormInput>;
@@ -41,15 +42,19 @@ const SelectingSectionInputs = ({
     refetchInterval: 1000 * 60 * 2,
     placeholderData: (prev) => prev,
   });
-  const categoryOptions = data?.categories?.data.map((category: ICategory) => ({
-    value: String(category.documentId),
-    label: category.title,
-  }));
+  const categoryOptions = useMemo(() => {
+    return data?.categories?.data.map((category: ICategory) => ({
+      value: String(category.documentId),
+      label: category.title,
+    }));
+  }, [data?.categories?.data]);
 
-  const tagOptions = data?.tags?.data.map((tag: ITag) => ({
-    value: String(tag.documentId),
-    label: tag.tag,
-  }));
+  const tagOptions = useMemo(() => {
+    return data?.tags?.data.map((tag: ITag) => ({
+      value: String(tag.documentId),
+      label: tag.tag,
+    }));
+  }, [data?.tags?.data]);
 
   if (isLoading) return <SkeletonCard height="30px" noOfLines={0} count={6}/>
   if (error)

@@ -1,13 +1,18 @@
 import { Box, HStack, Image, Text, VStack } from "@chakra-ui/react";
-
-const ItemDetailsCard = () => {
+import type { IProductCard } from "../../interfaces";
+interface IItemDetailsCard {
+  product: IProductCard;
+}
+const ItemDetailsCard = ({ product }: IItemDetailsCard) => {
   return (
     <Box>
       <HStack alignItems={"center"} gap={2}>
         <Image
           loading="lazy"
-          src=""
-          alt=""
+          src={`${import.meta.env.VITE_BASE_URL}${
+            product?.thumbnail?.formats?.small?.url
+          }`}
+          alt={product?.title}
           width={"60px"}
           height={"60px"}
           objectFit="cover"
@@ -15,10 +20,10 @@ const ItemDetailsCard = () => {
         />
         <VStack alignItems={"start"} gap={0}>
           <Text fontSize={"sm"} color={"gray.800"} fontWeight={"medium"}>
-            Laptop sa32
+            {product?.title}
           </Text>
           <Text fontSize={"sm"} color={"gray.500"}>
-            Laptop sa32
+            {product?.description}
           </Text>
         </VStack>
       </HStack>

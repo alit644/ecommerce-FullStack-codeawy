@@ -4,8 +4,20 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
 import OrderAddress from "./OrderAddress";
 import OrderProgress from "./OrderProgress";
-
-const CustomerInfo = () => {
+import type { IUserInfo, TStatuss } from "../../interfaces";
+interface ICustomerInfo {
+  user: IUserInfo;
+  statuss: TStatuss;
+  updatedAt: string;
+  address: {
+    street?: string;
+    city?: string;
+    state?: string;
+    zipCode?: string;
+    country?: string;
+  };
+}
+const CustomerInfo = ({ user, statuss, updatedAt, address }: ICustomerInfo) => {
   return (
     <Box
       mt={4}
@@ -32,10 +44,10 @@ const CustomerInfo = () => {
             />
             <VStack alignItems={"start"} gap={0}>
               <Text fontSize={"sm"} color={"gray.800"} fontWeight={"medium"}>
-                John Doe
+                {user?.username}
               </Text>
               <Text fontSize={"sm"} color={"gray.500"}>
-                john@example.com
+                {user?.email}
               </Text>
             </VStack>
           </HStack>
@@ -72,9 +84,9 @@ const CustomerInfo = () => {
       </Box>
 
       {/* Progress */}
-      <OrderProgress />
+      <OrderProgress statuss={statuss} updatedAt={updatedAt} />
       {/* location */}
-      <OrderAddress />
+      <OrderAddress address={address} />
     </Box>
   );
 };
