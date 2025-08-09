@@ -8,7 +8,6 @@ export interface AuthState {
 
 const initialState: AuthState = {
   isAuthenticated: !!cookieManager.get("jwt") && !!cookieManager.get("user"),
-  // isAuthenticated: !!cookieManager.get("jwtToken") && !!cookieManager.get("user"),
 };
 
 export const authSlice = createSlice({

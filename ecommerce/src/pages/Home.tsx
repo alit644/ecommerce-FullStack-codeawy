@@ -33,8 +33,8 @@ function LazyLoadOnView({ children, height = "200px" }: LazyLoadOnViewProps) {
   }, []);
 
   return (
-    <Box ref={ref} minH={height}>
-      {isVisible ? children : <SkeletonCard height={height} />}
+    <Box ref={ref} minH={height} >
+      {isVisible ? children : ''}
     </Box>
   );
 }
@@ -47,16 +47,17 @@ const Home = () => {
       <Container maxW="container.xl" mt={6} mb={6}>
         <BrowseByCategory />
         <LazyLoadOnView>
-          <Suspense fallback={<div>Loading...</div>}>
+          <Suspense fallback={<SkeletonCard count={5} noOfLines={3} isAction={true} />}>
             <FeaturedProducts />
           </Suspense>
         </LazyLoadOnView>
       </Container>
-      <LazyLoadOnView>
+      <LazyLoadOnView height="350px" >
         <Suspense
           fallback={
             <SkeletonCard
-              height="200px"
+              height="350px"
+              width="100%"
               count={1}
               isAction={false}
               textSkeleton={false}

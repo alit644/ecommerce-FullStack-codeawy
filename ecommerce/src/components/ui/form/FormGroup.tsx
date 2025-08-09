@@ -1,4 +1,5 @@
 import { Box, Text } from "@chakra-ui/react";
+import { memo } from "react";
 interface IFormGroup {
     label: string;
     htmlFor: string;
@@ -25,4 +26,4 @@ const FormGroup = ({label, htmlFor, children, error}: IFormGroup) => {
   );
 };
 
-export default FormGroup;
+export default memo(FormGroup);

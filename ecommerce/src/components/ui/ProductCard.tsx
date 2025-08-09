@@ -4,9 +4,8 @@ import type { ICartProduct, IProductCard } from "../../interfaces";
 import { useAppDispatch } from "../../App/store";
 import { addToCart } from "../../App/features/cartSlice";
 import { Link } from "react-router";
-import { useCallback } from "react";
+import { memo, useCallback } from "react";
 import MButton from "./Button";
-import cookieManager from "../../utils/cookieManager";
 
 const ProductCard = ({ data }: { data: IProductCard }) => {
   const { title, description, price, thumbnail, discount, documentId, brand } =
@@ -120,4 +119,4 @@ const ProductCard = ({ data }: { data: IProductCard }) => {
   );
 };
 
-export default ProductCard;
+export default memo(ProductCard);

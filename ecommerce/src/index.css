@@ -14,3 +14,9 @@
   background-color: #14b8a6;
   color: white;
 }
+
+.active .profileButton {
+  background-color: #f4f4f5;
+  color: black;
+}
+

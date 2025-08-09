@@ -55,7 +55,7 @@ const Shop = () => {
 
   //!: Render Data
   const renderProducts = () => {
-    return data?.data.map((product: IProductCard) => (
+    return data?.data?.map((product: IProductCard) => (
       <ProductCard key={product.id} data={product} />
     ));
   };

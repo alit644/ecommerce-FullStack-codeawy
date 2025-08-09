@@ -13,7 +13,7 @@ import SkeletonCard from "./ui/Skeleton";
 const BrowseByCategory = () => {
   const queryClient = useQueryClient();
   const [page, setPage] = useState<number>(1);
-  const pageSize = 6;
+  const pageSize = 3;
 
   const { data, isLoading, isFetching, error } = useBrowseByCategory({
     page,

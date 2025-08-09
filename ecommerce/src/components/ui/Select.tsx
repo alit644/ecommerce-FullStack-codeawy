@@ -1,5 +1,5 @@
 import { Select, Portal, createListCollection } from "@chakra-ui/react";
-
+import { memo } from "react";
 interface ISelect {
   label?: string;
   options: Array<{ value: string; label: string }>;
@@ -57,4 +57,4 @@ const MSelect = ({
   );
 };
 
-export default MSelect;
+export default memo(MSelect);

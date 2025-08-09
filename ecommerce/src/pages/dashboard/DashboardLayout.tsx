@@ -192,7 +192,7 @@ function AppSidebar() {
   );
 }
 
-function SidebarButton({
+ function SidebarButton({
   children,
   isActive,
   icon,

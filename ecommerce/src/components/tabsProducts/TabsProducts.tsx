@@ -1,11 +1,10 @@
-import { Box, Grid, Tabs } from "@chakra-ui/react";
-import { lazy, Suspense, useState } from "react";
-const ProductCard = lazy(() => import("../ui/ProductCard"));
+import { Box, Tabs } from "@chakra-ui/react";
+import {  useState } from "react";
+import ProductCard from "../ui/ProductCard";
 import type { IProductCard } from "../../interfaces";
 import { tabs } from "../../data";
 import { useProductsByTag } from "../../Hooks/useProductsByTag";
 import ProductListWrapper from "../ProductListWrapper";
-import SkeletonCard from "../ui/Skeleton";
 
 const TabsProducts = () => {
   const [value, setValue] = useState<string | null>("featured");
@@ -13,6 +12,7 @@ const TabsProducts = () => {
   //! Fetch products from the API
   const { data, isLoading, error } = useProductsByTag(value);
 
+  
   return (
     <Box fontSize="2xl" fontWeight="bold" color="gray.700" mb={4}>
       <Tabs.Root
@@ -35,24 +35,11 @@ const TabsProducts = () => {
             <ProductListWrapper
               isLoading={isLoading}
               error={error}
-              data={data?.data}
+              dataLength={data?.data?.length}
             >
-              <Grid
-                templateColumns={{
-                  base: "repeat(2, 1fr)",
-                  md: "repeat(auto-fill, minmax(220px, 1fr))",
-                }}
-                gap={6}
-                mt={6}
-              >
-                {data?.data?.map((product: IProductCard) => {
-                  return (
-                    <Suspense key={product.id} fallback={<SkeletonCard count={5} noOfLines={3} isAction={true} />}>
-                      <ProductCard  data={product} />
-                    </Suspense>
-                  );
-                })}
-              </Grid>
+              {data?.data?.map((product: IProductCard) => {
+                return <ProductCard key={product.id} data={product} />;
+              })}
             </ProductListWrapper>
           </Tabs.Content>
         ))}

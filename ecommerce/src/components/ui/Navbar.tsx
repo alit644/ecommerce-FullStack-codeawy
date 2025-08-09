@@ -9,7 +9,6 @@ import {
   Text,
   Spacer,
   Badge,
-  Avatar,
   Menu,
   Button,
 } from "@chakra-ui/react";
@@ -23,7 +22,7 @@ const RxHamburgerMenu = lazy(() =>
 );
 import { IoIosClose } from "react-icons/io";
 import MButton from "./Button";
-import { Link as RouterLink } from "react-router";
+import { Link, Link as RouterLink } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../App/store";
 import { cartSelector } from "../../App/features/cartSlice";
 import MenuComponent from "./Menu";
@@ -33,32 +32,44 @@ import { logout } from "../../App/features/authSlice";
 import MAvatar from "./MAvatar";
 
 const Links = [
-  { name: "Home", href: "/" },
-  { name: "Shop", href: "/shop" },
-  { name: "Dashboard", href: "/dashboard" },
+  { name: "Home", href: "/", isAuth: false },
+  { name: "Shop", href: "/shop", isAuth: false },
+  { name: "Dashboard", href: "/dashboard", isAuth: true },
 ];
 
 const NavLink = ({
   href,
   children,
+  isAuth,
+  isAuthenticated,
+  onClose,
 }: {
   href: string;
   children: React.ReactNode;
-}) => (
-  <RouterLink to={href}>
-    <Box
-      px={2}
-      py={1}
-      rounded="md"
-      _hover={{
-        textDecoration: "none",
-        bg: "gray.200",
-      }}
-    >
-      {children}
-    </Box>
-  </RouterLink>
-);
+  isAuth: boolean;
+  isAuthenticated: boolean;
+  onClose: () => void;
+}) => {
+  if (isAuth && !isAuthenticated) return null;
+  return (
+    <RouterLink to={href}>
+      <Box
+        onClick={() => {
+          onClose();
+        }}
+        px={2}
+        py={1}
+        rounded="md"
+        _hover={{
+          textDecoration: "none",
+          bg: "gray.200",
+        }}
+      >
+        {children}
+      </Box>
+    </RouterLink>
+  );
+};
 
 export default function Navbar() {
   const userInfo = cookieManager.get<IUserInfo>("user");
@@ -86,7 +97,13 @@ export default function Navbar() {
           </Box>
           <HStack as="nav" spaceX={3} display={{ base: "none", md: "flex" }}>
             {Links.map((link) => (
-              <NavLink key={link.name} href={link.href}>
+              <NavLink
+                key={link.name}
+                href={link.href}
+                isAuth={link.isAuth}
+                isAuthenticated={isAuthenticated}
+                onClose={onClose}
+              >
                 {link.name}
               </NavLink>
             ))}
@@ -157,18 +174,20 @@ export default function Navbar() {
             <>
               <MenuComponent
                 menuTrigger={
-                  <MAvatar colorPalette="teal" border="2px solid #14b8a6" size="sm" name={userInfo?.username || ""} />
+                  <MAvatar
+                    colorPalette="teal"
+                    border="2px solid #14b8a6"
+                    size="sm"
+                    name={userInfo?.username || ""}
+                  />
                 }
                 children={
                   <>
                     <Menu.Item value="account" fontSize="md">
-                      Account
-                    </Menu.Item>
-                    <Menu.Item value="settings" fontSize="md">
-                      Settings
+                      <Link to="/profile">My Account</Link>
                     </Menu.Item>
                     <Menu.Item value="orders" fontSize="md">
-                      Orders
+                      <Link to="/profile/myOrders">Orders</Link>
                     </Menu.Item>
                     <Menu.Separator />
                     <Menu.Item value="logout" fontSize="md">
@@ -185,6 +204,7 @@ export default function Navbar() {
                     </Menu.Item>
                   </>
                 }
+                // dashboard
               />
             </>
           ) : (
@@ -219,13 +239,19 @@ export default function Navbar() {
         <Box pb={4} display={{ md: "none" }}>
           <Stack as={"nav"} spaceY={2}>
             {Links.map((link) => (
-              <NavLink key={link.name} href={link.href}>
+              <NavLink
+                key={link.name}
+                href={link.href}
+                isAuth={link.isAuth}
+                isAuthenticated={isAuthenticated}
+                onClose={onClose}
+              >
                 {link.name}
               </NavLink>
             ))}
           </Stack>
           {!isAuthenticated && (
-            <HStack display={{ base: "flex", md: "none" }}>
+            <HStack display={{ base: "flex", md: "none" }} mt={4}>
               <RouterLink to={"login"}>
                 <MButton size="md" title="Login" variant="outline" />
               </RouterLink>

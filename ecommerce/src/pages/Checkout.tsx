@@ -6,9 +6,8 @@ import MButton from "../components/ui/Button";
 import TotalPrice from "../components/ui/TotalPrice";
 import CheckoutCartCard from "../components/ui/CheckoutCartCard";
 import { useAppDispatch, useAppSelector } from "../App/store";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 import { useCalculateTotal } from "../Hooks/useCalculateTotal";
-import { useEffect, useMemo } from "react";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schemaCheckout } from "../schema";
@@ -32,17 +31,15 @@ const Checkout = () => {
   const dispatch = useAppDispatch();
   const user = cookieManager.get<IUserInfo>("user");
   const calculateTotal = useCalculateTotal(cartItems);
-  const [createOrder , { isLoading}] = useCreateOrderMutation()
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
 
   const calculateDiscount = () => {
     return calculateTotal * 0.1;
   };
 
-  useEffect(() => {
-   if (cartItems.length === 0) {
-     nav("/shop");
-   }
- }, [cartItems.length, nav]);
+  if (cartItems.length === 0) {
+   return <Navigate to="/shop" replace />;
+ }
 
   //! React hook form
   const {
@@ -53,24 +50,24 @@ const Checkout = () => {
     resolver: yupResolver(schemaCheckout),
   });
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
-   try {
-    const orderData = {
-      user: user?.id,
-      totalPrice: calculateTotal,
-      statuss: "pending",
-      items: cartItems.map((item) => ({
-        product: item.id,
-        quantity: item.quantity,
-      })),
-      address: data
+    try {
+      const orderData = {
+        user: user?.id,
+        totalPrice: calculateTotal,
+        statuss: "pending",
+        items: cartItems.map((item) => ({
+          product: item.id,
+          quantity: item.quantity,
+        })),
+        address: data,
+      };
+      await createOrder(orderData).unwrap();
+
+      nav("/isOrderCompleted", { state: { status: "success" }, replace: true });
+      dispatch(clearCart());
+    } catch (error) {
+      nav("/isOrderCompleted", { state: { status: "error" }, replace: true });
     }
-    await createOrder(orderData).unwrap()
-    dispatch(clearCart())
-   
-    nav("/isOrderCompleted", {state: {status: "success"}})
-   } catch (error) {
-    nav("/isOrderCompleted", {state: {status: "error"}})
-   }
   };
 
   //! Render
@@ -78,7 +75,7 @@ const Checkout = () => {
     <CheckoutCartCard
       key={item.id}
       id={item.id}
-      src={item.thumbnail.formats.small.url}
+      src={item.thumbnail.formats.small.url || ""}
       alt={item.title}
     />
   ));
@@ -169,8 +166,8 @@ const Checkout = () => {
                 discount={calculateDiscount()}
               />
               <MButton
-              loading={isLoading}
-              loadingText="Placing Order..."
+                loading={isLoading}
+                loadingText="Placing Order..."
                 type="submit"
                 title="Place Order"
                 size="md"

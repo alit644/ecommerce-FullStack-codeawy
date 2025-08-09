@@ -26,10 +26,14 @@ const AddCategory = lazy(
 );
 const Orders = lazy(() => import("../pages/dashboard/orders/orders"));
 const OrderDetails = lazy(
- () => import("../pages/dashboard/orders/OrderDetails")
+  () => import("../pages/dashboard/orders/OrderDetails")
 );
 const Checkout = lazy(() => import("../pages/Checkout"));
-const IsOrderCompleted = lazy(() => import("../components/orders/isOrderCompleted"));
+const IsOrderCompleted = lazy(
+  () => import("../components/orders/isOrderCompleted")
+);
+const MyOrders = lazy(() => import("../pages/Profile/myOrders"));
+const ProfileLayout = lazy(() => import("../pages/layout/ProfileLayout"));
 import PageLoader from "../components/ui/PageLoader";
 const withSuspense = (Component: LazyExoticComponent<() => JSX.Element>) => (
   <Suspense fallback={<PageLoader />}>{<Component />}</Suspense>
@@ -76,22 +80,47 @@ export const router = createBrowserRouter([
       },
       {
         path: "/checkout",
-        Component: () => withSuspense(Checkout),
-       //  element: (
-       //   <Suspense fallback={<PageLoader />}>
-       //     <ProtectedRoute  path="/login" children={<Checkout />} />
-       //   </Suspense>
-       // ),
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <ProtectedRoute path="/login" children={<Checkout />} />
+          </Suspense>
+        ),
       },
       {
         path: "/isOrderCompleted",
-        Component: () => withSuspense(IsOrderCompleted),
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <ProtectedRoute path="/login" children={<IsOrderCompleted />} />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/profile",
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <ProtectedRoute path="/login" children={<ProfileLayout />} />
+          </Suspense>
+        ),
+        children: [
+          {
+            index: true,
+            Component: () => withSuspense(MyOrders),
+          },
+          {
+            path: "myOrders",
+            Component: () => withSuspense(MyOrders),
+          },
+        ],
       },
     ],
   },
   {
     path: "/dashboard",
-    Component: () => withSuspense(DashboardLayout),
+    element: (
+      <Suspense fallback={<PageLoader />}>
+        <ProtectedRoute path="/login" children={<DashboardLayout />} />
+      </Suspense>
+    ),
     children: [
       {
         index: true,

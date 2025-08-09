@@ -21,6 +21,7 @@ const HeroSection = () => {
       alignItems="center"
       justifyContent={{ base: "center", md: "space-between" }}
       flexDirection={{ base: "column", md: "row" }}
+      textAlign={{ base: "center", md: "left" }}
       px={{ base: 4, md: 8 }}
       pt={{ base: 8, md: 12 }}
     >
@@ -44,7 +45,7 @@ const HeroSection = () => {
           <Heading as="h1" size="6xl" color="white" fontWeight={"lighter"}>
             IPhone 14 <span style={{ fontWeight: "bold" }}>Pro</span>
           </Heading>
-          <Text fontSize="xl" color="gray.400" mb={4}>
+          <Text fontSize="xl" color="gray.400" mb={4} w={{ base: "full", md: "350px" }}>
             Created to change everything for the better. For everyone{" "}
           </Text>
           <Link to="/shop">

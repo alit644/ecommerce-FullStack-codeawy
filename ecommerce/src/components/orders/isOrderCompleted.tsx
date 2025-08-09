@@ -1,19 +1,16 @@
 import { Alert, Box, Heading, Text, VStack } from "@chakra-ui/react";
 import { BsBox2Heart } from "react-icons/bs";
 import MButton from "../ui/Button";
-import { useLocation } from "react-router";
+import { Navigate, useLocation } from "react-router";
 import { useNavigate } from "react-router";
-import { useEffect } from "react";
 
 const IsOrderCompleted = () => {
   const { state } = useLocation();
   const nav = useNavigate();
-
-  useEffect(() => {
-    if (!state || !state.status) {
-      nav("/");
-    }
-  }, [state, nav]);
+  if (!state || !state.status) {
+   return <Navigate to="/" replace />;
+ }
+ 
 
   const status = state?.status as "success" | "error";
   const handleNavigate = () => {
@@ -23,6 +20,7 @@ const IsOrderCompleted = () => {
       nav("/shop");
     }
   };
+  
   return (
     <Box h={"calc(100vh - 80px)"} display="flex" flexDirection="column">
       <Alert.Root status={status} variant="surface">

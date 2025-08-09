@@ -1,5 +1,5 @@
 import type {
- ICheckoutInput,
+  ICheckoutInput,
   IDashboardLink,
   IDashboardOverview,
   ILoginInput,
@@ -277,7 +277,7 @@ export const mainInputsData: IPricingSectionInputsData[] = [
 
 export const orderStatus = ["pending", "confirmed", "shipped", "delivered"];
 
-export const checkoutData:ICheckoutInput[][] = [
+export const checkoutData: ICheckoutInput[][] = [
   [
     {
       id: "city",
@@ -324,4 +324,11 @@ export const checkoutData:ICheckoutInput[][] = [
       },
     },
   ],
+];
+
+export const profileLinks = [
+  { name: "Orders", href: "/profile", icon: GoInbox },
+  { name: "Wishlist", href: "/profile/wishlist", icon: BiCategory },
+  { name: "Address", href: "/profile/address", icon: BsBoxSeam },
+  { name: "Account Detail", href: "/profile/account-detail", icon: FaStore },
 ];

@@ -1,4 +1,5 @@
 import { Button, Icon } from "@chakra-ui/react";
+import { memo } from "react";
 interface MButtonProps extends React.ComponentProps<typeof Button> {
   colorScheme?: string;
   size: "sm" | "md" | "lg" | "xs" | "xl";
@@ -37,4 +38,4 @@ const MButton = ({
   );
 };
 
-export default MButton;
+export default memo(MButton);

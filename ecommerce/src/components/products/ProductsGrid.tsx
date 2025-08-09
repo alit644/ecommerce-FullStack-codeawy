@@ -27,7 +27,14 @@ export const ProductsGrid = ({
 
   return (
     <Box w="full" p={3}>
-      <Grid templateColumns="repeat(auto-fill, minmax(220px, 1fr))" gap={6}>
+       <Grid
+          w="full"
+          templateColumns={{
+            base: "repeat(2, 1fr)",
+            md: "repeat(auto-fill, minmax(220px, 1fr))",
+          }}
+          gap={6}
+        >
         {renderProducts}
       </Grid>
     </Box>

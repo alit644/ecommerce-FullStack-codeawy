@@ -1,5 +1,6 @@
 import {  Flex, HStack, IconButton, Text } from "@chakra-ui/react";
 import { HiChevronRight, HiChevronLeft } from "react-icons/hi";
+import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 interface MainTitleProps {
   title: string;
   onNext?: () => void;
@@ -30,24 +31,24 @@ const MainTitle = ({
       {isArrow && (
         <Flex gap={2} alignItems="center">
           <IconButton
-            variant="subtle"
+            variant="outline"
             aria-label="Browse categories"
             mx={2}
             onClick={onPrev}
             disabled={page === 1}
-            as={HiChevronLeft}
-            _icon={{ color: "gray.500", fontSize: "2xs" }}
+            as={RiArrowLeftSLine}
+            _icon={{ color: "gray.200", fontSize: "2xs" }}
             fontSize="md"
             _hover={{ color: "gray.700" }}
             transition="color 0.2s"
           />
           <IconButton
-            variant="subtle"
+            variant="outline"
             aria-label="Browse categories"
             onClick={onNext}
             disabled={page === pageCount}
-            as={HiChevronRight}
-            _icon={{ color: "gray.500", fontSize: "2xs" }}
+            as={RiArrowRightSLine}
+            _icon={{ color: "gray.200", fontSize: "2xs" }}
             fontSize="md"
             _hover={{ color: "gray.700" }}
             transition="color 0.2s"

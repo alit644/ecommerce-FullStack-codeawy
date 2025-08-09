@@ -1,4 +1,5 @@
 import { Box, Progress } from "@chakra-ui/react"
+import { memo } from "react";
 interface IProgress {
     value: number;
 }
@@ -15,4 +16,4 @@ const MProgress = ({value}: IProgress) => {
   )
 }
 
-export default MProgress
+export default memo(MProgress);

@@ -1,5 +1,5 @@
 import { Menu, Portal } from "@chakra-ui/react";
-import type { ReactNode } from "react";
+import { memo, type ReactNode } from "react";
 interface IMenuComponent {
   menuTrigger: ReactNode;
   children: ReactNode;
@@ -19,4 +19,4 @@ const MenuComponent = ({ menuTrigger, children }: IMenuComponent) => {
   );
 };
 
-export default MenuComponent;
+export default memo(MenuComponent);
