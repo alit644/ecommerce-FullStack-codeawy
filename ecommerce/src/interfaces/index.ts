@@ -61,6 +61,7 @@ export interface IOrder {
     state?: string;
     zipCode?: string
     country?: string;
+    discount?: number;
   }
 }
 
@@ -278,4 +279,20 @@ export interface OrdersResponse {
       pageCount: number;
     };
   };
+}
+
+export interface ICheckoutInput {
+ id: string;
+ name: "city" | "state" | "phone" | "email";
+ type: "text" | "email" | "password" | "number" | "tel" | "url" | "search";
+ placeholder: string;
+ label: string;
+ validation: {
+   required?: boolean;
+   pattern?: RegExp;
+   minLength?: number;
+   maxLength?: number;
+   min?: number;
+   max?: number;
+ };
 }

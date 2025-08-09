@@ -11,20 +11,19 @@ interface ICustomerInfo {
   statuss: TStatuss;
   updatedAt: string;
   address: {
-    street?: string;
+   streetAddress?: string;
     city?: string;
     state?: string;
-    zipCode?: string;
-    country?: string;
+    email?: string;
+    phone?: string;
   };
 }
 const CustomerInfo = ({ user, statuss, updatedAt, address }: ICustomerInfo) => {
   const handleSendEmail = () => {
-    const email = user?.email;
     const subject = "Support Request";
     const body = "Hello, I need help with...";
 
-    const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${email}&su=${encodeURIComponent(
+    const gmailLink = `https://mail.google.com/mail/?view=cm&fs=1&to=${address?.email}&su=${encodeURIComponent(
       subject
     )}&body=${encodeURIComponent(body)}`;
 
@@ -67,7 +66,7 @@ const CustomerInfo = ({ user, statuss, updatedAt, address }: ICustomerInfo) => {
 
           {/*  */}
           <HStack>
-            <Link to={`https://wa.me/905365663918`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+            <Link to={`https://wa.me/${address?.phone}`} target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
               <Button
                 w={"fit-content"}
                 borderRadius="md"
@@ -78,7 +77,7 @@ const CustomerInfo = ({ user, statuss, updatedAt, address }: ICustomerInfo) => {
               >
                 <FaPhoneAlt size={14} color="#27272a" />
                 <Text fontSize={"sm"} color={"gray.800"} fontWeight={"medium"}>
-                  +536 566 73 88
+                  {address?.phone}
                 </Text>
               </Button>
             </Link>
@@ -93,7 +92,7 @@ const CustomerInfo = ({ user, statuss, updatedAt, address }: ICustomerInfo) => {
             >
               <MdEmail size={14} color="#27272a" />
               <Text fontSize={"sm"} color={"gray.800"} fontWeight={"medium"}>
-                Send Email
+                {address?.email}
               </Text>
             </Button>
           </HStack>

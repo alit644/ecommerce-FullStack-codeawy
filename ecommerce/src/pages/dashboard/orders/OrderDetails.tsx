@@ -6,6 +6,7 @@ import OrderItemsTable from "../../../components/orders/OrderItemsTable";
 import CustomerInformationCard from "../../../components/ui/CustomerInformationCard";
 import { useParams } from "react-router";
 import { useGetOrderByIdQuery } from "../../../App/services/createOrderApi";
+import TotalPrice from "../../../components/ui/TotalPrice";
 
 const OrderDetails = () => {
   const { documentId } = useParams();
@@ -70,25 +71,9 @@ const OrderDetails = () => {
       {/* order Items And Totla */}
       <OrderItemsTable rows={renderTableRows} />
 
-      {/* Total */}
-      <Box mt={6} textAlign="right" maxW="400px" ml="auto">
-        <CustomerInformationCard value={order?.totalPrice?.toString() || ""} lable="Sub Total:" />
-        <CustomerInformationCard value="No Discount" lable="Discount:" />
-
-        <HStack
-          justifyContent="space-between"
-          fontWeight="bold"
-          fontSize="lg"
-          borderTop="1px solid"
-          borderColor="gray.200"
-          pt={2}
-        >
-          <Text>Total:</Text>
-          <Text fontWeight="bold" fontSize="lg" color={"teal.500"}>
-            {order?.totalPrice?.toString() || ""} $
-          </Text>
-        </HStack>
-      </Box>
+      {/* TotalPrice */}
+      <TotalPrice totalPrice={order?.totalPrice || 0} discount={order?.address?.discount || 0}/>
+    
     </Box>
   );
 };

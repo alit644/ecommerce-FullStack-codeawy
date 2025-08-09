@@ -1,185 +1,187 @@
-import {
-  Box,
-  CloseButton,
-  Container,
-  Flex,
-  Heading,
-  HStack,
-  Image,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Container, Flex, Heading, HStack } from "@chakra-ui/react";
 import MainTitle from "../components/MainTitle";
 import FormGroup from "../components/ui/form/FormGroup";
 import MInput from "../components/ui/MInput";
-import CustomerInformationCard from "../components/ui/CustomerInformationCard";
 import MButton from "../components/ui/Button";
+import TotalPrice from "../components/ui/TotalPrice";
+import CheckoutCartCard from "../components/ui/CheckoutCartCard";
+import { useAppDispatch, useAppSelector } from "../App/store";
+import { useNavigate } from "react-router";
+import { useCalculateTotal } from "../Hooks/useCalculateTotal";
+import { useEffect, useMemo } from "react";
+import { useForm, type SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { schemaCheckout } from "../schema";
+import { checkoutData } from "../data";
+import type { ICheckoutInput, IUserInfo } from "../interfaces";
+import { useCreateOrderMutation } from "../App/services/createOrderApi";
+import cookieManager from "../utils/cookieManager";
+import { clearCart } from "../App/features/cartSlice";
 
-//TODO: add react hook form 
-//TODO: refactor checkout (INPUTS) 
-//TODO: add loading state 
+interface IFormInput {
+  streetAddress: string;
+  city: string;
+  state: string;
+  phone: string;
+  email: string;
+}
+
 const Checkout = () => {
+  const nav = useNavigate();
+  const cartItems = useAppSelector((state) => state.cart.cartData);
+  const dispatch = useAppDispatch();
+  const user = cookieManager.get<IUserInfo>("user");
+  const calculateTotal = useCalculateTotal(cartItems);
+  const [createOrder , { isLoading}] = useCreateOrderMutation()
+
+  const calculateDiscount = () => {
+    return calculateTotal * 0.1;
+  };
+
+  useEffect(() => {
+   if (cartItems.length === 0) {
+     nav("/shop");
+   }
+ }, [cartItems.length, nav]);
+
+  //! React hook form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormInput>({
+    resolver: yupResolver(schemaCheckout),
+  });
+  const onSubmit: SubmitHandler<IFormInput> = async (data) => {
+   try {
+    const orderData = {
+      user: user?.id,
+      totalPrice: calculateTotal,
+      statuss: "pending",
+      items: cartItems.map((item) => ({
+        product: item.id,
+        quantity: item.quantity,
+      })),
+      address: data
+    }
+    await createOrder(orderData).unwrap()
+    dispatch(clearCart())
+   
+    nav("/isOrderCompleted", {state: {status: "success"}})
+   } catch (error) {
+    nav("/isOrderCompleted", {state: {status: "error"}})
+   }
+  };
+
+  //! Render
+  const renderCartItems = cartItems.map((item) => (
+    <CheckoutCartCard
+      key={item.id}
+      id={item.id}
+      src={item.thumbnail.formats.small.url}
+      alt={item.title}
+    />
+  ));
+
+  const renderCheckoutData = checkoutData.map((item: ICheckoutInput[], i) => (
+    <HStack gap={2} key={i}>
+      {item.map((item) => (
+        <FormGroup
+          key={item.id}
+          label={item.label}
+          htmlFor={item.id}
+          error={errors[item.name]?.message}
+        >
+          <MInput
+            {...register(item.name)}
+            id={item.id}
+            type={item.type}
+            placeholder={item.placeholder}
+          />
+        </FormGroup>
+      ))}
+    </HStack>
+  ));
+
+ 
   return (
     <Container maxW="container.xl" mt={6} mb={6}>
       <MainTitle title="Checkout" isArrow={false} />
       {/* shopping Address */}
-      <Flex
-        gap={4}
-        alignItems={"center"}
-        flexWrap={"wrap"}
-        justifyContent={"space-between"}
-      >
-        <Box
-          borderWidth="1px"
-          borderRadius="lg"
-          p={4}
-          bg="white"
-          w={{ base: "full", lg: "49%" }}
-          minHeight={"354px"}
+
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Flex
+          gap={4}
+          alignItems={"center"}
+          flexWrap={"wrap"}
+          justifyContent={"space-between"}
         >
-          <Heading as="h2" size="lg" mb={4}>
-            Shopping Address
-          </Heading>
-          <form>
+          <Box
+            borderWidth="1px"
+            borderRadius="lg"
+            p={4}
+            bg="white"
+            w={{ base: "full", lg: "49%" }}
+            minHeight={"354px"}
+          >
+            <Heading as="h2" size="lg" mb={4}>
+              Shopping Address
+            </Heading>
+
             <Box spaceY={4}>
               <FormGroup
                 label="Street Address"
                 htmlFor="streetAddress"
-                error={""}
+                error={errors.streetAddress?.message}
               >
                 <MInput
+                  {...register("streetAddress", {
+                    required: "Street Address is required",
+                  })}
                   id="streetAddress"
-                  name="streetAddress"
                   type="text"
                   placeholder="Street Address"
                 />
               </FormGroup>
-              <HStack gap={2}>
-                <FormGroup label="City" htmlFor="city" error={""}>
-                  <MInput
-                    id="city"
-                    name="city"
-                    type="text"
-                    placeholder="City"
-                  />
-                </FormGroup>
-                <FormGroup label="State" htmlFor="state" error={""}>
-                  <MInput
-                    id="state"
-                    name="state"
-                    type="text"
-                    placeholder="State"
-                  />
-                </FormGroup>
-                <FormGroup label="Zip Code" htmlFor="zipCode" error={""}>
-                  <MInput
-                    id="zipCode"
-                    name="zipCode"
-                    type="text"
-                    placeholder="Zip Code"
-                  />
-                </FormGroup>
-              </HStack>
-              <HStack gap={2}>
-                <FormGroup label="Phone" htmlFor="phone" error={""}>
-                  <MInput
-                    id="phone"
-                    name="phone"
-                    type="text"
-                    placeholder="Phone"
-                  />
-                </FormGroup>
-                <FormGroup label="Email" htmlFor="email" error={""}>
-                  <MInput
-                    id="email"
-                    name="email"
-                    type="email"
-                    placeholder="Email"
-                  />
-                </FormGroup>
-              </HStack>
-            </Box>
-          </form>
-        </Box>
-        {/* Your Order */}
-        <Box
-          w={{ base: "full", lg: "49%" }}
-          borderWidth="1px"
-          borderRadius="lg"
-          p={4}
-          bg="white"
-          minHeight={"310px"}
-        >
-          <Heading as="h2" size="lg" mb={4}>
-            Your Order
-          </Heading>
-          <Box w="full">
-            {/* Order Summary */}
-            <Flex
-              gap={4}
-              alignItems="center"
-              flexWrap={"wrap"}
-            >
-              <Box position="relative" w="70px" h="80px">
-                <Image
-                  src="https://images.unsplash.com/photo-1658226500474-9a01f528a93b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHw1fHx8ZW58MHx8fHx8"
-                  alt=""
-                  w="70px"
-                  h="80px"
-                  objectFit="cover"
-                  borderRadius="md"
-                />
-                <CloseButton
-                  zIndex={1}
-                  variant="solid"
-                  size="2xs"
-                  colorScheme="red"
-                  position="absolute"
-                  top="-2"
-                  right="-2"
-                />
-              </Box>
-              <Box position="relative" w="70px" h="80px">
-                <Image
-                  src="https://images.unsplash.com/photo-1754462642749-200ce41c11df?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxmZWF0dXJlZC1waG90b3MtZmVlZHwxM3x8fGVufDB8fHx8fA%3D%3D"
-                  alt=""
-                  w="70px"
-                  h="80px"
-                  objectFit="cover"
-                  borderRadius="md"
-                />
-                <CloseButton
-                  variant="solid"
-                  size="2xs"
-                  colorScheme="red"
-                  position="absolute"
-                  top="-2"
-                  right="-2"
-                />
-              </Box>
-            </Flex>
-            {/* Payment Method */}
-            <Box mt={6}>
-              <CustomerInformationCard value={"2214"} lable="Sub Total:" />
-              <CustomerInformationCard value="No Discount" lable="Discount:" />
-
-              <HStack
-                justifyContent="space-between"
-                fontWeight="bold"
-                fontSize="lg"
-                borderTop="1px solid"
-                borderColor="gray.200"
-                pt={2}
-              >
-                <Text>Total:</Text>
-                <Text fontWeight="bold" fontSize="lg" color={"teal.500"}>
-                  2214 $
-                </Text>
-              </HStack>
-              <MButton title="Place Order" size="md" variant="solid" w="full" mt={6}/>
+              {renderCheckoutData}
             </Box>
           </Box>
-        </Box>
-      </Flex>
+          {/* Your Order */}
+          <Box
+            w={{ base: "full", lg: "49%" }}
+            borderWidth="1px"
+            borderRadius="lg"
+            p={4}
+            bg="white"
+            minHeight={"310px"}
+          >
+            <Heading as="h2" size="lg" mb={4}>
+              Your Order
+            </Heading>
+            {/* Order Summary */}
+            <Flex w="full" gap={4} alignItems="center" flexWrap={"wrap"}>
+              {renderCartItems}
+            </Flex>
+            {/* Payment Method */}
+            <Box>
+              <TotalPrice
+                totalPrice={calculateTotal}
+                discount={calculateDiscount()}
+              />
+              <MButton
+              loading={isLoading}
+              loadingText="Placing Order..."
+                type="submit"
+                title="Place Order"
+                size="md"
+                variant="solid"
+                w="full"
+                mt={6}
+              />
+            </Box>
+          </Box>
+        </Flex>
+      </form>
     </Container>
   );
 };

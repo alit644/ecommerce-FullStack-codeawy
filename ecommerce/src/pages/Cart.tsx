@@ -18,6 +18,7 @@ import { closeDialog } from "../App/features/globalSlice";
 import DialogAlert from "../components/ui/Dialog";
 import CartItems from "../components/CartItems";
 import MButton from "../components/ui/Button";
+import { useCalculateTotal } from "../Hooks/useCalculateTotal";
 
 const Cart = () => {
   const bgColor = useColorModeValue("white", "gray.800");
@@ -25,12 +26,7 @@ const Cart = () => {
   const id = useAppSelector((state) => state.global.id);
   const dispatch = useAppDispatch();
 
-  const calculateTotal = () => {
-    return cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
-    );
-  };
+  const calculateTotal = useCalculateTotal(cartItems);
 
   //! handler
 
@@ -94,7 +90,7 @@ const Cart = () => {
               <HStack justify="space-between">
                 <Text>Subtotal</Text>
                 <Text color={"teal.600"} fontSize="lg" fontWeight="bold">
-                  ${calculateTotal().toFixed(2)}
+                  ${calculateTotal.toFixed(2)}
                 </Text>
               </HStack>
               <HStack justify="space-between">
@@ -104,7 +100,7 @@ const Cart = () => {
               <HStack justify="space-between" fontWeight="bold">
                 <Text>Total</Text>
                 <Text color={"teal.600"} fontSize="lg" fontWeight="bold">
-                  ${calculateTotal().toFixed(2)}
+                  ${calculateTotal.toFixed(2)}
                 </Text>
               </HStack>
               <Link to="/checkout">

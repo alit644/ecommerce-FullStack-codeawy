@@ -2,11 +2,11 @@ import { Circle, HStack, Text, VStack } from "@chakra-ui/react";
 import { FaMapLocationDot } from "react-icons/fa6";
 interface IOrderAddress {
   address: {
-    street?: string;
+    streetAddress?: string;
     city?: string;
     state?: string;
-    zipCode?: string;
-    country?: string;
+    email?: string;
+    phone?: string;
   };
 }
 const OrderAddress = ({ address }: IOrderAddress) => {
@@ -20,8 +20,7 @@ const OrderAddress = ({ address }: IOrderAddress) => {
           User Address
         </Text>
         <Text fontSize={"sm"} color={"gray.500"}>
-          {address?.street}, {address?.city}, {address?.state},{" "}
-          {address?.zipCode}, {address?.country}
+          {address?.streetAddress}, {address?.city}, {address?.state}
         </Text>
       </VStack>
     </HStack>

@@ -66,3 +66,16 @@ export const schemaAddCategory = yup
       .required(),
   })
   .required();
+
+export const schemaCheckout = yup
+  .object({
+    streetAddress: yup.string().required("Street Address is required").min(5).max(100),
+    city: yup.string().required("City is required").min(3).max(50),
+    state: yup.string().required("State is required").min(3).max(50),
+    phone: yup
+      .string()
+      .required()
+      .matches(/^\+?[0-9\s\-().]{7,20}$/, "Phone must be a valid phone number"),
+    email: yup.string().required("Email is required").email(),
+  })
+  .required();

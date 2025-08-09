@@ -29,8 +29,8 @@ const OrderDetails = lazy(
  () => import("../pages/dashboard/orders/OrderDetails")
 );
 const Checkout = lazy(() => import("../pages/Checkout"));
+const IsOrderCompleted = lazy(() => import("../components/orders/isOrderCompleted"));
 import PageLoader from "../components/ui/PageLoader";
-
 const withSuspense = (Component: LazyExoticComponent<() => JSX.Element>) => (
   <Suspense fallback={<PageLoader />}>{<Component />}</Suspense>
 );
@@ -82,6 +82,10 @@ export const router = createBrowserRouter([
        //     <ProtectedRoute  path="/login" children={<Checkout />} />
        //   </Suspense>
        // ),
+      },
+      {
+        path: "/isOrderCompleted",
+        Component: () => withSuspense(IsOrderCompleted),
       },
     ],
   },

@@ -1,4 +1,5 @@
 import type {
+ ICheckoutInput,
   IDashboardLink,
   IDashboardOverview,
   ILoginInput,
@@ -186,21 +187,21 @@ export const tableCategoryColumns: ITableColumn[] = [
 ];
 
 export const tableOrderColumns: ITableColumn[] = [
- { label: "ID", key: "id", type: "text" },
- { label: "SKU", key: "sku", type: "text" },
- { label: "Created At", key: "createdAt", type: "text" },
- { label: "Status", key: "status", type: "text" },
- { label: "Total", key: "total", type: "text" },
- {label: "Product Count", key: "productCount", type: "text"},
- {label: "User", key: "user", type: "text"},
- { label: "Actions", key: "actions", type: "actions" },
+  { label: "ID", key: "id", type: "text" },
+  { label: "SKU", key: "sku", type: "text" },
+  { label: "Created At", key: "createdAt", type: "text" },
+  { label: "Status", key: "status", type: "text" },
+  { label: "Total", key: "total", type: "text" },
+  { label: "Product Count", key: "productCount", type: "text" },
+  { label: "User", key: "user", type: "text" },
+  { label: "Actions", key: "actions", type: "actions" },
 ];
 export const tableOrderItemsColumns: ITableColumn[] = [
- { label: "ID", key: "id", type: "text"},
- { label: "Item Details", key: "itemDetails", type: "text"},
- { label: "Quantity", key: "quantity", type: "text" },
- { label: "Price", key: "price", type: "text" },
- { label: "Total Amount", key: "total", type: "text" },
+  { label: "ID", key: "id", type: "text" },
+  { label: "Item Details", key: "itemDetails", type: "text" },
+  { label: "Quantity", key: "quantity", type: "text" },
+  { label: "Price", key: "price", type: "text" },
+  { label: "Total Amount", key: "total", type: "text" },
 ];
 
 export const sortItems = [
@@ -274,5 +275,53 @@ export const mainInputsData: IPricingSectionInputsData[] = [
   },
 ];
 
-
 export const orderStatus = ["pending", "confirmed", "shipped", "delivered"];
+
+export const checkoutData:ICheckoutInput[][] = [
+  [
+    {
+      id: "city",
+      name: "city",
+      type: "text",
+      placeholder: "Enter your city",
+      label: "City",
+      validation: {
+        min: 3,
+        max: 50,
+      },
+    },
+    {
+      id: "state",
+      name: "state",
+      type: "text",
+      placeholder: "Enter your state",
+      label: "State",
+      validation: {
+        min: 3,
+        max: 50,
+      },
+    },
+  ],
+  [
+    {
+      id: "phone",
+      name: "phone",
+      type: "tel",
+      placeholder: "Enter your phone",
+      label: "Phone",
+      validation: {
+        pattern: /^\+?[0-9\s\-().]{7,20}$/,
+      },
+    },
+    {
+      id: "email",
+      name: "email",
+      type: "email",
+      placeholder: "Enter your email",
+      label: "Email",
+      validation: {
+        pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+      },
+    },
+  ],
+];

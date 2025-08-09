@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import cookieManager from "../../utils/cookieManager";
-import type { IOrder, OrdersResponse } from "../../interfaces";
+import type { IOrder, IProductCard, OrdersResponse } from "../../interfaces";
 import qs from "qs";
 export const createOrderApi = createApi({
   reducerPath: "createOrderApi",
@@ -128,10 +128,35 @@ export const createOrderApi = createApi({
         { type: "orders", id: result?.data?.documentId },
       ],
     }),
+    createOrder: builder.mutation({
+      query: (orderData) => ({
+        url: `/orders`,
+        method: "POST",
+        body: {
+          data: {
+            user: orderData.user,
+            items: orderData.items,
+            totalPrice: orderData.totalPrice,
+            statuss: orderData.statuss,
+            address: {
+              streetAddress: orderData.address.streetAddress,
+              city: orderData.address.city,
+              state: orderData.address.state,
+              phone: orderData.address.phone,
+              email: orderData.address.email,
+            },
+          },
+        },
+      }),
+      invalidatesTags: (result) => [
+        { type: "orders", id: result?.data?.documentId },
+      ],
+    }),
   }),
 });
 export const {
   useGetDashboardOrdersQuery,
   useGetOrderByIdQuery,
   useUpdateOrderStatusMutation,
+  useCreateOrderMutation,
 } = createOrderApi;
