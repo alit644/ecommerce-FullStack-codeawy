@@ -8,7 +8,7 @@ import { useGetOrderByIdQuery } from "../../../App/services/createOrderApi";
 import TotalPrice from "../../../components/ui/TotalPrice";
 import MBadge from "../../../components/ui/MBadge";
 
-const OrderDetails = () => {
+const OrderDetails = ({context}: {context: string}) => {
   const { documentId } = useParams();
   const {
     data: orderData,
@@ -45,7 +45,6 @@ const OrderDetails = () => {
   ));
 
   //TODO: add skeleton
-  //TODO: PUT update order status
   return (
     <Box>
       <VStack alignItems={"start"}>
@@ -64,6 +63,7 @@ const OrderDetails = () => {
           statuss={order.statuss}
           updatedAt={order.updatedAt || ""}
           address={order.address}
+          context={context}
         />
       )}
       {/* order Items And Totla */}

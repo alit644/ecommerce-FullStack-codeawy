@@ -40,7 +40,13 @@ export interface IProductCard {
   rating?: number;
 }
 
-export type TStatuss = "pending" | "confirmed" | "shipped" | "delivered";
+export type TStatuss =
+  | "cancelled"
+  | "completed"
+  | "pending"
+  | "confirmed"
+  | "shipped"
+  | "delivered";
 
 export interface IOrder {
   id: number;
@@ -48,7 +54,7 @@ export interface IOrder {
   createdAt: string;
   updatedAt?: string;
   totalPrice: number;
-  statuss: TStatuss
+  statuss: TStatuss;
   items: {
     id: number;
     quantity: number;
@@ -59,12 +65,11 @@ export interface IOrder {
     street?: string;
     city?: string;
     state?: string;
-    zipCode?: string
+    zipCode?: string;
     country?: string;
     discount?: number;
-  }
+  };
 }
-
 
 export interface ICategory {
   documentId?: string;
@@ -282,17 +287,17 @@ export interface OrdersResponse {
 }
 
 export interface ICheckoutInput {
- id: string;
- name: "city" | "state" | "phone" | "email";
- type: "text" | "email" | "password" | "number" | "tel" | "url" | "search";
- placeholder: string;
- label: string;
- validation: {
-   required?: boolean;
-   pattern?: RegExp;
-   minLength?: number;
-   maxLength?: number;
-   min?: number;
-   max?: number;
- };
+  id: string;
+  name: "city" | "state" | "phone" | "email";
+  type: "text" | "email" | "password" | "number" | "tel" | "url" | "search";
+  placeholder: string;
+  label: string;
+  validation: {
+    required?: boolean;
+    pattern?: RegExp;
+    minLength?: number;
+    maxLength?: number;
+    min?: number;
+    max?: number;
+  };
 }

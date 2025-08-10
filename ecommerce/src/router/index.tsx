@@ -110,8 +110,17 @@ export const router = createBrowserRouter([
             path: "myOrders",
             Component: () => withSuspense(MyOrders),
           },
+          {
+            path: "orders/order-details/:documentId",
+            element: (
+              <Suspense fallback={<PageLoader />}>
+                <ProtectedRoute path="/login" children={<OrderDetails context="profile" />} />
+              </Suspense>
+            ),
+          },
         ],
       },
+     
     ],
   },
   {
@@ -147,9 +156,15 @@ export const router = createBrowserRouter([
         Component: () => withSuspense(Orders),
       },
       {
-        path: "orders/:documentId",
-        Component: () => withSuspense(OrderDetails),
+        path: "orders/order-details/:documentId",
+        element: (
+          <Suspense fallback={<PageLoader />}>
+            <ProtectedRoute path="/login" children={<OrderDetails context="dashboard" />} />
+          </Suspense>
+        ),
       },
+      
     ],
+    
   },
 ]);

@@ -46,7 +46,7 @@ const Orders = () => {
 
       <Table.Cell>
         <HStack>
-          <Link to={`/dashboard/orders/${order.documentId}`}>
+          <Link to={`/dashboard/orders/order-details/${order.documentId}`}>
             <IconButton aria-label="Edit" variant="ghost" colorScheme="blue">
               <TbFileSearch />
             </IconButton>

@@ -17,8 +17,9 @@ interface ICustomerInfo {
     email?: string;
     phone?: string;
   };
+  context: string;
 }
-const CustomerInfo = ({ user, statuss, updatedAt, address }: ICustomerInfo) => {
+const CustomerInfo = ({ user, statuss, updatedAt, address, context }: ICustomerInfo) => {
   const handleSendEmail = () => {
     const subject = "Support Request";
     const body = "Hello, I need help with...";
@@ -100,7 +101,7 @@ const CustomerInfo = ({ user, statuss, updatedAt, address }: ICustomerInfo) => {
       </Box>
 
       {/* Progress */}
-      <OrderProgress statuss={statuss} updatedAt={updatedAt} />
+      <OrderProgress statuss={statuss} updatedAt={updatedAt} context={context} />
       {/* location */}
       <OrderAddress address={address} />
     </Box>

@@ -29,7 +29,7 @@ const TableWrapper = ({
   return (
     <Box position="relative">
       {!isLoading && !isFetching && data?.length === 0 ? (
-        <NoResult />
+        <NoResult title="No Orders Found" description="You Don't have any orders"/>
       ) : isLoading ? (
         <TableSkeleton />
       ) : (

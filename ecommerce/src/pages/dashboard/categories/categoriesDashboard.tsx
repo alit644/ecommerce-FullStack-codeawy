@@ -33,7 +33,7 @@ const CategoriesDashboard = () => {
   const [
     deleteCategory,
     { isLoading: isDeletingCategory, isSuccess: isCategoryDeleted },
-  ] = useDeleteCategoryMutation();
+   ] = useDeleteCategoryMutation();
   const documentId = useAppSelector((state) => state.global.id);
   const { page, pageSize } = useAppSelector((state) => state.pagination);
   //! get data RTX Query =
@@ -69,17 +69,19 @@ const CategoriesDashboard = () => {
       }
       dispatch(closeDialog());
       dispatch(setPage(1));
-    } catch (error) {
+    } catch (error: any) {
       console.log("error", error);
       dispatch(closeDialog());
       toaster.error({
-        title: "Product Delete Failed",
-        description: "Product deleted failed",
-        duration: 2000,
+        title: error?.status === 403 ? "Forbidden" : "Category Delete Failed",
+        description: error?.status === 403 ? "You don't have permission to perform this action." : "Category delete failed",
+        duration: 3200,
         type: "error",
       });
     }
   };
+  
+
 
 
   const renderTableRows = data?.data.map((category: any) => (

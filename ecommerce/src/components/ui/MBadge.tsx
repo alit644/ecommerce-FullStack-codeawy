@@ -4,12 +4,12 @@ const MBadge = ({ status }: { status: string }) => {
   return (
     <Badge
       colorPalette={
-        status === "pending"
+        status === "completed" || status === "delivered"
+          ? "green"
+          : status === "cancelled" || status === "pending"
           ? "red"
           : status === "confirmed"
           ? "blue"
-          : status === "delivered"
-          ? "green"
           : "orange"
       }
     >

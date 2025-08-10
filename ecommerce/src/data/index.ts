@@ -6,6 +6,7 @@ import type {
   IPricingSectionInputsData,
   IRegisterInput,
   ITableColumn,
+  TStatuss,
 } from "../interfaces";
 import { BsBoxSeam, BsTruck } from "react-icons/bs";
 import { FiRotateCcw, FiShield } from "react-icons/fi";
@@ -286,7 +287,14 @@ export const mainInputsData: IPricingSectionInputsData[] = [
   },
 ];
 
-export const orderStatus = ["pending", "confirmed", "shipped", "delivered"];
+export const orderStatus: TStatuss[] = [
+  "pending",
+  "confirmed",
+  "shipped",
+  "delivered",
+  "completed",
+  "cancelled",
+];
 
 export const checkoutData: ICheckoutInput[][] = [
   [

@@ -4,15 +4,16 @@ import CustomerInformationCard from "../ui/CustomerInformationCard";
 import MSelect from "../ui/Select";
 import { orderStatus } from "../../data";
 import type { TStatuss } from "../../interfaces";
-import { useCallback, useMemo, useState } from "react";
+import {  useMemo, useState } from "react";
 import { useUpdateOrderStatusMutation } from "../../App/services/createOrderApi";
 import { useParams } from "react-router";
 import { toaster } from "../ui/toaster";
 interface IOrderProgress {
   statuss: TStatuss;
   updatedAt: string;
+  context: string;
 }
-const OrderProgress = ({ statuss, updatedAt }: IOrderProgress) => {
+const OrderProgress = ({ statuss, updatedAt, context }: IOrderProgress) => {
   const { documentId } = useParams();
   const [status, setStatus] = useState<TStatuss | "">("");
   const [updateOrderStatus, { isLoading }] = useUpdateOrderStatusMutation();
@@ -35,11 +36,38 @@ const OrderProgress = ({ statuss, updatedAt }: IOrderProgress) => {
         closable: true,
       });
       setStatus("");
-    } catch (error) {
+    } catch (error: any) {
       toaster.error({
         closable: true,
-        title: "Error",
-        description: "Status update failed",
+        title: error?.status === 403 ? "Forbidden" : "Status Update Failed",
+        description:
+          error?.status === 403
+            ? "You don't have permission to perform this action."
+            : "Status update failed",
+        duration: 3000,
+      });
+    }
+  };
+  const handleCancelOrder = async () => {
+    try {
+      await updateOrderStatus({
+        documentId: documentId as string,
+        statuss: "cancelled",
+      }).unwrap();
+      toaster.success({
+        title: "Success",
+        description: "Order cancelled successfully",
+        duration: 3000,
+        closable: true,
+      });
+    } catch (error: any) {
+      toaster.error({
+        closable: true,
+        title: error?.status === 403 ? "Forbidden" : "Order Cancel Failed",
+        description:
+          error?.status === 403
+            ? "You don't have permission to perform this action."
+            : "Order cancel failed",
         duration: 3000,
       });
     }
@@ -68,7 +96,7 @@ const OrderProgress = ({ statuss, updatedAt }: IOrderProgress) => {
         Order Progress
       </Heading>
       <Box w={"full"} mt={6}>
-        <MProgress value={progressValue} />
+        <MProgress value={statuss === "cancelled" ? 100 : statuss === "completed" ? 100 : progressValue} bg={statuss === "completed" ? "green" : statuss === "cancelled" ? "red" : "black"}/>
       </Box>
       <Flex justifyContent={"space-between"} alignItems={"center"}>
         <CustomerInformationCard
@@ -84,27 +112,47 @@ const OrderProgress = ({ statuss, updatedAt }: IOrderProgress) => {
           lable="Status"
         />
       </Flex>
-
-      <Box mt={6}>
-        <form onSubmit={handleUpdateStatus}>
-          <MSelect
-            options={orderOptions}
-            w={"full"}
-            onChange={(e) => setStatus(e as TStatuss)}
-          />
-          <Button
-            mt={2}
-            disabled={!status || status === statuss}
-            colorScheme="teal"
-            size="sm"
-            loading={isLoading}
-            loadingText="Updating..."
-            type="submit"
-          >
-            Update Status
-          </Button>
-        </form>
-      </Box>
+      {context === "dashboard" && (
+        <Box mt={6}>
+          <form onSubmit={handleUpdateStatus}>
+            <MSelect
+              options={orderOptions}
+              w={"full"}
+              onChange={(e) => setStatus(e as TStatuss)}
+            />
+            <Button
+              mt={2}
+              disabled={!status || status === statuss}
+              colorScheme="teal"
+              size="sm"
+              loading={isLoading}
+              loadingText="Updating..."
+              type="submit"
+            >
+              Update Status
+            </Button>
+          </form>
+        </Box>
+      )}
+      {/* cancel order */}
+      {context === "profile" &&
+        (statuss === "pending" || statuss === "confirmed") && (
+          <Box mt={6} >
+            <Button
+              mt={2}
+              disabled={!(statuss === "pending" || statuss === "confirmed")}
+              colorScheme="red"
+              variant="subtle"
+              colorPalette={"red"}
+              size="sm"
+              loading={isLoading}
+              loadingText="Canceling..."
+              onClick={handleCancelOrder}
+            >
+              Cancel Order
+            </Button>
+          </Box>
+        )}
     </Box>
   );
 };

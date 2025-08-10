@@ -1,6 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import cookieManager from "../../utils/cookieManager";
-import type { FilterType } from "../../interfaces";
 import qs from "qs";
 export const createCategoryApi = createApi({
   reducerPath: "createCategoryApi",

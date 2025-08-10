@@ -30,7 +30,7 @@ const OrdersTableRows = ({ data }: { data: IOrder[] }) => {
             <Table.Cell>{order.totalPrice}</Table.Cell>
             <Table.Cell>
               <HStack>
-                <Link to={`/dashboard/orders/${order.documentId}`}>
+                <Link to={`/profile/orders/order-details/${order.documentId}`}>
                   <IconButton
                     aria-label="View Order"
                     variant="ghost"
