@@ -187,7 +187,7 @@ export const tableCategoryColumns: ITableColumn[] = [
 ];
 
 export const tableOrderColumns: ITableColumn[] = [
-  { label: "ID", key: "id", type: "text" },
+  { label: "Order ID", key: "id", type: "text" },
   { label: "SKU", key: "sku", type: "text" },
   { label: "Created At", key: "createdAt", type: "text" },
   { label: "Status", key: "status", type: "text" },
@@ -196,6 +196,17 @@ export const tableOrderColumns: ITableColumn[] = [
   { label: "User", key: "user", type: "text" },
   { label: "Actions", key: "actions", type: "actions" },
 ];
+
+export const tableOrderUserColumns: ITableColumn[] = [
+  { label: "Order ID", key: "id", type: "text" },
+  { label: "Images", key: "images", type: "image" },
+  { label: "Created At", key: "createdAt", type: "text" },
+  { label: "Status", key: "status", type: "text" },
+  { label: "Count", key: "count", type: "text" },
+  { label: "Total ($)", key: "total", type: "text" },
+  { label: "Actions", key: "actions", type: "actions" },
+];
+
 export const tableOrderItemsColumns: ITableColumn[] = [
   { label: "ID", key: "id", type: "text" },
   { label: "Item Details", key: "itemDetails", type: "text" },

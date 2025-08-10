@@ -15,7 +15,7 @@ const IsOrderCompleted = () => {
   const status = state?.status as "success" | "error";
   const handleNavigate = () => {
     if (status === "success") {
-      nav("/profile/myOrders");
+      nav("/profile");
     } else {
       nav("/shop");
     }

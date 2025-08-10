@@ -107,6 +107,7 @@ export const createOrderApi = createApi({
       providesTags: (result) => [
         { type: "orders", id: result?.data?.documentId },
       ],
+      keepUnusedDataFor: 300,
     }),
     updateOrderStatus: builder.mutation({
       query: ({
@@ -152,6 +153,75 @@ export const createOrderApi = createApi({
         { type: "orders", id: result?.data?.documentId },
       ],
     }),
+    getUserOrders: builder.query<
+      OrdersResponse,
+      {
+        page: number;
+        pageSize: number;
+        valueSort?: string;
+        query?: string;
+        userID: number;
+      }
+    >({
+      query: ({ page, pageSize, valueSort, query, userID }) => {
+        const queryString = qs.stringify(
+          {
+            populate: {
+              items: {
+                populate: {
+                  product: {
+                    populate: ["thumbnail"],
+                  },
+                },
+              },
+            },
+            pagination: {
+              page,
+              pageSize,
+            },
+            sort: valueSort ? ["createdAt:" + valueSort] : undefined,
+          },
+          { encodeValuesOnly: true }
+        );
+        const searchQuery = qs.stringify({
+          filters: {
+            $or: [
+              {
+                id: {
+                  $contains: query,
+                },
+              },
+              {
+                statuss: {
+                  $contains: query,
+                },
+              },
+            ],
+            user: {
+              id: {
+                $eq: userID,
+              },
+            },
+          },
+        });
+        return {
+          url: `/orders?${queryString}&${searchQuery}`,
+          method: "GET",
+        };
+      },
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.data.map(({ id }) => ({
+                type: "orders" as const,
+                id,
+              })),
+              { type: "orders", id: "LIST" },
+            ]
+          : [{ type: "orders", id: "LIST" }],
+
+      keepUnusedDataFor: 300,
+    }),
   }),
 });
 export const {
@@ -159,4 +229,5 @@ export const {
   useGetOrderByIdQuery,
   useUpdateOrderStatusMutation,
   useCreateOrderMutation,
+  useGetUserOrdersQuery,
 } = createOrderApi;

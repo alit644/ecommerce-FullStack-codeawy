@@ -5,7 +5,7 @@ const TableSkeleton = () => {
     <VStack
       mt={4}
       gap={3}
-      maxW="100%"
+      w="100%"
       overflow="auto"
       p={3}
       borderRadius={"md"}

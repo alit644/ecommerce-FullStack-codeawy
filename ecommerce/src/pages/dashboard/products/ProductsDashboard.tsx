@@ -1,38 +1,18 @@
-import {
-  Box,
-  HStack,
-  Image,
-  Table,
-  Badge,
-  IconButton,
-  Flex,
-  Menu,
-  Text,
-} from "@chakra-ui/react";
+import { Box, HStack, Flex, Text } from "@chakra-ui/react";
 import MainTitle from "../../../components/MainTitle";
-import { LuTrash2 } from "react-icons/lu";
-import { TbEdit } from "react-icons/tb";
 import { BsFilterRight, BsPlus } from "react-icons/bs";
-import { sortItems, tableColumns } from "../../../data";
-import TableComponent from "../../../components/ui/Table";
-import type { IProductCard } from "../../../interfaces";
-import PaginationComponent from "../../../components/ui/Pagination";
+import { tableColumns } from "../../../data";
 import { useAppDispatch, useAppSelector } from "../../../App/store";
-import { HiSortAscending } from "react-icons/hi";
-import MenuComponent from "../../../components/ui/Menu";
 import { lazy, Suspense, useEffect, useState } from "react";
 import DrawerComponent from "../../../components/ui/Drawer";
 import FilterSidebar from "../../../components/Filter";
 import {
-  openDialog,
   openFilterDrawer,
   closeDialog,
 } from "../../../App/features/globalSlice";
 import { useProductFilters } from "../../../Hooks/useProductFilters";
 import SearchQuery from "../../../components/SearchQuery";
-import NoResult from "../../../components/ui/NoResult";
 import Error from "../../../components/Error/Error";
-import TableSkeleton from "../../../components/ui/TableSkeleton";
 import MButton from "../../../components/ui/Button";
 import { Link } from "react-router";
 const DialogAlert = lazy(() => import("../../../components/ui/Dialog"));
@@ -43,6 +23,9 @@ import {
 } from "../../../App/services/createProductApi";
 import { toaster } from "../../../components/ui/toaster";
 import { setPage } from "../../../App/features/paginationSlice";
+import SortMenu from "../../../components/ui/SortMenu";
+import ProductsTableRows from "../../../components/products/ProductsTableRows";
+import TablePagination from "../../../components/ui/Table/TablePagination";
 
 const ProductsDashboard = () => {
   const [value, setValue] = useState("asc");
@@ -93,10 +76,6 @@ const ProductsDashboard = () => {
     }
   }, [page, pageSize, filtersSlice, value, searchQuery]);
 
-  const handleOpenDialog = (id: string) => {
-    dispatch(openDialog(id));
-  };
-
   const handleDeleteProduct = async () => {
     try {
       const result = await deleteProduct(documentId as string).unwrap();
@@ -124,59 +103,6 @@ const ProductsDashboard = () => {
     }
   };
 
-  //! Render
-  const renderTableHeaders = tableColumns.map((header) => (
-    <Table.ColumnHeader key={header.key} color={"gray.500"}>
-      {header.label}
-    </Table.ColumnHeader>
-  ));
-
-  const renderTableRows = data?.data.map((product: IProductCard) => (
-    <Table.Row key={product.id}>
-      <Table.Cell>
-        <Image
-          loading="lazy"
-          src={`${import.meta.env.VITE_BASE_URL}${product.thumbnail?.url}`}
-          alt={product.title}
-          w={50}
-          h={50}
-        />
-      </Table.Cell>
-      <Table.Cell>{product.id}</Table.Cell>
-      <Table.Cell>{product.title}</Table.Cell>
-      <Table.Cell>{product.category?.title}</Table.Cell>
-      <Table.Cell>{product.price}</Table.Cell>
-      <Table.Cell>{product.stock}</Table.Cell>
-      <Table.Cell>
-        <Badge
-          colorPalette={
-            product.stock !== undefined && product.stock > 0 ? "green" : "red"
-          }
-        >
-          {product.stock !== undefined && product.stock > 0
-            ? "Active"
-            : "Out of Stock"}
-        </Badge>
-      </Table.Cell>
-      <Table.Cell>
-        <HStack>
-          <Link to={`/dashboard/products/create/${product.documentId}`}>
-            <IconButton aria-label="Edit" variant="ghost" colorScheme="blue">
-              <TbEdit />
-            </IconButton>
-          </Link>
-          <IconButton
-            onClick={() => handleOpenDialog(product.documentId)}
-            aria-label="Delete"
-            variant="ghost"
-            colorScheme="red"
-          >
-            <LuTrash2 />
-          </IconButton>
-        </HStack>
-      </Table.Cell>
-    </Table.Row>
-  ));
 
   if (isError) return <Error description="Something went wrong" />;
 
@@ -208,37 +134,7 @@ const ProductsDashboard = () => {
             {/* Search Query */}
             <SearchQuery setSearchQuery={setSearchQuery} />
             {/* Sort */}
-            <MenuComponent
-              menuTrigger={
-                //
-                <Flex
-                  alignItems="center"
-                  fontWeight={"medium"}
-                  color={"gray.800"}
-                  _hover={{ bg: "gray.100" }}
-                  gap={2}
-                  cursor="pointer"
-                  bg="white"
-                  border={"1px solid #e4e4e7"}
-                  p={"7px 15px"}
-                  borderRadius="md"
-                >
-                  <HiSortAscending size={20} /> Sort
-                </Flex>
-              }
-            >
-              <Menu.RadioItemGroup
-                value={value}
-                onValueChange={(e) => setValue(e.value)}
-              >
-                {sortItems.map((item) => (
-                  <Menu.RadioItem key={item.value} value={item.value}>
-                    {item.label}
-                    <Menu.ItemIndicator />
-                  </Menu.RadioItem>
-                ))}
-              </Menu.RadioItemGroup>
-            </MenuComponent>
+            <SortMenu value={value} setValue={setValue} />
             {/* Filter */}
             <MButton
               variant="outline"
@@ -249,26 +145,16 @@ const ProductsDashboard = () => {
             />
           </Flex>
           {/* Table */}
-          {data?.data.length === 0 ? (
-            <NoResult />
-          ) : isLoading || isFetching ? (
-            <TableSkeleton />
-          ) : (
-            <TableComponent
-              headers={renderTableHeaders}
-              rows={renderTableRows}
-            />
-          )}
-
-          {/* Pagination */}
-          {data?.meta.pagination.total !== undefined &&
-            data?.meta.pagination.total > 0 && (
-              <PaginationComponent
-                count={data?.meta.pagination.total || 0}
-                pageSize={pageSize}
-                page={page}
-              />
-            )}
+          <TablePagination
+            data={data?.data || []}
+            isLoading={isLoading}
+            isFetching={isFetching}
+            columns={tableColumns}
+            rows={<ProductsTableRows data={data?.data || []} />}
+            count={data?.meta.pagination.total || 0}
+            pageSize={pageSize}
+            page={page}
+          />
         </Box>
       </Box>
       {/* Filter Drawer */}

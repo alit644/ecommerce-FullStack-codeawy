@@ -1,18 +1,25 @@
-import { Box, Text, VStack, Badge, HStack, Table } from "@chakra-ui/react";
+import { Box, Text, VStack, HStack, Table } from "@chakra-ui/react";
 import MainTitle from "../../../components/MainTitle";
 import ItemDetailsCard from "../../../components/ui/itemDetailsCard";
 import CustomerInfo from "../../../components/orders/CustomerInfo";
 import OrderItemsTable from "../../../components/orders/OrderItemsTable";
-import CustomerInformationCard from "../../../components/ui/CustomerInformationCard";
 import { useParams } from "react-router";
 import { useGetOrderByIdQuery } from "../../../App/services/createOrderApi";
 import TotalPrice from "../../../components/ui/TotalPrice";
+import MBadge from "../../../components/ui/MBadge";
 
 const OrderDetails = () => {
   const { documentId } = useParams();
-  const { data: orderData, isLoading, isError } = useGetOrderByIdQuery(documentId as string);
+  const {
+    data: orderData,
+    isLoading,
+    isError,
+  } = useGetOrderByIdQuery(documentId as string);
   const order = orderData?.data;
-   const orderItems = order?.items.map((item) => ({product: item.product , quantity: item.quantity}));
+  const orderItems = order?.items.map((item) => ({
+    product: item.product,
+    quantity: item.quantity,
+  }));
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -21,11 +28,10 @@ const OrderDetails = () => {
     return <div>Error loading order</div>;
   }
 
-
   //! Render
 
   const renderTableRows = orderItems?.map((item) => (
-    <Table.Row key={item?.product?.id}> 
+    <Table.Row key={item?.product?.id}>
       <Table.Cell>{item?.product?.id}</Table.Cell>
       <Table.Cell>
         <ItemDetailsCard product={item.product} />
@@ -38,22 +44,14 @@ const OrderDetails = () => {
     </Table.Row>
   ));
 
-  //TODO: add skeleton 
-  //TODO: PUT update order status 
+  //TODO: add skeleton
+  //TODO: PUT update order status
   return (
     <Box>
       <VStack alignItems={"start"}>
         <HStack alignItems={"center"} gap={2}>
           <MainTitle title={`Order ID : #${order?.id}`} isArrow={false} />
-          <Badge colorPalette={order?.statuss === "pending"
-              ? "red"
-              : order?.statuss === "shipped"
-              ? "blue"
-              : order?.statuss === "delivered"
-              ? "green"
-              : "orange"}>
-            {order?.statuss}
-          </Badge>
+          <MBadge status={order?.statuss || ""} />
         </HStack>
         <Text fontSize={"sm"} color={"gray.500"}>
           Order Created At : {order?.createdAt?.split("T")[0]}
@@ -72,8 +70,10 @@ const OrderDetails = () => {
       <OrderItemsTable rows={renderTableRows} />
 
       {/* TotalPrice */}
-      <TotalPrice totalPrice={order?.totalPrice || 0} discount={order?.address?.discount || 0}/>
-    
+      <TotalPrice
+        totalPrice={order?.totalPrice || 0}
+        discount={order?.address?.discount || 0}
+      />
     </Box>
   );
 };

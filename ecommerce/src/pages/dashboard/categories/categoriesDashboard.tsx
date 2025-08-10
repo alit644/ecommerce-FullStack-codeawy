@@ -5,31 +5,26 @@ import {
   Table,
   IconButton,
   Flex,
-  Menu,
   Text,
 } from "@chakra-ui/react";
 import MainTitle from "../../../components/MainTitle";
 import { LuTrash2 } from "react-icons/lu";
 import { TbEdit } from "react-icons/tb";
 import { BsPlus } from "react-icons/bs";
-import { sortItems, tableCategoryColumns } from "../../../data";
-import TableComponent from "../../../components/ui/Table";
-import PaginationComponent from "../../../components/ui/Pagination";
+import {  tableCategoryColumns } from "../../../data";
 import { useAppDispatch, useAppSelector } from "../../../App/store";
-import { HiSortAscending } from "react-icons/hi";
-import MenuComponent from "../../../components/ui/Menu";
 import { useState } from "react";
 import { openDialog, closeDialog } from "../../../App/features/globalSlice";
 import SearchQuery from "../../../components/SearchQuery";
-import NoResult from "../../../components/ui/NoResult";
 import Error from "../../../components/Error/Error";
-import TableSkeleton from "../../../components/ui/TableSkeleton";
 import MButton from "../../../components/ui/Button";
 import { Link } from "react-router";
 import DialogAlert from "../../../components/ui/Dialog";
 import { toaster } from "../../../components/ui/toaster";
 import { setPage } from "../../../App/features/paginationSlice";
 import { useDeleteCategoryMutation, useGetDashboardCategoriesQuery } from "../../../App/services/createCategoryApi";
+import SortMenu from "../../../components/ui/SortMenu";
+import TablePagination from "../../../components/ui/Table/TablePagination";
 
 const CategoriesDashboard = () => {
   const [value, setValue] = useState("asc");
@@ -86,12 +81,6 @@ const CategoriesDashboard = () => {
     }
   };
 
-  //! Render
-  const renderTableHeaders = tableCategoryColumns.map((header) => (
-    <Table.ColumnHeader key={header.key} color={"gray.500"}>
-      {header.label}
-    </Table.ColumnHeader>
-  ));
 
   const renderTableRows = data?.data.map((category: any) => (
     <Table.Row key={category.id}>
@@ -157,59 +146,22 @@ const CategoriesDashboard = () => {
             {/* Search Query */}
             <SearchQuery setSearchQuery={setSearchQuery} />
             {/* Sort */}
-            <MenuComponent
-              menuTrigger={
-                //
-                <Flex
-                  alignItems="center"
-                  fontWeight={"medium"}
-                  color={"gray.800"}
-                  _hover={{ bg: "gray.100" }}
-                  gap={2}
-                  cursor="pointer"
-                  bg="white"
-                  border={"1px solid #e4e4e7"}
-                  p={"7px 15px"}
-                  borderRadius="md"
-                >
-                  <HiSortAscending size={20} /> Sort
-                </Flex>
-              }
-            >
-              <Menu.RadioItemGroup
-                value={value}
-                onValueChange={(e) => setValue(e.value)}
-              >
-                {sortItems.map((item) => (
-                  <Menu.RadioItem key={item.value} value={item.value}>
-                    {item.label}
-                    <Menu.ItemIndicator />
-                  </Menu.RadioItem>
-                ))}
-              </Menu.RadioItemGroup>
-            </MenuComponent>
+            <SortMenu value={value} setValue={setValue} />
           </Flex>
           {/* Table */}
-          {data?.data.length === 0 ? (
-            <NoResult />
-          ) : isLoading || isFetching ? (
-            <TableSkeleton />
-          ) : (
-            <TableComponent
-              headers={renderTableHeaders}
-              rows={renderTableRows}
-            />
-          )}
+          
+          <TablePagination
+          data={data?.data || []}
+          isLoading={isLoading}
+          isFetching={isFetching}
+          columns={tableCategoryColumns}
+          rows={renderTableRows}
+          count={data?.meta.pagination.total || 0}
+          pageSize={pageSize}
+          page={page}
+          /> 
 
-          {/* Pagination */}
-          {data?.meta.pagination.total !== undefined &&
-            data?.meta.pagination.total > 0 && (
-              <PaginationComponent
-                count={data?.meta.pagination.total || 0}
-                pageSize={pageSize}
-                page={page}
-              />
-            )}
+          
         </Box>
       </Box>
       {/* Dialog Alert */}
