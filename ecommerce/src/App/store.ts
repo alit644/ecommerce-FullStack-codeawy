@@ -13,12 +13,19 @@ import { createProductApi } from "./services/createProductApi";
 import { createCategoryApi } from "./services/createCategoryApi";
 import { createOrderApi } from "./services/createOrderApi";
 import { createProfileApi } from "./services/createProfileApi";
+import  wishlistSlice  from "./features/wishlistSlice";
 
 const persistConfig = {
   key: "cart",
   storage,
 };
+const persistConfig2 = {
+  key: "wishlist",
+  storage,
+};
+
 const persistedCart = persistReducer(persistConfig, cartSlice);
+const persistedWishlist = persistReducer(persistConfig2, wishlistSlice);
 
 export const store = configureStore({
   reducer: {
@@ -29,6 +36,7 @@ export const store = configureStore({
     global: globalSlice,
     pagination: paginationSlice,
     filters: filtersSlice,
+    wishlist: persistedWishlist,
     [createProductApi.reducerPath]: createProductApi.reducer,
     [createCategoryApi.reducerPath]: createCategoryApi.reducer,
     [createOrderApi.reducerPath]: createOrderApi.reducer,

@@ -37,6 +37,7 @@ const ProfileLayout = lazy(() => import("../pages/layout/ProfileLayout"));
 const Wishlist = lazy(() => import("../pages/Profile/Wishlist"));
 const Address = lazy(() => import("../pages/Profile/Address"));
 const Password = lazy(() => import("../pages/Profile/Password"));
+const HomeWishlist = lazy(() => import("../pages/Wishlist"));
 import PageLoader from "../components/ui/PageLoader";
 const withSuspense = (Component: LazyExoticComponent<() => JSX.Element>) => (
   <Suspense fallback={<PageLoader />}>{<Component />}</Suspense>
@@ -65,6 +66,10 @@ export const router = createBrowserRouter([
         path: "/cart",
         Component: () => withSuspense(Cart),
       },
+      {
+       path: "/wishlist",
+       Component: () => withSuspense(HomeWishlist),
+     },
       {
         path: "/login",
         element: (

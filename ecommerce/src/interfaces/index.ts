@@ -140,6 +140,14 @@ export interface IUserInfo {
   publishedAt: string;
   updatedAt: string;
   username: string;
+  address?: {
+   streetAddress?: string;
+    city?: string;
+    state?: string;
+    country?: string;
+    phone?: string;
+    email?: string;
+  };
 }
 export interface AuthData {
   jwt: string;

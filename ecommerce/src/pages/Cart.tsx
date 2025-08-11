@@ -5,20 +5,19 @@ import {
   Text,
   VStack,
   HStack,
-  Flex,
   SimpleGrid,
 } from "@chakra-ui/react";
 
 import { useColorModeValue } from "../components/ui/color-mode";
 import { useAppDispatch, useAppSelector } from "../App/store";
-import { LuShoppingBag } from "react-icons/lu";
-import { Link, NavLink } from "react-router";
+import { Link, Navigate } from "react-router";
 import { removeItem } from "../App/features/cartSlice";
 import { closeDialog } from "../App/features/globalSlice";
 import DialogAlert from "../components/ui/Dialog";
 import CartItems from "../components/CartItems";
 import MButton from "../components/ui/MButton";
 import { useCalculateTotal } from "../Hooks/useCalculateTotal";
+import NoResult from "../components/ui/NoResult";
 
 const Cart = () => {
   const bgColor = useColorModeValue("white", "gray.800");
@@ -49,33 +48,7 @@ const Cart = () => {
       </Heading>
 
       {cartItems.length === 0 ? (
-        <Flex
-          width="full"
-          borderWidth={"1px"}
-          borderRadius={"lg"}
-          textAlign="center"
-          direction="column"
-          py={10}
-          alignItems="center"
-          justifyContent="center"
-        >
-          <LuShoppingBag size={200} color="#d4d4d8" />
-          <Text as="h2" fontSize="2xl" color="gray.300">
-            Your cart is empty
-          </Text>
-          <Text fontSize="md" color="gray.300">
-            Please add some items to your cart.
-          </Text>
-          <NavLink to="/shop">
-            <MButton
-              title="Go to Shop"
-              variant="solid"
-              colorScheme="teal"
-              size="md"
-              mt={2}
-            />
-          </NavLink>
-        </Flex>
+      <NoResult title="Your cart is empty" description="Please add some items to your cart." children={<Link  to="/shop">Go to Shop</Link>}/>
       ) : (
         <>
           <SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>

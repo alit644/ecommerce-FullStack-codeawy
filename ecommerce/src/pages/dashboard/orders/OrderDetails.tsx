@@ -7,6 +7,7 @@ import { useParams } from "react-router";
 import { useGetOrderByIdQuery } from "../../../App/services/createOrderApi";
 import TotalPrice from "../../../components/ui/TotalPrice";
 import MBadge from "../../../components/ui/MBadge";
+import PageLoader from "../../../components/ui/PageLoader";
 
 const OrderDetails = ({context}: {context: string}) => {
   const { documentId } = useParams();
@@ -21,7 +22,7 @@ const OrderDetails = ({context}: {context: string}) => {
     quantity: item.quantity,
   }));
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <PageLoader />
   }
 
   if (isError || !orderData) {
@@ -33,7 +34,7 @@ const OrderDetails = ({context}: {context: string}) => {
   const renderTableRows = orderItems?.map((item) => (
     <Table.Row key={item?.product?.id}>
       <Table.Cell>{item?.product?.id}</Table.Cell>
-      <Table.Cell>
+      <Table.Cell w="400px">
         <ItemDetailsCard product={item.product} />
       </Table.Cell>
       <Table.Cell>{item.quantity}</Table.Cell>

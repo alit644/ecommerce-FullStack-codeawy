@@ -13,7 +13,7 @@ import { BsBoxSeam, BsTruck } from "react-icons/bs";
 import { FiRotateCcw, FiShield } from "react-icons/fi";
 import { BiCategory } from "react-icons/bi";
 import { GoInbox, GoHome } from "react-icons/go";
-import { FaDollarSign, FaRegUser, FaStore } from "react-icons/fa";
+import { FaDollarSign, FaStore } from "react-icons/fa";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { TbTruckDelivery } from "react-icons/tb";
 import { RiKey2Line } from "react-icons/ri";
@@ -353,7 +353,6 @@ export const profileLinks = [
   { name: "Orders", href: "/profile", icon: BsBoxSeam },
   { name: "Wishlist", href: "/profile/wishlist", icon: IoIosHeartEmpty },
   { name: "Address", href: "/profile/address", icon: TbTruckDelivery },
-  { name: "Account Detail", href: "/profile/account-detail", icon: FaRegUser },
   { name: "Password", href: "/profile/password", icon: RiKey2Line },
 ];
 

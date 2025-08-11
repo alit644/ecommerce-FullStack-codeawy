@@ -152,23 +152,24 @@ export default function Navbar() {
               </IconButton>
             </Box>
           </RouterLink>
-
-          <IconButton variant={"plain"} size={"md"} color={"gray.500"}>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="34"
-              height="34"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="lucide lucide-heart-icon lucide-heart"
-            >
-              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-            </svg>
-          </IconButton>
+          <RouterLink to={"wishlist"}>
+            <IconButton variant={"plain"} size={"md"} color={"gray.500"}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="34"
+                height="34"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="lucide lucide-heart-icon lucide-heart"
+              >
+                <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+              </svg>
+            </IconButton>
+          </RouterLink>
 
           {isAuthenticated ? (
             <>
@@ -186,9 +187,7 @@ export default function Navbar() {
                     <Menu.Item value="account" fontSize="md">
                       <Link to="/profile">My Account</Link>
                     </Menu.Item>
-                    <Menu.Item value="orders" fontSize="md">
-                      <Link to="/profile/myOrders">Orders</Link>
-                    </Menu.Item>
+
                     <Menu.Separator />
                     <Menu.Item value="logout" fontSize="md">
                       <Button

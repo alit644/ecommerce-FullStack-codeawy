@@ -1,16 +1,29 @@
 import { Box, Image, Text, IconButton, Badge } from "@chakra-ui/react";
 import { FiHeart } from "react-icons/fi";
 import type { ICartProduct, IProductCard } from "../../interfaces";
-import { useAppDispatch } from "../../App/store";
+import { useAppDispatch, useAppSelector } from "../../App/store";
 import { addToCart } from "../../App/features/cartSlice";
 import { Link } from "react-router";
 import { memo, useCallback } from "react";
 import MButton from "./MButton";
+import { addToWishlist } from "../../App/features/wishlistSlice";
+import { FaHeart } from "react-icons/fa";
 
 const ProductCard = ({ data }: { data: IProductCard }) => {
-  const { title, description, price, thumbnail, discount, documentId, brand } =
-    data;
+  const {
+    id,
+    title,
+    description,
+    price,
+    thumbnail,
+    discount,
+    documentId,
+    brand,
+  } = data;
   const dispatch = useAppDispatch();
+  const isInWishlist = useAppSelector((state) =>
+    state.wishlist.wishlistData.find((item) => item.id === id)
+  );
   //! Handler
   const handelAddToCart = useCallback(() => {
     const cartProduct: ICartProduct = {
@@ -26,19 +39,35 @@ const ProductCard = ({ data }: { data: IProductCard }) => {
     dispatch(addToCart(cartProduct));
   }, [data, thumbnail, dispatch]);
 
+  const handelAddToWishlist = useCallback(() => {
+    const wishlistProduct: ICartProduct = {
+      ...data,
+
+      thumbnail: {
+        formats: {
+          small: {
+            url: thumbnail?.formats?.small?.url || "",
+          },
+        },
+      },
+    };
+
+    dispatch(addToWishlist(wishlistProduct));
+  }, [data, thumbnail, dispatch]);
+
   return (
-    <Link to={`/${brand}/${documentId}`}>
-      <Box
-        bg="gray.50"
-        borderRadius="md"
-        overflow="hidden"
-        transition="transform 0.2s"
-        w={{ base: "100%", sm: "200px", md: "220px" }}
-        mx="auto"
-        position="relative"
-        textAlign="center"
-        p={0}
-      >
+    <Box
+      bg="gray.50"
+      borderRadius="md"
+      overflow="hidden"
+      transition="transform 0.2s"
+      w={{ base: "100%", sm: "200px", md: "220px" }}
+      mx="auto"
+      position="relative"
+      textAlign="center"
+      p={0}
+    >
+      <Link to={`/${brand}/${documentId}`}>
         <Box m={2} position="relative">
           <Image
             loading="lazy"
@@ -52,18 +81,6 @@ const ProductCard = ({ data }: { data: IProductCard }) => {
             objectFit="cover"
             bg="gray.100"
           />
-          <IconButton
-            aria-label="إضافة إلى المفضلة"
-            // color={isFavorite ? "red.400" : "gray.400"}
-            variant="subtle"
-            size="sm"
-            position="absolute"
-            top={2}
-            right={2}
-            _hover={{ color: "red.500", bg: "gray.50" }}
-          >
-            <FiHeart />
-          </IconButton>
         </Box>
         <Box
           p={{ base: 2, sm: 4 }}
@@ -102,20 +119,35 @@ const ProductCard = ({ data }: { data: IProductCard }) => {
           <Text fontWeight="bold" color="teal.600" fontSize="2xl">
             ${price}
           </Text>
-
-          <MButton
-            title="Add To Cart"
-            variant="solid"
-            colorScheme="teal"
-            size="sm"
-            borderRadius={"md"}
-            mt={2}
-            w="full"
-            onClick={handelAddToCart}
-          />
+          {/*  */}
         </Box>
+      </Link>
+
+      <Box mt={0} p={2}>
+        <MButton
+          title="Add To Cart"
+          variant="solid"
+          colorScheme="teal"
+          size="sm"
+          borderRadius={"md"}
+          mt={2}
+          w="full"
+          onClick={handelAddToCart}
+        />
       </Box>
-    </Link>
+      <IconButton
+        onClick={handelAddToWishlist}
+        aria-label="إضافة إلى المفضلة"
+        variant="subtle"
+        size="sm"
+        position="absolute"
+        top={3}
+        right={3}
+        _hover={{ color: "red.500", bg: "gray.50" }}
+      >
+        {isInWishlist ? <FaHeart color="red" /> : <FiHeart />}
+      </IconButton>
+    </Box>
   );
 };
 

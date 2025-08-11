@@ -18,11 +18,11 @@ const ItemDetailsCard = ({ product }: IItemDetailsCard) => {
           objectFit="cover"
           borderRadius="md"
         />
-        <VStack alignItems={"start"} gap={0}>
+        <VStack alignItems={"start"} gap={0} w="full">
           <Text fontSize={"sm"} color={"gray.800"} fontWeight={"medium"}>
             {product?.title}
           </Text>
-          <Text fontSize={"sm"} color={"gray.500"}>
+          <Text fontSize={"sm"} color={"gray.500"} lineClamp={2}>
             {product?.description}
           </Text>
         </VStack>

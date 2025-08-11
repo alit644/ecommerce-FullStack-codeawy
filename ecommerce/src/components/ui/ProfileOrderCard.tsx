@@ -1,52 +1,111 @@
-import { Box, Flex, HStack, Image, Text } from "@chakra-ui/react";
-import MButton from "./MButton";
+import {
+  Box,
+  Button,
+  CloseButton,
+  Flex,
+  Image,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
+import type { ICartProduct } from "../../interfaces";
+import { useAppDispatch } from "../../App/store";
+import { removeItemWishlist } from "../../App/features/wishlistSlice";
+import { useCallback } from "react";
+import { addToCart } from "../../App/features/cartSlice";
+import { Link } from "react-router";
+interface IProfileOrderCard {
+  data: ICartProduct;
+}
 
-const ProfileOrderCard = () => {
+const ProfileOrderCard = ({ data }: IProfileOrderCard) => {
+  const dispatch = useAppDispatch();
+  const handelRemoveItemWishlist = useCallback(() => {
+    dispatch(removeItemWishlist(data.id));
+  }, [data.id, dispatch]);
+
+  const handelAddToCart = useCallback(() => {
+    dispatch(addToCart(data));
+  }, [data, dispatch]);
   return (
     <Flex
-    w={{base:"full",md:"80%"}}
       justifyContent={"space-between"}
-      alignItems={"center"}
+      direction={"column"}
+      alignItems={"start"}
       borderWidth={"1px"}
-      p={2}
       gap={2}
-      mb={4}
-      flexWrap={'wrap'}
+      p={2}
+      mb={2}
       borderRadius={"md"}
+      position={"relative"}
     >
-      <HStack gap={4}>
-        <Image
-          loading="lazy"
-          src={`https://images.unsplash.com/photo-1751193978006-4c19abfb5f3f?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`}
-          alt={" "}
-          w={"70px"}
-          h={"80px"}
-          objectFit="cover"
-          borderRadius={"md"}
-        />
-        <Box >
-          <Text fontSize={"md"} fontWeight={"medium"} color={"gray.800"}>
-            Lenovo x240
-          </Text>
-          <Text fontSize={"sm"} color={"gray.500"} lineBreak={"anywhere"}>
-            Lenovo x240 1TB 32 Ram
-          </Text>
-          <MButton  title="Remove Item" size="sm" variant="ghost" colorScheme="red"/>
-        </Box>
-      </HStack>
-      <Text fontSize={"sm"} color={"gray.600"} fontWeight={"bold"}>
-        $1000
+      <Image
+        loading="lazy"
+        src={`${import.meta.env.VITE_BASE_URL}${
+          data.thumbnail.formats.small.url
+        }`}
+        alt={data.title}
+        w="100%"
+        h="180px"
+        objectFit="cover"
+        borderRadius={"md"}
+      />
+      <Box>
+        <Text
+          lineClamp={1}
+          fontSize={"md"}
+          fontWeight={"medium"}
+          color={"gray.800"}
+        >
+          Lenovo x240 Lenovo
+        </Text>
+        <Text
+          lineClamp={2}
+          fontSize={"sm"}
+          color={"gray.500"}
+          lineBreak={"anywhere"}
+        >
+          Lenovo x240 1TB 32 Ram Lorem ipsum dolor, sit amet consectetur
+          adipisicing elit. Aspernatur, a!
+        </Text>
+      </Box>
+      <Text fontSize={"lg"} fontWeight={"bold"} color={"teal.600"}>
+        ${data.price}
       </Text>
 
       {/* actions */}
-      <HStack>
-        <MButton
+      <Stack
+        pr={2}
+        w="full"
+        direction={{ base: "column", md: "row" }}
+        alignItems={"center"}
+      >
+        <Button
+          onClick={handelAddToCart}
+          variant={"solid"}
+          colorScheme={"blue"}
+          size="xs"
+          w={{ base: "full", md: "50%" }}
+        >
+          Add to Cart
+        </Button>
+
+        <Button
           variant={"outline"}
           colorScheme={"blue"}
-          title="View Item"
-          size="sm"
-        />
-      </HStack>
+          size="xs"
+          w={{ base: "full", md: "50%" }}
+        >
+          <Link to={`/product/${data.documentId}`}>View Item</Link>
+        </Button>
+      </Stack>
+      <CloseButton
+        onClick={handelRemoveItemWishlist}
+        position={"absolute"}
+        top={-2}
+        right={-2}
+        variant="solid"
+        size="2xs"
+      />
     </Flex>
   );
 };

@@ -1,4 +1,4 @@
-import { Flex, Text, VStack, Button } from "@chakra-ui/react";
+import { Flex, Button } from "@chakra-ui/react";
 import { profileLinks } from "../../data";
 import { NavLink } from "react-router";
 import React from "react";
@@ -11,14 +11,23 @@ const ProfileSidebar = () => {
   ));
   return (
     <Flex
-      direction="column"
-      w="260px"
+      direction={{ base: "row", md: "column" }}
+      w={{ base: "full", md: "260px" }}
       h="100%"
     >
       {/* Navigation */}
-      <VStack align="stretch" spaceY={1} px={2} mt={4} >
+      <Flex
+        direction={{ base: "row", md: "column" }}
+        alignItems={{ base: "center", md: "start" }}
+        justifyContent={{ base: "space-between", md: "stretch" }}
+        align={{ base: "center", md: "stretch" }}
+        spaceY={{ base: 1, md: 2 }}
+        px={2}
+        mt={4}
+        w={{ base: "full", md: "260px" }}
+      >
         {renderLinks}
-      </VStack>
+      </Flex>
     </Flex>
   );
 };
@@ -40,7 +49,7 @@ function SidebarButton({
     <NavLink
       to={href}
       className={isActive ? "active" : ""}
-      style={{ border: "none" }}
+      style={{ border: "none", width: "100%" }}
       end
     >
       <Button
@@ -50,7 +59,7 @@ function SidebarButton({
         colorScheme={isActive ? "blue" : undefined}
         justifyContent="flex-start"
         color="gray.400"
-        w="100%"
+        w="full"
         fontWeight="normal"
         fontSize="md"
         borderRadius="md"

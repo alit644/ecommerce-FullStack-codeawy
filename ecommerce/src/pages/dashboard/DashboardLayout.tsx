@@ -12,7 +12,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 // import icone
-import { FaSearch, FaStore } from "react-icons/fa";
+import {  FaStore } from "react-icons/fa";
 import { GoPackage } from "react-icons/go";
 import { Link, NavLink, Outlet } from "react-router";
 import { dashboardLinks } from "../../data";
@@ -23,13 +23,15 @@ import { useAppDispatch } from "../../App/store";
 import { openDrawer } from "../../App/features/globalSlice";
 import { Tooltip } from "../../components/ui/tooltip";
 import { useAppSelector } from "../../App/store";
-import MInput from "../../components/ui/MInput";
+import cookieManager from "../../utils/cookieManager";
+import type { IUserInfo } from "../../interfaces";
 const renderLinks = dashboardLinks.map((link) => (
   <SidebarButton key={link.name} icon={link.icon} href={link.href}>
     {link.name}
   </SidebarButton>
 ));
 export default function SidebarLayout() {
+ const user = cookieManager.get<IUserInfo>("user");
   const dispatch = useAppDispatch();
   const isOpenDrawer = useAppSelector((state) => state.global.isOpenDrawer);
   return (
@@ -43,13 +45,14 @@ export default function SidebarLayout() {
           // bg="gray.800"
           color="gray.500"
         >
-          <AppSidebar />
+          <AppSidebar username={user?.username || ""} email={user?.email || ""}/>
         </Box>
 
         {/* Main content and Outlet */}
         <Flex direction="column" flex="1" overflow="auto">
           <Flex
             as="header"
+            justify="right"
             h="60px"
             align="center"
             gap={4}
@@ -68,35 +71,7 @@ export default function SidebarLayout() {
               onClick={() => dispatch(openDrawer())}
               variant="ghost"
             />
-            <Box flex="1">
-              <form>
-                <Box position="relative" w="100%">
-                  <Box
-                    position="absolute"
-                    left="10px"
-                    top="50%"
-                    transform="translateY(-50%)"
-                    zIndex={1}
-                  >
-                    <FaSearch size={16} color="#ccc" />
-                  </Box>
-                  <MInput
-                    type="search"
-                    placeholder="Search products..."
-                    pl="32px"
-                    bg="white"
-                    maxW={{ md: "66%", lg: "33%" }}
-                    _placeholder={{ color: "gray.500" }}
-                    borderColor="gray.200"
-                    _focus={{
-                      shadow: "0 0 4px 0 rgb(0, 128, 128)",
-                      borderColor: "teal.500",
-                    }}
-                    borderRadius="md"
-                  />
-                </Box>
-              </form>
-            </Box>
+            
             <Link to="/">
               <Tooltip content="Store">
                 <IconButton
@@ -110,8 +85,7 @@ export default function SidebarLayout() {
               </Tooltip>
             </Link>
             <Avatar.Root size="sm">
-              <Avatar.Fallback name="JD" />
-              <Avatar.Image src="/placeholder.svg?height=32&width=32" />
+              <Avatar.Fallback name={user?.username || ""} />
             </Avatar.Root>
           </Flex>
           <Box as="main" flex="1" p={{ base: 4, md: 6 }}>
@@ -123,14 +97,14 @@ export default function SidebarLayout() {
       <DrawerComponent
         isOpenDrawer={isOpenDrawer}
         title="Dashboard Menu"
-        children={<AppSidebar />}
+        children={<AppSidebar username={user?.username || ""} email={user?.email || ""}/>}
         action={false}
       />
     </>
   );
 }
 
-function AppSidebar() {
+function AppSidebar({ username, email }: { username: string; email: string }) {
   return (
     <Flex direction="column" h="100%" >
       {/* Header */}
@@ -168,15 +142,14 @@ function AppSidebar() {
         <HStack justify="space-between">
           <HStack>
             <Avatar.Root size="sm">
-              <Avatar.Fallback name="JD" />
-              <Avatar.Image src="/placeholder.svg?height=32&width=32" />
+              <Avatar.Fallback name={username || ""} />
             </Avatar.Root>
             <Box>
               <Text fontSize="sm" fontWeight="medium">
-                John Doe
+                {username || ""}
               </Text>
               <Text fontSize="xs" color="gray.400">
-                john@example.com
+                {email || ""}
               </Text>
             </Box>
           </HStack>

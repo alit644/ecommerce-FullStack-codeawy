@@ -6,7 +6,7 @@ interface MButtonProps extends React.ComponentProps<typeof Button> {
   title: string;
   variant: "ghost" | "outline" | "plain" | "solid" | "subtle" | "surface";
   type?: "button" | "submit" | "reset";
-  w?: "full" | "fit-content";
+  w?: "full" | "fit-content" | "50%";
   isLoading?: boolean;
   icon?: React.ReactNode;
   

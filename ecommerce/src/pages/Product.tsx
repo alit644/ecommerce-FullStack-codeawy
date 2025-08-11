@@ -11,12 +11,12 @@ import {
   Flex,
   Button,
   Icon,
+  Badge,
 } from "@chakra-ui/react";
 import { useCallback, useMemo, useState } from "react";
 import { useParams } from "react-router";
 import type { ICartProduct, IProductCard } from "../interfaces";
 import { FaStar } from "react-icons/fa";
-import ProductInformationCard from "../components/ui/ProductInformationCard";
 import ProductCard from "../components/ui/ProductCard";
 import MainTitle from "../components/MainTitle";
 import { ProductsGrid } from "../components/products/ProductsGrid";
@@ -26,6 +26,8 @@ import { fetchProduct, fetchProductsByCategory } from "../utils/fetchingData";
 import { useAppDispatch } from "../App/store";
 import { addToCart } from "../App/features/cartSlice";
 import MButton from "../components/ui/MButton";
+import PageLoader from "../components/ui/PageLoader";
+import { addToWishlist } from "../App/features/wishlistSlice";
 
 //TODO: add loading and error states
 
@@ -84,6 +86,20 @@ const Product = () => {
     dispatch(addToCart(cartProduct));
   }, [product, selectedImage, dispatch]);
 
+  //!: add to wishlist
+  const handelAddToWishlist = useCallback(() => {
+    const wishlistProduct: ICartProduct = {
+      ...product,
+      thumbnail: {
+        formats: {
+          small: {
+            url: product?.images?.[selectedImage]?.formats?.small?.url || "",
+          },
+        },
+      },
+    };
+    dispatch(addToWishlist(wishlistProduct));
+  }, [product, selectedImage, dispatch]);
   //!: Render Data
   const renderProducts = () => {
     return relatedProducts?.map((product: IProductCard) => (
@@ -99,17 +115,14 @@ const Product = () => {
       </Text>
     </Flex>
   ));
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <PageLoader />;
   if (error) return <div>Error: {error.message}</div>;
 
   return (
     <Container maxW="container.xl" py={8}>
       <SimpleGrid columns={{ base: 1, md: 2 }} gap={4}>
         {/* Product Images */}
-        <Stack
-          align={{ base: "center", md: "start" }}
-          direction={{ base: "column", md: "row-reverse" }}
-        >
+        <Stack align={{ base: "center", md: "start" }} direction={"column"}>
           <Image
             src={`${import.meta.env.VITE_BASE_URL}${
               product?.images?.[selectedImage]?.formats?.small?.url
@@ -117,13 +130,13 @@ const Product = () => {
             alt={product?.title}
             borderRadius="lg"
             boxShadow="lg"
-            maxH="500px"
+            h={{ base: "300px", md: "400px" }}
             w="100%"
             objectFit="cover"
           />
 
           {/* Image Thumbnails */}
-          <Flex gap={2} direction={{ base: "row", md: "column" }}>
+          <Flex gap={2} direction={"row"}>
             {product.images?.map((image, index) => (
               <Box
                 cursor="pointer"
@@ -163,43 +176,19 @@ const Product = () => {
           </Heading>
           <HStack spaceX={2}>
             {/* rating */}
-            <HStack spaceX={0}>
-              {[1, 2, 3, 4, 5].map((star) => (
-                <Icon
-                  fontSize={"2xl"}
-                  key={star}
-                  as={FaStar}
-                  color={
-                    star <= (product.rating || 0) ? "yellow.400" : "gray.300"
-                  }
-                />
-              ))}
+            <HStack spaceX={0} bg={"gray.100"} borderRadius="md" p={1}>
+              <Icon fontSize={"lg"} as={FaStar} color={"gray.300"} />
+              <Text color="gray.600">{product.rating} Reviews </Text>
             </HStack>
-            <Text color="gray.600">{`(${product.rating})`}</Text>
+            <Badge colorPalette={product.stock > 0 ? "green" : "red"}>
+              {product.stock > 0 ? "In Stock" : "Out of Stock"}
+            </Badge>
           </HStack>
           {/* description */}
           <Text fontSize="lg" mt={3} color="gray.600">
             {product.description}
           </Text>
 
-          {/* Product Information*/}
-          <Flex direction={"row"} flexWrap={"wrap"} gap={2} w={"full"}>
-            <ProductInformationCard label="Brand" value={product.brand || ""} />
-            <ProductInformationCard label="Stock" value={product.stock || ""} />
-
-            {product.product_option?.color && (
-              <ProductInformationCard
-                label="Color"
-                value={product.product_option?.color || ""}
-              />
-            )}
-            {product.product_option?.storage && (
-              <ProductInformationCard
-                label="Storage"
-                value={product.product_option?.storage || ""}
-              />
-            )}
-          </Flex>
           {/* price */}
           <Text fontSize="4xl" color="blackAlpha.900" fontWeight="bolder">
             ${product.price}
@@ -218,6 +207,7 @@ const Product = () => {
                 transform: "translateY(-3px)",
                 boxShadow: "lg",
               }}
+              onClick={handelAddToWishlist}
             >
               Add To Wishlist
             </Button>
@@ -244,7 +234,7 @@ const Product = () => {
 
         {/* related products */}
         <VStack alignItems={"start"}>
-          <MainTitle title="More From This Category" isArrow={false} />
+          <MainTitle title="You might also like" isArrow={false} />
           <ProductsGrid
             renderProducts={renderProducts() || []}
             totalProducts={relatedProducts?.length || 0}
