@@ -21,7 +21,7 @@ const RxHamburgerMenu = lazy(() =>
   }))
 );
 import { IoIosClose } from "react-icons/io";
-import MButton from "./Button";
+import MButton from "./MButton";
 import { Link, Link as RouterLink } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../App/store";
 import { cartSelector } from "../../App/features/cartSlice";
@@ -196,7 +196,7 @@ export default function Navbar() {
                         variant="outline"
                         onClick={() => {
                           dispatch(logout());
-                          window.location.reload();
+                          window.location.href = "/";
                         }}
                       >
                         Logout

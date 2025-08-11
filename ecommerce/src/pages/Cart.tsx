@@ -17,7 +17,7 @@ import { removeItem } from "../App/features/cartSlice";
 import { closeDialog } from "../App/features/globalSlice";
 import DialogAlert from "../components/ui/Dialog";
 import CartItems from "../components/CartItems";
-import MButton from "../components/ui/Button";
+import MButton from "../components/ui/MButton";
 import { useCalculateTotal } from "../Hooks/useCalculateTotal";
 
 const Cart = () => {

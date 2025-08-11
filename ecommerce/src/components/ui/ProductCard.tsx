@@ -5,7 +5,7 @@ import { useAppDispatch } from "../../App/store";
 import { addToCart } from "../../App/features/cartSlice";
 import { Link } from "react-router";
 import { memo, useCallback } from "react";
-import MButton from "./Button";
+import MButton from "./MButton";
 
 const ProductCard = ({ data }: { data: IProductCard }) => {
   const { title, description, price, thumbnail, discount, documentId, brand } =

@@ -10,9 +10,13 @@ const ProfileSidebar = () => {
     </SidebarButton>
   ));
   return (
-    <Flex direction="column" h="100%">
+    <Flex
+      direction="column"
+      w="260px"
+      h="100%"
+    >
       {/* Navigation */}
-      <VStack  align="stretch" spaceY={1} px={2} mt={4}>
+      <VStack align="stretch" spaceY={1} px={2} mt={4} >
         {renderLinks}
       </VStack>
     </Flex>
@@ -49,7 +53,6 @@ function SidebarButton({
         w="100%"
         fontWeight="normal"
         fontSize="md"
-
         borderRadius="md"
         _hover={{ bg: "gray.100", color: "black" }}
         px={3}

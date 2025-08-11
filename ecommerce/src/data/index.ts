@@ -1,4 +1,5 @@
 import type {
+ IChangePasswordInput,
   ICheckoutInput,
   IDashboardLink,
   IDashboardOverview,
@@ -12,7 +13,10 @@ import { BsBoxSeam, BsTruck } from "react-icons/bs";
 import { FiRotateCcw, FiShield } from "react-icons/fi";
 import { BiCategory } from "react-icons/bi";
 import { GoInbox, GoHome } from "react-icons/go";
-import { FaDollarSign, FaStore } from "react-icons/fa";
+import { FaDollarSign, FaRegUser, FaStore } from "react-icons/fa";
+import { IoIosHeartEmpty } from "react-icons/io";
+import { TbTruckDelivery } from "react-icons/tb";
+import { RiKey2Line } from "react-icons/ri";
 
 export const tabs = [
   { label: "Featured Products", value: "featured" },
@@ -346,8 +350,46 @@ export const checkoutData: ICheckoutInput[][] = [
 ];
 
 export const profileLinks = [
-  { name: "Orders", href: "/profile", icon: GoInbox },
-  { name: "Wishlist", href: "/profile/wishlist", icon: BiCategory },
-  { name: "Address", href: "/profile/address", icon: BsBoxSeam },
-  { name: "Account Detail", href: "/profile/account-detail", icon: FaStore },
+  { name: "Orders", href: "/profile", icon: BsBoxSeam },
+  { name: "Wishlist", href: "/profile/wishlist", icon: IoIosHeartEmpty },
+  { name: "Address", href: "/profile/address", icon: TbTruckDelivery },
+  { name: "Account Detail", href: "/profile/account-detail", icon: FaRegUser },
+  { name: "Password", href: "/profile/password", icon: RiKey2Line },
+];
+
+export const changePasswordData:IChangePasswordInput[] = [
+  {
+    id: "currentPassword",
+    name: "currentPassword",
+    type: "password",
+    placeholder: "Enter your current password",
+    label: "Current Password",
+    validation: {
+     minLength: 6,
+     maxLength: 20,
+    },
+  },
+  {
+    id: "password",
+    name: "password",
+    type: "password",
+    placeholder: "Enter your password",
+    label: "Password",
+    validation: {
+      minLength: 6,
+      maxLength: 20,
+      
+    },
+  },
+  {
+    id: "passwordConfirmation",
+    name: "passwordConfirmation",
+    type: "password",
+    placeholder: "Confirm your password",
+    label: "Confirm Password",
+    validation: {
+      minLength: 6,
+      maxLength: 20,
+    },
+  },
 ];

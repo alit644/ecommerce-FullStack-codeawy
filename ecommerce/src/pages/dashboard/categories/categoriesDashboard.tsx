@@ -17,7 +17,7 @@ import { useState } from "react";
 import { openDialog, closeDialog } from "../../../App/features/globalSlice";
 import SearchQuery from "../../../components/SearchQuery";
 import Error from "../../../components/Error/Error";
-import MButton from "../../../components/ui/Button";
+import MButton from "../../../components/ui/MButton";
 import { Link } from "react-router";
 import DialogAlert from "../../../components/ui/Dialog";
 import { toaster } from "../../../components/ui/toaster";

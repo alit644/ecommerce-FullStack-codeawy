@@ -14,7 +14,7 @@ import { LOGIN_FORM } from "../../data";
 import { useAppDispatch, useAppSelector } from "../../App/store";
 import { loginUser } from "../../App/features/loginSlice";
 import { Toaster, toaster } from "../../components/ui/toaster";
-import MButton from "../../components/ui/Button";
+import MButton from "../../components/ui/MButton";
 import cookieManager from "../../utils/cookieManager";
 
 export interface IFormInput {

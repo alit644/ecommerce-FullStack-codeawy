@@ -301,3 +301,19 @@ export interface ICheckoutInput {
     max?: number;
   };
 }
+
+export interface IChangePasswordInput {
+  id: string;
+  name: "currentPassword" | "password" | "passwordConfirmation";
+  type: "text" | "email" | "password" | "number" | "tel" | "url" | "search";
+  placeholder: string;
+  label: string;
+  validation: {
+    required?: boolean;
+    pattern?: RegExp;
+    minLength?: number;
+    maxLength?: number;
+    min?: number;
+    max?: number;
+  };
+}

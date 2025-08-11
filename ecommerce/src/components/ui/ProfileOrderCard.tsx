@@ -1,68 +1,52 @@
-import { Box, Flex, HStack, Image, Text, Badge } from "@chakra-ui/react";
-import MButton from "./Button";
-import type { IOrder, IProductCard } from "../../interfaces";
-interface IProfileOrderCard {
-  order: any;
-  status: string
-  id: string
-} 
-const ProfileOrderCard = ({order, status, id}: IProfileOrderCard) => {
+import { Box, Flex, HStack, Image, Text } from "@chakra-ui/react";
+import MButton from "./MButton";
 
-
-
+const ProfileOrderCard = () => {
   return (
     <Flex
+    w={{base:"full",md:"80%"}}
       justifyContent={"space-between"}
       alignItems={"center"}
-      // borderWidth={"1px"}
-      borderBottomWidth={"1px"}
+      borderWidth={"1px"}
       p={2}
+      gap={2}
       mb={4}
+      flexWrap={'wrap'}
       borderRadius={"md"}
     >
       <HStack gap={4}>
         <Image
           loading="lazy"
-          src={
-            `${import.meta.env.VITE_BASE_URL}${order.product?.thumbnail?.formats?.small?.url}`
-          }
+          src={`https://images.unsplash.com/photo-1751193978006-4c19abfb5f3f?q=80&w=387&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D`}
           alt={" "}
           w={"70px"}
           h={"80px"}
           objectFit="cover"
           borderRadius={"md"}
         />
-        <Box>
+        <Box >
           <Text fontSize={"md"} fontWeight={"medium"} color={"gray.800"}>
-            {order.product.title}
+            Lenovo x240
           </Text>
           <Text fontSize={"sm"} color={"gray.500"} lineBreak={"anywhere"}>
-            {order.product.description}
+            Lenovo x240 1TB 32 Ram
           </Text>
-          <Text fontSize={"sm"} color={"gray.600"} fontWeight={"bold"}>
-            ${order.product.price}
-          </Text>
+          <MButton  title="Remove Item" size="sm" variant="ghost" colorScheme="red"/>
         </Box>
       </HStack>
-      {/* order id */}
       <Text fontSize={"sm"} color={"gray.600"} fontWeight={"bold"}>
-        Order ID : {id}
+        $1000
       </Text>
-      {/* Status */}
-      <Badge colorScheme="red" variant="surface" colorPalette={"blue"}>
-       {status}
-      </Badge>
 
       {/* actions */}
-      {/* <HStack>
+      <HStack>
         <MButton
           variant={"outline"}
           colorScheme={"blue"}
           title="View Item"
           size="sm"
         />
-       
-      </HStack> */}
+      </HStack>
     </Flex>
   );
 };

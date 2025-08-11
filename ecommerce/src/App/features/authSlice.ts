@@ -31,9 +31,9 @@ export const authSlice = createSlice({
     },
     logout: (state) => {
       state.isAuthenticated = false;
-      // cookieManager.remove("jwtToken");
       cookieManager.remove("jwt");
       cookieManager.remove("user");
+      cookieManager.remove("jwtToken");
     },
   },
 });

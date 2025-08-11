@@ -3,7 +3,7 @@ import MainTitle from "../../../components/MainTitle";
 import MInput from "../../../components/ui/MInput";
 import MTextarea from "../../../components/ui/Textarea ";
 import MFileUpload from "../../../components/ui/FileUpload";
-import MButton from "../../../components/ui/Button";
+import MButton from "../../../components/ui/MButton";
 import { FaPlus } from "react-icons/fa";
 import FormGroup from "../../../components/ui/form/FormGroup";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";

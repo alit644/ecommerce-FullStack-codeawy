@@ -4,13 +4,13 @@ import { useAppSelector } from "../../App/store";
 import { useState } from "react";
 import SearchQuery from "../../components/SearchQuery";
 import Error from "../../components/Error/Error";
-import { useGetUserOrdersQuery } from "../../App/services/createOrderApi";
 import type { IUserInfo } from "../../interfaces";
 import cookieManager from "../../utils/cookieManager";
 import SortMenu from "../../components/ui/SortMenu";
 import { tableOrderUserColumns } from "../../data";
 import TablePagination from "../../components/ui/Table/TablePagination";
 import OrdersTableRows from "../../components/ui/TableRows";
+import { useGetUserOrdersQuery } from "../../App/services/createProfileApi";
 
 const Profile = () => {
   const [value, setValue] = useState("asc");

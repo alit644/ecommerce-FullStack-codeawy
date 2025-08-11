@@ -14,7 +14,7 @@ import { REGISTER_FORM } from "../../data";
 import { useAppDispatch, useAppSelector } from "../../App/store";
 import { Toaster, toaster } from "../../components/ui/toaster";
 import { registerUser } from "../../App/features/registerSlice";
-import MButton from "../../components/ui/Button";
+import MButton from "../../components/ui/MButton";
 import cookieManager from "../../utils/cookieManager";
 
 export interface IFormInput {

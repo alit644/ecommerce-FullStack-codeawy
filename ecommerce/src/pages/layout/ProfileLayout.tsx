@@ -12,6 +12,13 @@ const ProfileLayout = () => {
           w="260px"
           bg="white"
           color="gray.500"
+          position="sticky"
+          top={0}
+          bottom={0}
+          
+          overflow="hidden"
+     
+
         >
           <ProfileSidebar />
         </GridItem>

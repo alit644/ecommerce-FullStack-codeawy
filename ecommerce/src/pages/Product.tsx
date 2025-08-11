@@ -25,7 +25,7 @@ import { useFetching } from "../Hooks/useFetching";
 import { fetchProduct, fetchProductsByCategory } from "../utils/fetchingData";
 import { useAppDispatch } from "../App/store";
 import { addToCart } from "../App/features/cartSlice";
-import MButton from "../components/ui/Button";
+import MButton from "../components/ui/MButton";
 
 //TODO: add loading and error states
 

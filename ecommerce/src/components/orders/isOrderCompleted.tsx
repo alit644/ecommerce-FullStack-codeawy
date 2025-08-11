@@ -1,6 +1,6 @@
 import { Alert, Box, Heading, Text, VStack } from "@chakra-ui/react";
 import { BsBox2Heart } from "react-icons/bs";
-import MButton from "../ui/Button";
+import MButton from "../ui/MButton";
 import { Navigate, useLocation } from "react-router";
 import { useNavigate } from "react-router";
 

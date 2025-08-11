@@ -13,7 +13,7 @@ import AccordionComponent from "./Accordion/Accordion";
 import { useMemo } from "react";
 import Error from "./Error/Error";
 import SkeletonCard from "./ui/Skeleton";
-import MButton from "./ui/Button";
+import MButton from "./ui/MButton";
 
 //TODO: add filter price
 

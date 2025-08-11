@@ -12,6 +12,7 @@ import filtersSlice from "./features/filtersSlice";
 import { createProductApi } from "./services/createProductApi";
 import { createCategoryApi } from "./services/createCategoryApi";
 import { createOrderApi } from "./services/createOrderApi";
+import { createProfileApi } from "./services/createProfileApi";
 
 const persistConfig = {
   key: "cart",
@@ -31,12 +32,14 @@ export const store = configureStore({
     [createProductApi.reducerPath]: createProductApi.reducer,
     [createCategoryApi.reducerPath]: createCategoryApi.reducer,
     [createOrderApi.reducerPath]: createOrderApi.reducer,
+    [createProfileApi.reducerPath]: createProfileApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       createProductApi.middleware,
       createCategoryApi.middleware,
-      createOrderApi.middleware
+      createOrderApi.middleware,
+      createProfileApi.middleware
     ),
 });
 

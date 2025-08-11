@@ -2,7 +2,7 @@ import { Box, Container, Flex, Heading, HStack } from "@chakra-ui/react";
 import MainTitle from "../components/MainTitle";
 import FormGroup from "../components/ui/form/FormGroup";
 import MInput from "../components/ui/MInput";
-import MButton from "../components/ui/Button";
+import MButton from "../components/ui/MButton";
 import TotalPrice from "../components/ui/TotalPrice";
 import CheckoutCartCard from "../components/ui/CheckoutCartCard";
 import { useAppDispatch, useAppSelector } from "../App/store";

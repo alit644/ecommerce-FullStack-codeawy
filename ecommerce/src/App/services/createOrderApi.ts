@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import cookieManager from "../../utils/cookieManager";
-import type { IOrder, IProductCard, OrdersResponse } from "../../interfaces";
+import type { IOrder, OrdersResponse } from "../../interfaces";
 import qs from "qs";
 export const createOrderApi = createApi({
   reducerPath: "createOrderApi",
@@ -153,81 +153,15 @@ export const createOrderApi = createApi({
         { type: "orders", id: result?.data?.documentId },
       ],
     }),
-    getUserOrders: builder.query<
-      OrdersResponse,
-      {
-        page: number;
-        pageSize: number;
-        valueSort?: string;
-        query?: string;
-        userID: number;
-      }
-    >({
-      query: ({ page, pageSize, valueSort, query, userID }) => {
-        const queryString = qs.stringify(
-          {
-            populate: {
-              items: {
-                populate: {
-                  product: {
-                    populate: ["thumbnail"],
-                  },
-                },
-              },
-            },
-            pagination: {
-              page,
-              pageSize,
-            },
-            sort: valueSort ? ["createdAt:" + valueSort] : undefined,
-          },
-          { encodeValuesOnly: true }
-        );
-        const searchQuery = qs.stringify({
-          filters: {
-            $or: [
-              {
-                id: {
-                  $contains: query,
-                },
-              },
-              {
-                statuss: {
-                  $contains: query,
-                },
-              },
-            ],
-            user: {
-              id: {
-                $eq: userID,
-              },
-            },
-          },
-        });
-        return {
-          url: `/orders?${queryString}&${searchQuery}`,
-          method: "GET",
-        };
-      },
-      providesTags: (result) =>
-        result
-          ? [
-              ...result.data.map(({ id }) => ({
-                type: "orders" as const,
-                id,
-              })),
-              { type: "orders", id: "LIST" },
-            ]
-          : [{ type: "orders", id: "LIST" }],
-
-      keepUnusedDataFor: 300,
-    }),
+    
+  
   }),
 });
+
 export const {
   useGetDashboardOrdersQuery,
   useGetOrderByIdQuery,
   useUpdateOrderStatusMutation,
   useCreateOrderMutation,
-  useGetUserOrdersQuery,
+ 
 } = createOrderApi;

@@ -13,7 +13,7 @@ import {
 import { useProductFilters } from "../../../Hooks/useProductFilters";
 import SearchQuery from "../../../components/SearchQuery";
 import Error from "../../../components/Error/Error";
-import MButton from "../../../components/ui/Button";
+import MButton from "../../../components/ui/MButton";
 import { Link } from "react-router";
 const DialogAlert = lazy(() => import("../../../components/ui/Dialog"));
 import {

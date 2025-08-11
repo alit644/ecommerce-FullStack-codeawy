@@ -69,7 +69,11 @@ export const schemaAddCategory = yup
 
 export const schemaCheckout = yup
   .object({
-    streetAddress: yup.string().required("Street Address is required").min(5).max(100),
+    streetAddress: yup
+      .string()
+      .required("Street Address is required")
+      .min(5)
+      .max(100),
     city: yup.string().required("City is required").min(3).max(50),
     state: yup.string().required("State is required").min(3).max(50),
     phone: yup
@@ -77,5 +81,22 @@ export const schemaCheckout = yup
       .required()
       .matches(/^\+?[0-9\s\-().]{7,20}$/, "Phone must be a valid phone number"),
     email: yup.string().required("Email is required").email(),
+  })
+  .required();
+
+export const schemaChangePassword = yup
+  .object({
+   currentPassword: yup
+      .string()
+      .required("Current Password is required")
+      .min(6)
+      .max(20),
+    password: yup.string().required("Password is required").min(6).max(20),
+    passwordConfirmation: yup
+      .string()
+      .required("Confirm Password is required")
+      .min(6)
+      .max(20)
+      .oneOf([yup.ref("password")], "Passwords do not match"),
   })
   .required();

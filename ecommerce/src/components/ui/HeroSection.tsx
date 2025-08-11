@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { memo  } from "react";
 import { Link } from "react-router";
-import MButton from "./Button";
+import MButton from "./MButton";
 
 const HeroSection = () => {
   return (

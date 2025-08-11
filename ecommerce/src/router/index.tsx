@@ -34,6 +34,9 @@ const IsOrderCompleted = lazy(
 );
 const MyOrders = lazy(() => import("../pages/Profile/myOrders"));
 const ProfileLayout = lazy(() => import("../pages/layout/ProfileLayout"));
+const Wishlist = lazy(() => import("../pages/Profile/Wishlist"));
+const Address = lazy(() => import("../pages/Profile/Address"));
+const Password = lazy(() => import("../pages/Profile/Password"));
 import PageLoader from "../components/ui/PageLoader";
 const withSuspense = (Component: LazyExoticComponent<() => JSX.Element>) => (
   <Suspense fallback={<PageLoader />}>{<Component />}</Suspense>
@@ -111,6 +114,14 @@ export const router = createBrowserRouter([
             Component: () => withSuspense(MyOrders),
           },
           {
+            path: "wishlist",
+            Component: () => withSuspense(Wishlist),
+          },
+          {
+            path: "address",
+            Component: () => withSuspense(Address),
+          },
+          {
             path: "orders/order-details/:documentId",
             element: (
               <Suspense fallback={<PageLoader />}>
@@ -118,6 +129,11 @@ export const router = createBrowserRouter([
               </Suspense>
             ),
           },
+          {
+            path: "password",
+            Component: () => withSuspense(Password),
+          },
+
         ],
       },
      
