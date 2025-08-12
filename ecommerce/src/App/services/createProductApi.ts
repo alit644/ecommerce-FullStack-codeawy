@@ -139,6 +139,44 @@ export const createProductApi = createApi({
       },
       invalidatesTags: ["products"],
     }),
+    filterGlobalProducts: builder.query({
+      query: ({ query }: { query: string }) => {
+        const searchQuery = qs.stringify({
+          filters: {
+            $or: [
+              {
+                title: {
+                  $contains: query,
+                },
+              },
+              {
+                category: {
+                  title: {
+                    $contains: query,
+                  },
+                },
+              },
+            ],
+          },
+        }, { encodeValuesOnly: true });
+        return {
+          url: `/products?populate=*&${searchQuery}`,
+          method: "GET",
+        };
+      },
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.data.map(({ id }: { id: string }) => ({
+                type: "products" as const,
+                id,
+              })),
+              { type: "products", id: "LIST" },
+            ]
+          : [{ type: "products", id: "LIST" }],
+
+      keepUnusedDataFor: 300,
+    }),
   }),
 });
 export const {
@@ -148,4 +186,5 @@ export const {
   useGetDashboardProductsQuery,
   useUpdateProductMutation,
   useDeleteImageMutation,
+  useFilterGlobalProductsQuery,
 } = createProductApi;

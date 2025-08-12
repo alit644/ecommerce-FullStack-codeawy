@@ -104,7 +104,7 @@ const ProductsDashboard = () => {
   };
 
 
-  if (isError) return <Error description="Something went wrong" />;
+  if (isError) return <Error status={500} message="Server error. Please try again later." height="100vh" />;
 
   return (
     <>

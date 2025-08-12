@@ -98,7 +98,7 @@ const OrderProgress = ({ statuss, updatedAt, context }: IOrderProgress) => {
       <Box w={"full"} mt={6}>
         <MProgress value={statuss === "cancelled" ? 100 : statuss === "completed" ? 100 : progressValue} bg={statuss === "completed" ? "green" : statuss === "cancelled" ? "red" : "black"}/>
       </Box>
-      <Flex justifyContent={"space-between"} alignItems={"center"}>
+      <Flex justifyContent={"space-between"} alignItems={"center"} gap={2} flexWrap={'wrap'}>
         <CustomerInformationCard
           mt={3}
           mb={0}

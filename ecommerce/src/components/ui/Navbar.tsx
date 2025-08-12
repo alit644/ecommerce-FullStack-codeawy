@@ -1,4 +1,4 @@
-import React, { lazy } from "react";
+import React, { lazy, useState } from "react";
 import {
   Box,
   Flex,
@@ -30,6 +30,7 @@ import cookieManager from "../../utils/cookieManager";
 import type { IUserInfo } from "../../interfaces";
 import { logout } from "../../App/features/authSlice";
 import MAvatar from "./MAvatar";
+import SearchQueryPage from "../SearchQueryPage";
 
 const Links = [
   { name: "Home", href: "/", isAuth: false },
@@ -78,6 +79,9 @@ export default function Navbar() {
   const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
   const dispatch = useAppDispatch();
   const { cartData } = useAppSelector(cartSelector);
+
+  
+
   return (
     <Box
       bg="white"
@@ -109,6 +113,8 @@ export default function Navbar() {
             ))}
           </HStack>
         </HStack>
+        <SearchQueryPage />
+
         <Spacer />
         {/* Auth */}
         <Flex alignItems={"center"} spaceX={2}>

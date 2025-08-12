@@ -1,61 +1,61 @@
 import React from "react";
-import { Box, Text, Button, VStack } from "@chakra-ui/react";
-import { useColorModeValue } from "../ui/color-mode";
-
-interface ErrorProps {
-  code?: number;
-  message?: string;
-  description?: string;
+import { Box, Text, Icon } from "@chakra-ui/react";
+import { FaServer, FaBan } from "react-icons/fa";
+import { CiWarning } from "react-icons/ci";
+import { IoMdInformationCircleOutline } from "react-icons/io";
+import type { IconType } from "react-icons/lib";
+import MButton from "../ui/MButton";
+interface IErrorType {
+  color: string;
+  icon: IconType;
+  defaultMsg: string;
 }
+const errorTypes: Record<number, IErrorType> = {
+  404: {
+    color: "orange.400",
+    icon: CiWarning,
+    defaultMsg: "Oops! Page not found.",
+  },
+  500: {
+    color: "red.500",
+    icon: FaServer,
+    defaultMsg: "Server error. Please try again later.",
+  },
+  401: {
+    color: "blue.400",
+    icon: IoMdInformationCircleOutline,
+    defaultMsg: "Unauthorized. Please login.",
+  },
+};
+const defaultError: IErrorType = {
+  color: "gray.500",
+  icon: IoMdInformationCircleOutline,
+  defaultMsg: "An unexpected error occurred.",
+};
 
-const Error: React.FC<ErrorProps> = ({
-  code = 404,
-  message = "Not Found",
-  description = "The page you are looking for doesn't exist.",
-}) => {
-  const bgColor = useColorModeValue("gray.50", "gray.900");
+const Error = ({ status, message , height = "300px" }: { status: number; message: string , height?: string }) => {
+  const errorData = errorTypes[status] || defaultError;
 
   return (
     <Box
-      minH="200px"
+      w="full"
+      h={height}
       display="flex"
       flexDirection="column"
       alignItems="center"
       justifyContent="center"
-      bg={bgColor}
-      py={8}
+      gap={3}
+      p={4}
+      bg={`${errorData.color}20`}
+      borderRadius="md"
+      border={`1px solid ${errorData.color}`}
     >
-      <VStack spaceY={4} alignItems="center" textAlign="center">
-        <Text
-          fontSize={{ base: "6rem", md: "8rem" }}
-          fontWeight="bold"
-          color={useColorModeValue("gray.800", "white")}
-        >
-          {code}
-        </Text>
-        <Text
-          fontSize="2xl"
-          fontWeight="semibold"
-          color={useColorModeValue("gray.700", "gray.200")}
-        >
-          {message}
-        </Text>
-        <Text fontSize="lg" color={useColorModeValue("gray.600", "gray.400")}>
-          {description}
-        </Text>
-        <Button
-          size="lg"
-          colorScheme="blue"
-          onClick={() => window.location.reload()}
-          _hover={{
-            transform: "translateY(-2px)",
-            boxShadow: "lg",
-          }}
-        >
-          Reload Page
-        </Button>
-      </VStack>
-    </Box>
+      <Icon as={errorData.icon} boxSize={11} color={errorData.color} />
+      <Text color={"black"} fontWeight="bold" fontSize="lg">
+        {message || errorData.defaultMsg}
+      </Text>
+      <MButton variant="solid" size="sm" title="Reload Page" onClick={() => window.location.reload()}/>
+    </Box> 
   );
 };
 

@@ -38,7 +38,11 @@ function LazyLoadOnView({ children, height = "200px" }: LazyLoadOnViewProps) {
     </Box>
   );
 }
-// Dynamic import لمكتبة كبيرة (مثلاً moment.js)
+//TODO : اضافة خقل البحث الكلي في الموقع 
+//TODO : تعديل اساسيات الموقع مثل الالوان واضافة خط جديد 
+//TODO : qs in path url في قسم الفلترة و البحث اضافة 
+//TODO : الصحفة الرئيسة في لوحة تحكم اضافة الاحصائيات
+//TODO : اضافاة ترتيب من الاحدث الى الاقدم في قسم الفلترة و البحث
 
 const Home = () => {
   return (

@@ -19,22 +19,25 @@ export const ProductsGrid = ({
 }: ProductsGridProps) => {
   if (isLoading)
     return <SkeletonCard count={6} noOfLines={3} isAction={true} />;
-  if (totalProducts === 0) return <NoResult />;
-  if (isError)
+  if (isError) return <Error status={500} message="" />;
+  if (totalProducts === 0)
     return (
-      <Error code={500} message="Error" description="Something went wrong" />
+      <NoResult
+        title="No products found"
+        description="Try adjusting your filters or search criteria"
+      />
     );
 
   return (
     <Box w="full" p={3}>
-       <Grid
-          w="full"
-          templateColumns={{
-            base: "repeat(2, 1fr)",
-            md: "repeat(auto-fill, minmax(220px, 1fr))",
-          }}
-          gap={6}
-        >
+      <Grid
+        w="full"
+        templateColumns={{
+          base: "repeat(2, 1fr)",
+          md: "repeat(auto-fill, minmax(220px, 1fr))",
+        }}
+        gap={6}
+      >
         {renderProducts}
       </Grid>
     </Box>

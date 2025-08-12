@@ -12,7 +12,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 // import icone
-import {  FaStore } from "react-icons/fa";
+import { FaStore } from "react-icons/fa";
 import { GoPackage } from "react-icons/go";
 import { Link, NavLink, Outlet } from "react-router";
 import { dashboardLinks } from "../../data";
@@ -31,7 +31,7 @@ const renderLinks = dashboardLinks.map((link) => (
   </SidebarButton>
 ));
 export default function SidebarLayout() {
- const user = cookieManager.get<IUserInfo>("user");
+  const user = cookieManager.get<IUserInfo>("user");
   const dispatch = useAppDispatch();
   const isOpenDrawer = useAppSelector((state) => state.global.isOpenDrawer);
   return (
@@ -45,14 +45,17 @@ export default function SidebarLayout() {
           // bg="gray.800"
           color="gray.500"
         >
-          <AppSidebar username={user?.username || ""} email={user?.email || ""}/>
+          <AppSidebar
+            username={user?.username || ""}
+            email={user?.email || ""}
+          />
         </Box>
 
         {/* Main content and Outlet */}
         <Flex direction="column" flex="1" overflow="auto">
           <Flex
             as="header"
-            justify="right"
+            justify="space-between"
             h="60px"
             align="center"
             gap={4}
@@ -71,22 +74,23 @@ export default function SidebarLayout() {
               onClick={() => dispatch(openDrawer())}
               variant="ghost"
             />
-            
-            <Link to="/">
-              <Tooltip content="Store">
-                <IconButton
-                  variant={"outline"}
-                  color={"gray.500"}
-                  _hover={{ color: "teal.500" }}
-                  size={"md"}
-                >
-                  <FaStore size={16} />
-                </IconButton>
-              </Tooltip>
-            </Link>
-            <Avatar.Root size="sm">
-              <Avatar.Fallback name={user?.username || ""} />
-            </Avatar.Root>
+            <HStack>
+              <Link to="/">
+                <Tooltip content="Store">
+                  <IconButton
+                    variant={"outline"}
+                    color={"gray.500"}
+                    _hover={{ color: "teal.500" }}
+                    size={"md"}
+                  >
+                    <FaStore size={16} />
+                  </IconButton>
+                </Tooltip>
+              </Link>
+              <Avatar.Root size="sm">
+                <Avatar.Fallback name={user?.username || ""} />
+              </Avatar.Root>
+            </HStack>
           </Flex>
           <Box as="main" flex="1" p={{ base: 4, md: 6 }}>
             <Outlet />
@@ -97,7 +101,12 @@ export default function SidebarLayout() {
       <DrawerComponent
         isOpenDrawer={isOpenDrawer}
         title="Dashboard Menu"
-        children={<AppSidebar username={user?.username || ""} email={user?.email || ""}/>}
+        children={
+          <AppSidebar
+            username={user?.username || ""}
+            email={user?.email || ""}
+          />
+        }
         action={false}
       />
     </>
@@ -106,7 +115,7 @@ export default function SidebarLayout() {
 
 function AppSidebar({ username, email }: { username: string; email: string }) {
   return (
-    <Flex direction="column" h="100%" >
+    <Flex direction="column" h="100%">
       {/* Header */}
       <Flex align="center" gap={2} px={4} py={3}>
         <Flex
@@ -165,7 +174,7 @@ function AppSidebar({ username, email }: { username: string; email: string }) {
   );
 }
 
- function SidebarButton({
+function SidebarButton({
   children,
   isActive,
   icon,
@@ -200,7 +209,6 @@ function AppSidebar({ username, email }: { username: string; email: string }) {
         {icon && React.createElement(icon, { size: 16 })}
         {children}
       </Button>
-      
     </NavLink>
   );
 }

@@ -20,12 +20,11 @@ const ProductListWrapper = ({
   if (error)
     return (
       <Error
-        code={500}
-        message="Error"
-        description="Failed to fetch products"
+        status={500}
+        message=""
       />
     );
-  if (!dataLength) return <NoResult />;
+  if (!dataLength) return <NoResult title="No products found" description="Try adjusting your filters or search criteria" />;
   return (
     <>
       <Grid

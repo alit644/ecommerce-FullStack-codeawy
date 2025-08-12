@@ -32,6 +32,9 @@ const Checkout = lazy(() => import("../pages/Checkout"));
 const IsOrderCompleted = lazy(
   () => import("../components/orders/isOrderCompleted")
 );
+const SearchPage = lazy(
+ () => import("../pages/SearchResultPage")
+);
 const MyOrders = lazy(() => import("../pages/Profile/myOrders"));
 const ProfileLayout = lazy(() => import("../pages/layout/ProfileLayout"));
 const Wishlist = lazy(() => import("../pages/Profile/Wishlist"));
@@ -47,7 +50,7 @@ export const router = createBrowserRouter([
     path: "/",
     Component: RootLayout,
     errorElement: (
-      <Error code={500} message="Error" description="Something went wrong" />
+      <Error status={500} message="Server error. Please try again later." height="100vh"/>
     ),
     children: [
       {
@@ -70,6 +73,10 @@ export const router = createBrowserRouter([
        path: "/wishlist",
        Component: () => withSuspense(HomeWishlist),
      },
+     {
+      path: "/search",
+      Component: () => withSuspense(SearchPage),
+    },
       {
         path: "/login",
         element: (
@@ -143,6 +150,7 @@ export const router = createBrowserRouter([
       },
      
     ],
+    
   },
   {
     path: "/dashboard",
@@ -150,6 +158,9 @@ export const router = createBrowserRouter([
       <Suspense fallback={<PageLoader />}>
         <ProtectedRoute path="/login" children={<DashboardLayout />} />
       </Suspense>
+    ),
+    errorElement: (
+      <Error status={500} message="Server error. Please try again later." height="100vh"/>
     ),
     children: [
       {
@@ -163,6 +174,7 @@ export const router = createBrowserRouter([
       {
         path: "products/create/:editProductId?",
         Component: () => withSuspense(AddProduct),
+        
       },
       {
         path: "categories",

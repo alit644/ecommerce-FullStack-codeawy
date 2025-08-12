@@ -28,6 +28,7 @@ import { addToCart } from "../App/features/cartSlice";
 import MButton from "../components/ui/MButton";
 import PageLoader from "../components/ui/PageLoader";
 import { addToWishlist } from "../App/features/wishlistSlice";
+import Error from "../components/Error/Error";
 
 //TODO: add loading and error states
 
@@ -116,7 +117,7 @@ const Product = () => {
     </Flex>
   ));
   if (isLoading) return <PageLoader />;
-  if (error) return <div>Error: {error.message}</div>;
+  if (error) return <Error status={500} message="" />;
 
   return (
     <Container maxW="container.xl" py={8}>
@@ -233,7 +234,7 @@ const Product = () => {
         </VStack>
 
         {/* related products */}
-        <VStack alignItems={"start"}>
+        <VStack w="full" alignItems={"start"}>
           <MainTitle title="You might also like" isArrow={false} />
           <ProductsGrid
             renderProducts={renderProducts() || []}

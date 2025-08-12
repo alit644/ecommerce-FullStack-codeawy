@@ -43,7 +43,9 @@ export const fetchCategory = async (page: number, pageSize: number) => {
     const { data } = await api.get(`api/categories?${queryString}`);
     return data;
   } catch (error) {
+   
     console.log(error);
+    
   }
 };
 
@@ -144,5 +146,6 @@ export const fetchProductsByCategory = async (
     return data.data;
   } catch (error) {
     console.log(error);
+    
   }
 };
