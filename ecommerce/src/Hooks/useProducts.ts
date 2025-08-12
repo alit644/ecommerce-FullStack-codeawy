@@ -10,6 +10,8 @@ export const useProducts = (filters: FilterType , valueSort?: string ,query?: st
   const { page, pageSize } = useAppSelector((state) => state.pagination);
   const queryClient = useQueryClient();
   const filtersQuery = generateStrapiQuery(filters);
+  
+
   const { data, isLoading, isError, isFetching } = useQuery<ProductsResponse>({
     queryKey: ["products", "pagination", page, pageSize, filtersQuery,valueSort,query],
     queryFn: () => fetchProducts(page, pageSize, filtersQuery, valueSort,query ),

@@ -4,7 +4,7 @@ import { NavLink } from "react-router";
 
 const CategoryCard = ({ title, thumbnail }: ICategory) => {
   return (
-    <NavLink to={`/shop/filters[category][$in][0]=${title}`}>
+    <NavLink to={`/shop?category=${encodeURIComponent(title)}`}>
       <Box
         bg="gray.50"
         borderRadius="xl"

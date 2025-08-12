@@ -51,13 +51,13 @@ const BrowseByCategory = () => {
   //! Render Categories Data
   const renderCategory = data?.data.map((item: ICategory) => (
     <CategoryCard
-      key={item.id}
-      title={item.title}
+      key={item?.id}
+      title={item?.title}
       thumbnail={{
         formats: {
           small: {
             url: `${import.meta.env.VITE_BASE_URL}${
-              item.thumbnail?.formats?.small?.url
+              item?.thumbnail?.formats?.small?.url
             }`,
           },
         },
@@ -75,7 +75,6 @@ const BrowseByCategory = () => {
         textSkeleton={true}
       />
     );
-    console.log(error)
   if (error)
     return (
       <Error

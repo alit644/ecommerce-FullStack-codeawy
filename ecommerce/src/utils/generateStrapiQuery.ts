@@ -28,6 +28,5 @@ export const generateStrapiQuery = (filters: FilterType) => {
     };
   }
 
-  
   return qs.stringify(query, { encodeValuesOnly: true });
 };

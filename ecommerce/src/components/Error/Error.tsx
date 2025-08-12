@@ -1,6 +1,5 @@
-import React from "react";
 import { Box, Text, Icon } from "@chakra-ui/react";
-import { FaServer, FaBan } from "react-icons/fa";
+import { FaServer } from "react-icons/fa";
 import { CiWarning } from "react-icons/ci";
 import { IoMdInformationCircleOutline } from "react-icons/io";
 import type { IconType } from "react-icons/lib";

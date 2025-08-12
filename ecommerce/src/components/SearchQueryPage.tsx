@@ -11,13 +11,17 @@ const SearchQueryPage = () => {
 
   const debouncedSearch = useDebouncedCallback((value: string) => {
     if (value.trim()) {
-      navigate(`search/?q=${value}`);
+      navigate(`/shop?query=${encodeURIComponent(value)}`);
+    } else {
+      navigate(`/shop`);
+
     }
   }, 600);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
     debouncedSearch(e.target.value);
+    
   };
 
   return (

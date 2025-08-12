@@ -26,6 +26,7 @@ import { setPage } from "../../../App/features/paginationSlice";
 import SortMenu from "../../../components/ui/SortMenu";
 import ProductsTableRows from "../../../components/products/ProductsTableRows";
 import TablePagination from "../../../components/ui/Table/TablePagination";
+import { useLoadFiltersFromUrl } from "../../../Hooks/useLoadFiltersFromUrl";
 
 const ProductsDashboard = () => {
   const [value, setValue] = useState("asc");
@@ -57,6 +58,7 @@ const ProductsDashboard = () => {
       refetchOnMountOrArgChange: false,
     }
   );
+  useLoadFiltersFromUrl()
   const pageCount = data?.meta.pagination.pageCount;
 
   //** Prefetch

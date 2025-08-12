@@ -88,8 +88,8 @@ const FilterSidebar = ({
     return (
       <SkeletonCard count={accordionItems.length} noOfLines={2} isAction={false} height="60px" textSkeleton={false}/>
     );
-  if (error) return <Error code={500} message="Error" description="Failed to fetch filters" />;
-  if (!categories || !tags) return <Error code={500} message="Error" description="Filters not available" />;
+  if (error) return <Error status={500} message="Failed to fetch filters" />;
+  if (!categories || !tags) return <Error status={500} message="Filters not available" />;
 
  return (
     <Box w="full" maxW="280px" p={2} borderRight={{base:"0", md:"1px solid #e2e8f0"}} h="full">

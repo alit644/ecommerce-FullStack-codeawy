@@ -30,6 +30,7 @@ export const fetchProducts = async (
 
 export const fetchCategory = async (page: number, pageSize: number) => {
   try {
+   
     const queryString = qs.stringify(
       {
         populate: ["thumbnail"],

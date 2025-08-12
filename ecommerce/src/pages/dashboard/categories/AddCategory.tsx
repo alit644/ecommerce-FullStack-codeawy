@@ -196,7 +196,7 @@ const AddCategory = () => {
     );
   }
   if (editCategoryError) {
-    return <Error message="Error" description="Error fetching category" />;
+    return <Error status={500} message="Error fetching category" />;
   }
 
   return (

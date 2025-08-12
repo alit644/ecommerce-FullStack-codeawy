@@ -1,11 +1,8 @@
 import { useSearchParams } from "react-router";
 import { useFilterGlobalProductsQuery } from "../App/services/createProductApi";
 
-
-
 const SearchPage = () => {
   const [query] = useSearchParams();
-  console.log(query.get("q"));
 
   const { data, isLoading, isError } = useFilterGlobalProductsQuery(
     {
@@ -15,7 +12,6 @@ const SearchPage = () => {
       refetchOnMountOrArgChange: false,
     }
   );
-  console.log(data?.data);
 
   return <div>SearchPage</div>;
 };

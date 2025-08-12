@@ -141,7 +141,7 @@ export interface IUserInfo {
   updatedAt: string;
   username: string;
   address?: {
-   streetAddress?: string;
+    streetAddress?: string;
     city?: string;
     state?: string;
     country?: string;

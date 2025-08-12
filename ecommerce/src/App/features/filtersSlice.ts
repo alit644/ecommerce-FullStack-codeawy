@@ -6,6 +6,7 @@ export interface filtersSliceState {
   category: string[];
   price: string[];
   tags: string[];
+  query: string;
 }
 
 const initialState: filtersSliceState = {
@@ -13,6 +14,7 @@ const initialState: filtersSliceState = {
   category: [],
   price: [],
   tags: [],
+  query: "",
 };
 
 export const filtersSlice = createSlice({
@@ -24,6 +26,7 @@ export const filtersSlice = createSlice({
       state.category = action.payload.category;
       state.price = action.payload.price;
       state.tags = action.payload.tags;
+      state.query = action.payload.query;
     },
     resetFilter: () => {
       return initialState;

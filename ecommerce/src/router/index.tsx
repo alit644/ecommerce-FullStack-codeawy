@@ -42,6 +42,7 @@ const Address = lazy(() => import("../pages/Profile/Address"));
 const Password = lazy(() => import("../pages/Profile/Password"));
 const HomeWishlist = lazy(() => import("../pages/Wishlist"));
 import PageLoader from "../components/ui/PageLoader";
+import PageNotFound from "../components/Error/PageNotFound";
 const withSuspense = (Component: LazyExoticComponent<() => JSX.Element>) => (
   <Suspense fallback={<PageLoader />}>{<Component />}</Suspense>
 );
@@ -50,9 +51,16 @@ export const router = createBrowserRouter([
     path: "/",
     Component: RootLayout,
     errorElement: (
-      <Error status={500} message="Server error. Please try again later." height="100vh"/>
+      <Error status={500} message="Server error. Please try again later."/>
     ),
     children: [
+     
+     {
+      path: "*",
+      element: (
+        <PageNotFound/>
+      ),
+     },
       {
         index: true,
         Component: Home,
@@ -151,6 +159,7 @@ export const router = createBrowserRouter([
      
     ],
     
+    
   },
   {
     path: "/dashboard",
@@ -160,9 +169,15 @@ export const router = createBrowserRouter([
       </Suspense>
     ),
     errorElement: (
-      <Error status={500} message="Server error. Please try again later." height="100vh"/>
+      <Error status={500} message="Server error. Please try again later."/>
     ),
     children: [
+     {
+      path: "*",
+      element: (
+        <PageNotFound/>
+      ),
+     },
       {
         index: true,
         Component: DashboardHome,

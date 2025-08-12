@@ -18,6 +18,8 @@ const AccordionComponent = ({
   filters,
   handleFilterChange,
 }: IAccordion) => {
+  
+ 
   return (
     <Accordion.Item p={2} value={value} key={key}>
       <h2>
@@ -33,7 +35,9 @@ const AccordionComponent = ({
           <CheckboxGroup
             options={options}
             value={filters[value as keyof FilterType] || []}
-            onChange={(e: string[]) => handleFilterChange(value, e)}
+            onChange={(e: string[]) => {
+             handleFilterChange(value, e)
+            }}
           />
         </Stack>
       </Accordion.ItemContent>

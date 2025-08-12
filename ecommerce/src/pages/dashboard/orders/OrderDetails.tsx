@@ -38,10 +38,10 @@ const OrderDetails = ({context}: {context: string}) => {
       <Table.Cell minW="400px" w="400px">
         <ItemDetailsCard product={item.product} />
       </Table.Cell>
-      <Table.Cell>{item.quantity}</Table.Cell>
-      <Table.Cell>{item.product.price} $</Table.Cell>
+      <Table.Cell>{item?.quantity}</Table.Cell>
+      <Table.Cell>{item?.product?.price} $</Table.Cell>
       <Table.Cell fontWeight={"bold"} fontSize={"md"}>
-        {item.product.price * item.quantity} $
+        {item?.product?.price * item?.quantity} $
       </Table.Cell>
     </Table.Row>
   ));

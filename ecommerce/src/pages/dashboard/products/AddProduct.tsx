@@ -279,7 +279,7 @@ const AddProduct = () => {
     );
   }
   if (editProductError) {
-    return <Error message="Error" description="Error fetching product" />;
+    return <Error status={500} message="" />;
   }
 
   return (

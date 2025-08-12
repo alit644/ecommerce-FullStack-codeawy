@@ -80,8 +80,6 @@ export default function Navbar() {
   const dispatch = useAppDispatch();
   const { cartData } = useAppSelector(cartSelector);
 
-  
-
   return (
     <Box
       bg="white"
@@ -91,7 +89,7 @@ export default function Navbar() {
       top={0}
       zIndex={100}
     >
-      <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
+      <Flex h={16} alignItems={"center"} justifyContent={"space-between"} gap={2}>
         <HStack alignItems={"center"}>
           <Box display="flex" alignItems="center">
             <Box as={FaStore} color="teal.500" boxSize={6} mr={2} />
@@ -113,11 +111,12 @@ export default function Navbar() {
             ))}
           </HStack>
         </HStack>
-        <SearchQueryPage />
-
+        <Box  w={"full"} display={{ base: "none", md: "flex"}}>
+          <SearchQueryPage />
+        </Box>
         <Spacer />
         {/* Auth */}
-        <Flex alignItems={"center"} spaceX={2}>
+        <Flex alignItems={"center"} justifyContent={"space-between"} spaceX={2}>
           <RouterLink to={"cart"}>
             <Box position="relative">
               {cartData.length > 0 && (
@@ -242,6 +241,9 @@ export default function Navbar() {
 
       {open ? (
         <Box pb={4} display={{ md: "none" }}>
+          <Box mb={4}>
+            <SearchQueryPage />
+          </Box>
           <Stack as={"nav"} spaceY={2}>
             {Links.map((link) => (
               <NavLink

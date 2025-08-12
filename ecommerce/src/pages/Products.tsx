@@ -13,6 +13,8 @@ import { setFilter } from "../App/features/filtersSlice";
 import DrawerComponent from "../components/ui/Drawer";
 import { closeDrawer } from "../App/features/globalSlice";
 import { useProductFilters } from "../Hooks/useProductFilters";
+import { useLoadFiltersFromUrl } from "../Hooks/useLoadFiltersFromUrl";
+import { useSearchParams } from "react-router";
 const Shop = () => {
   const { page, pageSize } = useAppSelector((state) => state.pagination);
   const dispatch = useAppDispatch();
@@ -21,9 +23,12 @@ const Shop = () => {
     (state) => state.global.isFilterDrawerOpen
   );
   const [localFilters, setLocalFilters] = useState(filtersSlice);
-
+  const [searchParams, setSearchParams] = useSearchParams();
+  const querySearch = searchParams.get("query")
+  
   const { handleFilterChange, resetFilters } = useProductFilters();
 
+  useLoadFiltersFromUrl();
   //setPage
   useEffect(() => {
     dispatch(setPage(1));
@@ -35,12 +40,16 @@ const Shop = () => {
         ...prev,
         [filter]: value,
       }));
-    },
+     
+    }, 
     [setLocalFilters]
   );
 
-  const { data, isLoading, isError } = useProducts(filtersSlice, "asc", "");
+  const { data, isLoading, isError } = useProducts(filtersSlice, "asc", querySearch || "");
+
   const total = data?.meta.pagination.total;
+
+  
 
   const onConfirmDrawer = () => {
     dispatch(closeDrawer());
@@ -51,6 +60,29 @@ const Shop = () => {
         ...localFilters,
       })
     );
+    // تحديث URL
+    const params = new URLSearchParams(searchParams);
+    if (localFilters.brand.length > 0) {
+      params.set("brand", localFilters.brand.join(","));
+    } else {
+      params.delete("brand");
+    }
+    if (localFilters.category.length > 0) {
+      params.set("category", localFilters.category.join(","));
+    } else {
+      params.delete("category");
+    }
+    if (localFilters.price.length > 0) {
+      params.set("price", localFilters.price.join(","));
+    } else {
+      params.delete("price");
+    }
+    if (localFilters.tags.length > 0) {
+      params.set("tags", localFilters.tags.join(","));
+    } else {
+      params.delete("tags");
+    }
+    setSearchParams(params);
   };
 
   //!: Render Data
@@ -85,8 +117,6 @@ const Shop = () => {
         </DrawerComponent>
         {/* Products Grid and Pagination */}
         <Flex direction="column" gap={6} w="full">
-     
-
           <Box w="full" p={3}>
             <Grid gap={6} w="full">
               <ProductHeader totalProducts={total ?? 0} />
