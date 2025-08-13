@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_products_info_infos",
+  "info": {
+    "displayName": "info",
+    "icon": "priceTag"
+  },
+  "options": {},
+  "attributes": {
+    "product": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::product.product"
+    }
+  },
+  "config": {}
+}

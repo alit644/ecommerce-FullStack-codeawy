@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "dashboard_stats",
+  "info": {
+    "singularName": "dashboard-stat",
+    "pluralName": "dashboard-stats",
+    "displayName": "DashboardStat"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "totalProducts": {
+      "type": "biginteger"
+    },
+    "totalCategories": {
+      "type": "biginteger"
+    },
+    "totalOrders": {
+      "type": "biginteger"
+    },
+    "totalValue": {
+      "type": "biginteger"
+    }
+  }
+}

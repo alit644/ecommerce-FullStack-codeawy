@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_products_info_qos",
+  "info": {
+    "displayName": "qos",
+    "icon": "attachment"
+  },
+  "options": {},
+  "attributes": {
+    "product": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::product.product"
+    }
+  },
+  "config": {}
+}

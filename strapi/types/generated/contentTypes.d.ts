@@ -403,40 +403,70 @@ export interface ApiCategoryCategory extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiProductOptionProductOption
+export interface ApiDashboardStatDashboardStat
   extends Struct.CollectionTypeSchema {
-  collectionName: 'product_options';
+  collectionName: 'dashboard_stats';
   info: {
-    displayName: 'Product Option';
-    pluralName: 'product-options';
-    singularName: 'product-option';
+    displayName: 'DashboardStat';
+    pluralName: 'dashboard-stats';
+    singularName: 'dashboard-stat';
   };
   options: {
     draftAndPublish: true;
   };
   attributes: {
-    color: Schema.Attribute.Enumeration<
-      ['Red ', 'Green ', 'Black', 'Gray', 'Blue']
-    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    dimensions: Schema.Attribute.String;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
-      'api::product-option.product-option'
+      'api::dashboard-stat.dashboard-stat'
     > &
       Schema.Attribute.Private;
-    material: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
-    size: Schema.Attribute.Enumeration<['XS', 'S', 'M', 'L', 'XL', 'Xll']>;
-    storage: Schema.Attribute.Enumeration<
-      ['S 128 GB', 'S 256 GB', 'S 512 GB', 'T 1 TB']
-    >;
+    totalCategories: Schema.Attribute.BigInteger;
+    totalOrders: Schema.Attribute.BigInteger;
+    totalProducts: Schema.Attribute.BigInteger;
+    totalValue: Schema.Attribute.BigInteger;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+  };
+}
+
+export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
+  collectionName: 'orders';
+  info: {
+    displayName: 'order';
+    pluralName: 'orders';
+    singularName: 'order';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    address: Schema.Attribute.JSON & Schema.Attribute.Required;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    items: Schema.Attribute.Component<'items.items', true>;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::order.order'> &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    statuss: Schema.Attribute.Enumeration<
+      ['cancelled', 'pending', 'confirmed', 'shipped', 'delivered', 'completed']
+    > &
+      Schema.Attribute.Required;
+    totalPrice: Schema.Attribute.Decimal & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -451,7 +481,7 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    brand: Schema.Attribute.Enumeration<['Apple', 'Samsung', 'Poco']>;
+    brand: Schema.Attribute.String;
     category: Schema.Attribute.Relation<'manyToOne', 'api::category.category'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -469,12 +499,9 @@ export interface ApiProductProduct extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     price: Schema.Attribute.Decimal & Schema.Attribute.Required;
-    product_option: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::product-option.product-option'
-    >;
     publishedAt: Schema.Attribute.DateTime;
     rating: Schema.Attribute.Integer & Schema.Attribute.Required;
+    SKU: Schema.Attribute.UID<''>;
     stock: Schema.Attribute.Integer & Schema.Attribute.Required;
     tags: Schema.Attribute.Relation<'manyToMany', 'api::tag.tag'>;
     thumbnail: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
@@ -966,9 +993,9 @@ export interface PluginUsersPermissionsUser
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
+    address: Schema.Attribute.JSON;
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -986,6 +1013,7 @@ export interface PluginUsersPermissionsUser
       'plugin::users-permissions.user'
     > &
       Schema.Attribute.Private;
+    orders: Schema.Attribute.Relation<'oneToMany', 'api::order.order'>;
     password: Schema.Attribute.Password &
       Schema.Attribute.Private &
       Schema.Attribute.SetMinMaxLength<{
@@ -1021,7 +1049,8 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::category.category': ApiCategoryCategory;
-      'api::product-option.product-option': ApiProductOptionProductOption;
+      'api::dashboard-stat.dashboard-stat': ApiDashboardStatDashboardStat;
+      'api::order.order': ApiOrderOrder;
       'api::product.product': ApiProductProduct;
       'api::tag.tag': ApiTagTag;
       'plugin::content-releases.release': PluginContentReleasesRelease;

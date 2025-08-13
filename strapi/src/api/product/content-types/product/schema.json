@@ -41,15 +41,6 @@
       "target": "api::category.category",
       "inversedBy": "products"
     },
-    "brand": {
-      "type": "enumeration",
-      "required": false,
-      "enum": [
-        "Apple",
-        "Samsung",
-        "Poco"
-      ]
-    },
     "discount": {
       "type": "integer",
       "required": true,
@@ -74,10 +65,12 @@
       "type": "integer",
       "required": true
     },
-    "product_option": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::product-option.product-option"
+    "SKU": {
+      "type": "uid",
+      "targetField": ""
+    },
+    "brand": {
+      "type": "string"
     }
   }
 }
