@@ -72,12 +72,12 @@ const CustomerInfo = ({ user, statuss, updatedAt, address, context }: ICustomerI
                 w={"fit-content"}
                 borderRadius="md"
                 variant="outline"
-                size="sm"
+                size={{base: "xs", sm: "sm"}}
                 p={1}
                 gap={2}
               >
-                <FaPhoneAlt size={14} color="#27272a" />
-                <Text fontSize={"sm"} color={"gray.800"} fontWeight={"medium"}>
+                <FaPhoneAlt size={12} color="#27272a" />
+                <Text fontSize={{base: "xs", sm: "sm"}} color={"gray.800"} fontWeight={"medium"}>
                   {address?.phone}
                 </Text>
               </Button>
@@ -86,13 +86,13 @@ const CustomerInfo = ({ user, statuss, updatedAt, address, context }: ICustomerI
               variant="outline"
               w={"fit-content"}
               borderRadius="md"
-              size="sm"
+              size={{base: "xs", sm: "sm"}}
               p={1}
               gap={2}
               onClick={handleSendEmail}
             >
-              <MdEmail size={14} color="#27272a" />
-              <Text fontSize={"sm"} color={"gray.800"} fontWeight={"medium"}>
+              <MdEmail size={12} color="#27272a" />
+              <Text fontSize={{base: "xs", sm: "sm"}} color={"gray.800"} fontWeight={"medium"}>
                 {address?.email}
               </Text>
             </Button>

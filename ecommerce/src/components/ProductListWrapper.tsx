@@ -16,7 +16,7 @@ const ProductListWrapper = ({
   children,
 }: ProductCardLoaderProps) => {
   if (isLoading)
-    return <SkeletonCard count={6} noOfLines={3} isAction={true} />;
+    return <SkeletonCard count={5} noOfLines={3} isAction={true} />;
   if (error)
     return (
       <Error

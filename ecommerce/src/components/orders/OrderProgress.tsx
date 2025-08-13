@@ -16,7 +16,7 @@ interface IOrderProgress {
 const OrderProgress = ({ statuss, updatedAt, context }: IOrderProgress) => {
   const { documentId } = useParams();
   const [status, setStatus] = useState<TStatuss | "">("");
-  const [updateOrderStatus, { isLoading }] = useUpdateOrderStatusMutation();
+  const [updateOrderStatus, { isLoading }] = useUpdateOrderStatusMutation({});
 
   const handleUpdateStatus = async (e: React.FormEvent) => {
     e.preventDefault();

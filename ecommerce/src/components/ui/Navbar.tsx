@@ -1,4 +1,4 @@
-import React, { lazy, useState } from "react";
+import React, { lazy } from "react";
 import {
   Box,
   Flex,
@@ -89,14 +89,22 @@ export default function Navbar() {
       top={0}
       zIndex={100}
     >
-      <Flex h={16} alignItems={"center"} justifyContent={"space-between"} gap={2}>
+      <Flex
+        h={16}
+        alignItems={"center"}
+        justifyContent={"space-between"}
+        gap={2}
+      >
         <HStack alignItems={"center"}>
-          <Box display="flex" alignItems="center">
-            <Box as={FaStore} color="teal.500" boxSize={6} mr={2} />
-            <Text fontWeight="bold" fontSize="xl" color="teal.600">
-              Store
-            </Text>
-          </Box>
+          <Link to="/">
+            <Box display="flex" alignItems="center">
+              <Box as={FaStore} color="teal.500" boxSize={6} mr={2} />
+              <Text fontWeight="bold" fontSize="xl" color="teal.600">
+                Store
+              </Text>
+            </Box>
+          </Link>
+
           <HStack as="nav" spaceX={3} display={{ base: "none", md: "flex" }}>
             {Links.map((link) => (
               <NavLink
@@ -111,7 +119,7 @@ export default function Navbar() {
             ))}
           </HStack>
         </HStack>
-        <Box  w={"full"} display={{ base: "none", md: "flex"}}>
+        <Box w={"full"} display={{ base: "none", md: "flex" }}>
           <SearchQueryPage />
         </Box>
         <Spacer />
@@ -189,8 +197,12 @@ export default function Navbar() {
                 }
                 children={
                   <>
-                    <Menu.Item value="account" fontSize="md">
-                      <Link to="/profile">My Account</Link>
+                    <Menu.Item value="account"  fontSize="md">
+                      <Link to="/profile">
+                        <Button size="md" variant="ghost">
+                          My Account
+                        </Button>
+                      </Link>
                     </Menu.Item>
 
                     <Menu.Separator />
@@ -198,6 +210,7 @@ export default function Navbar() {
                       <Button
                         size="md"
                         variant="outline"
+                        colorPalette={"red"}
                         onClick={() => {
                           dispatch(logout());
                           window.location.href = "/";

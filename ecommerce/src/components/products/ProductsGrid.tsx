@@ -36,7 +36,7 @@ export const ProductsGrid = ({
           base: "repeat(2, 1fr)",
           md: "repeat(auto-fill, minmax(220px, 1fr))",
         }}
-        gap={6}
+        gap={{base:2,md:6}}
       >
         {renderProducts}
       </Grid>

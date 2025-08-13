@@ -58,8 +58,11 @@ const ProductsDashboard = () => {
       refetchOnMountOrArgChange: false,
     }
   );
-  useLoadFiltersFromUrl()
+  useLoadFiltersFromUrl();
   const pageCount = data?.meta.pagination.pageCount;
+  useEffect(() => {
+   dispatch(setPage(1));
+ }, [dispatch]);
 
   //** Prefetch
   const prefetch = createProductApi.usePrefetch("getDashboardProducts");
@@ -77,11 +80,11 @@ const ProductsDashboard = () => {
       );
     }
   }, [page, pageSize, filtersSlice, value, searchQuery]);
+ 
 
   const handleDeleteProduct = async () => {
     try {
-      const result = await deleteProduct(documentId as string).unwrap();
-      console.log("data", result);
+       await deleteProduct(documentId as string).unwrap();
       //? Toaster
       if (isProductDeleted) {
         toaster.success({
@@ -105,8 +108,14 @@ const ProductsDashboard = () => {
     }
   };
 
-
-  if (isError) return <Error status={500} message="Server error. Please try again later." height="100vh" />;
+  if (isError)
+    return (
+      <Error
+        status={500}
+        message="Server error. Please try again later."
+        height="100vh"
+      />
+    );
 
   return (
     <>
@@ -130,21 +139,26 @@ const ProductsDashboard = () => {
           <Flex
             mt={4}
             justifyContent="space-between"
-            alignItems="center"
+            alignItems={{ base: "flex-start", sm: "center", md: "center" }}
+            // flexWrap={"wrap"}
+            direction={{ base: "column", sm: "row", md: "row" }}
             gap={4}
+           
           >
             {/* Search Query */}
-            <SearchQuery setSearchQuery={setSearchQuery} />
-            {/* Sort */}
-            <SortMenu value={value} setValue={setValue} />
-            {/* Filter */}
-            <MButton
-              variant="outline"
-              size="md"
-              title="Filter"
-              icon={<BsFilterRight />}
-              onClick={() => dispatch(openFilterDrawer())}
-            />
+              <SearchQuery setSearchQuery={setSearchQuery} />
+            <HStack alignItems="right" justifyContent="flex-end" flex={1}>
+              {/* Sort */}
+              <SortMenu value={value} setValue={setValue} />
+              {/* Filter */}
+              <MButton
+                variant="outline"
+                size="md"
+                title="Filter"
+                icon={<BsFilterRight />}
+                onClick={() => dispatch(openFilterDrawer())}
+              />
+            </HStack>
           </Flex>
           {/* Table */}
           <TablePagination

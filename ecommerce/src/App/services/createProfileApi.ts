@@ -4,7 +4,7 @@ import type { OrdersResponse } from "../../interfaces";
 import qs from "qs";
 export const createProfileApi = createApi({
   reducerPath: "createProfileApi",
-  tagTypes: ["profile"],
+  tagTypes: ['orders', 'profile'],
   baseQuery: fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_BASE_URL}/api`,
     credentials: "include",
@@ -76,9 +76,9 @@ export const createProfileApi = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.data.map(({ id }) => ({
+              ...result.data.map(({ documentId }) => ({
                 type: "profile" as const,
-                id,
+                id: documentId,
               })),
               { type: "profile", id: "LIST" },
             ]

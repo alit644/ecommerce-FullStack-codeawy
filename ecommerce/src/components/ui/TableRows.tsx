@@ -8,29 +8,29 @@ const OrdersTableRows = ({ data }: { data: IOrder[] }) => {
   return (
     <>
       {data?.map((order) => {
-        const images = order.items.map(
-          (item) => item.product.thumbnail?.formats?.small?.url
+        const images = order?.items?.map(
+          (item) => item?.product?.thumbnail?.formats?.small?.url
         );
 
         return (
-          <Table.Row key={order.id}>
-            <Table.Cell>{order.id}</Table.Cell>
+          <Table.Row key={order?.id}>
+            <Table.Cell>{order?.id}</Table.Cell>
             <Table.Cell>
               <Image
                 w={"50px"}
                 h={"60px"}
-                src={`${import.meta.env.VITE_BASE_URL}${images[0]}`}
+                src={`${import.meta.env.VITE_BASE_URL}${images?.[0]}`}
               />
             </Table.Cell>
-            <Table.Cell>{order.createdAt.split("T")[0]}</Table.Cell>
+            <Table.Cell>{order?.createdAt?.split("T")[0]}</Table.Cell>
             <Table.Cell>
-             <MBadge status={order.statuss || ""} />
+              <MBadge status={order?.statuss || ""} />
             </Table.Cell>
-            <Table.Cell>{order.items.length}</Table.Cell>
-            <Table.Cell>{order.totalPrice}</Table.Cell>
+            <Table.Cell>{order?.items?.length}</Table.Cell>
+            <Table.Cell>{order?.totalPrice}</Table.Cell>
             <Table.Cell>
               <HStack>
-                <Link to={`/profile/orders/order-details/${order.documentId}`}>
+                <Link to={`/profile/orders/order-details/${order?.documentId}`}>
                   <IconButton
                     aria-label="View Order"
                     variant="ghost"

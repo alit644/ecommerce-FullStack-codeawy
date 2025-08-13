@@ -27,6 +27,7 @@ const MButton = ({
       loading={isLoading}
       w={w}
       colorScheme={colorScheme}
+      colorPalette={"blackAlpha"}
       size={size}
       variant={variant}
       type={type}

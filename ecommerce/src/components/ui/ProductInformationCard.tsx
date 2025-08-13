@@ -20,7 +20,7 @@ const ProductInformationCard = ({
     <Box
       p={5}
       _hover={{
-        bg: "blue.100",
+        bg: `blue.100`,
         border: "1px solid blue",
         transition: "all 0.3s ease",
       }}

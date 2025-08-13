@@ -30,8 +30,8 @@ const SelectingSectionInputs = ({
       api.get("/api/tags?fields=tag"),
     ]);
     return {
-      categories: catRes.data,
-      tags: tagRes.data,
+      categories: catRes?.data,
+      tags: tagRes?.data,
     };
   };
 
@@ -43,14 +43,14 @@ const SelectingSectionInputs = ({
     placeholderData: (prev) => prev,
   });
   const categoryOptions = useMemo(() => {
-    return data?.categories?.data.map((category: ICategory) => ({
+    return data?.categories?.data?.map((category: ICategory) => ({
       value: String(category.documentId),
       label: category.title,
     }));
   }, [data?.categories?.data]);
 
   const tagOptions = useMemo(() => {
-    return data?.tags?.data.map((tag: ITag) => ({
+    return data?.tags?.data?.map((tag: ITag) => ({
       value: String(tag.documentId),
       label: tag.tag,
     }));
@@ -59,7 +59,7 @@ const SelectingSectionInputs = ({
   if (isLoading) return <SkeletonCard height="30px" noOfLines={0} count={6}/>
   if (error)
     return (
-      <Error code={500} message="Error" description="Failed to fetch filters" />
+      <Error status={500} message="Failed to fetch filters" />
     );
 
   return (
@@ -129,6 +129,7 @@ const SelectingSectionInputs = ({
           })}
           id="brand"
           placeholder="Enter Product Brand"
+          
         />
       </FormGroup>
     </Flex>

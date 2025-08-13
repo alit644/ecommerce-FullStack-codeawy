@@ -96,9 +96,10 @@ const Register = () => {
     >
       <Toaster />
       <Box
-        p={8}
+        p={{ base: "4", md: "6", lg: "8" }}
         maxW="400px"
-        w="full"
+        w="90%"
+        mx="auto"
         bg={"white"}
         boxShadow={"lg"}
         rounded="lg"
@@ -122,6 +123,7 @@ const Register = () => {
               colorScheme="brand"
               type="submit"
               size="lg"
+              w="full"
               title="Sign Up"
               variant="solid"
               isLoading={isLoading}

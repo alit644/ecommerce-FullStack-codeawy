@@ -1,8 +1,7 @@
 import type {
- IChangePasswordInput,
+  IChangePasswordInput,
   ICheckoutInput,
   IDashboardLink,
-  IDashboardOverview,
   ILoginInput,
   IPricingSectionInputsData,
   IRegisterInput,
@@ -13,7 +12,7 @@ import { BsBoxSeam, BsTruck } from "react-icons/bs";
 import { FiRotateCcw, FiShield } from "react-icons/fi";
 import { BiCategory } from "react-icons/bi";
 import { GoInbox, GoHome } from "react-icons/go";
-import { FaDollarSign, FaStore } from "react-icons/fa";
+import { FaStore } from "react-icons/fa";
 import { IoIosHeartEmpty } from "react-icons/io";
 import { TbTruckDelivery } from "react-icons/tb";
 import { RiKey2Line } from "react-icons/ri";
@@ -120,41 +119,6 @@ export const dashboardLinks: IDashboardLink[] = [
   { name: "Categories", href: "/dashboard/categories", icon: BiCategory },
   { name: "Orders", href: "/dashboard/orders", icon: BsBoxSeam },
   { name: "Store", href: "/", icon: FaStore },
-];
-
-export const dashboardOverview: IDashboardOverview[] = [
-  {
-    name: "Total Products",
-    percentage: "+5%",
-    description: "increase from last month",
-    count: 100,
-    icon: GoInbox,
-    color: "blue.500",
-  },
-  {
-    name: "Categories",
-    percentage: "+10%",
-    description: "increase from last month",
-    count: 100,
-    icon: BiCategory,
-    color: "green.500",
-  },
-  {
-    name: "Total Orders",
-    percentage: "+15%",
-    description: "increase from last month",
-    count: 100,
-    icon: BsBoxSeam,
-    color: "purple.500",
-  },
-  {
-    name: "Total Value",
-    percentage: "-20%",
-    description: "decrease from last month",
-    count: 100,
-    icon: FaDollarSign,
-    color: "orange.500",
-  },
 ];
 
 export const tableColumns: ITableColumn[] = [
@@ -356,7 +320,7 @@ export const profileLinks = [
   { name: "Password", href: "/profile/password", icon: RiKey2Line },
 ];
 
-export const changePasswordData:IChangePasswordInput[] = [
+export const changePasswordData: IChangePasswordInput[] = [
   {
     id: "currentPassword",
     name: "currentPassword",
@@ -364,8 +328,8 @@ export const changePasswordData:IChangePasswordInput[] = [
     placeholder: "Enter your current password",
     label: "Current Password",
     validation: {
-     minLength: 6,
-     maxLength: 20,
+      minLength: 6,
+      maxLength: 20,
     },
   },
   {
@@ -377,7 +341,6 @@ export const changePasswordData:IChangePasswordInput[] = [
     validation: {
       minLength: 6,
       maxLength: 20,
-      
     },
   },
   {

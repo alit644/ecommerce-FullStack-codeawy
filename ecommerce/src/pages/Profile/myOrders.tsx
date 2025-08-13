@@ -1,7 +1,7 @@
 import { Box, Flex } from "@chakra-ui/react";
 import MainTitle from "../../components/MainTitle";
-import { useAppSelector } from "../../App/store";
-import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../App/store";
+import { useEffect, useState } from "react";
 import SearchQuery from "../../components/SearchQuery";
 import Error from "../../components/Error/Error";
 import type { IUserInfo } from "../../interfaces";
@@ -11,12 +11,18 @@ import { tableOrderUserColumns } from "../../data";
 import TablePagination from "../../components/ui/Table/TablePagination";
 import OrdersTableRows from "../../components/ui/TableRows";
 import { useGetUserOrdersQuery } from "../../App/services/createProfileApi";
+import { setPage } from "../../App/features/paginationSlice";
 
 const Profile = () => {
   const [value, setValue] = useState("asc");
   const [searchQuery, setSearchQuery] = useState("");
   const userID = cookieManager.get<IUserInfo>("user")?.id;
   const { page, pageSize } = useAppSelector((state) => state.pagination);
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    dispatch(setPage(1))
+  }, [])
 
   //! get data RTX Query =
   const { data, isLoading, isError, isFetching } = useGetUserOrdersQuery(
@@ -32,7 +38,7 @@ const Profile = () => {
     }
   );
 
-  if (isError) return <Error description="Something went wrong" />;
+  if (isError) return <Error status={500} message="Server error. Please try again later." />;
 
   return (
     <>
@@ -54,7 +60,7 @@ const Profile = () => {
             gap={4}
           >
             {/* Search Query */}
-            <SearchQuery setSearchQuery={setSearchQuery} />
+            <SearchQuery setSearchQuery={setSearchQuery} placeholder="Search orders..."/>
             {/* Sort */}
             <SortMenu value={value} setValue={setValue} />
           </Flex>

@@ -12,7 +12,10 @@ import cookieManager from "../../utils/cookieManager";
 import { toaster } from "../../components/ui/toaster";
 import { useEffect } from "react";
 import PageLoader from "../../components/ui/PageLoader";
-import { useCreateAddressMutation, useGetUserAddressQuery } from "../../App/services/createProfileApi";
+import {
+  useCreateAddressMutation,
+  useGetUserAddressQuery,
+} from "../../App/services/createProfileApi";
 interface IFormInput {
   streetAddress: string;
   city: string;
@@ -34,7 +37,7 @@ const Address = () => {
   });
   const onSubmit: SubmitHandler<IFormInput> = async (data) => {
     try {
-      const { data: addressData } = await createAddress({
+      await createAddress({
         address: data,
         id: userId as number,
       }).unwrap();
@@ -57,11 +60,11 @@ const Address = () => {
   useEffect(() => {
     if (data) {
       reset({
-        streetAddress: data.address.streetAddress,
-        city: data.address.city,
-        state: data.address.state,
-        phone: data.address.phone,
-        email: data.address.email,
+        streetAddress: data?.address?.streetAddress,
+        city: data?.address?.city,
+        state: data?.address?.state,
+        phone: data?.address?.phone,
+        email: data?.address?.email,
       });
     }
   }, [data]);

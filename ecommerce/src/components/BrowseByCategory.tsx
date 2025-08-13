@@ -15,7 +15,7 @@ const BrowseByCategory = () => {
   const queryClient = useQueryClient();
   const [page, setPage] = useState<number>(1);
 
-  const pageSize = 3;
+  const pageSize = 5;
 
   const { data, isLoading, isFetching, error } = useBrowseByCategory({
    page,

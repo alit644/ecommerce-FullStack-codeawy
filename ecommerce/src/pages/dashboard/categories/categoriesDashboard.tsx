@@ -13,7 +13,7 @@ import { TbEdit } from "react-icons/tb";
 import { BsPlus } from "react-icons/bs";
 import {  tableCategoryColumns } from "../../../data";
 import { useAppDispatch, useAppSelector } from "../../../App/store";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { openDialog, closeDialog } from "../../../App/features/globalSlice";
 import SearchQuery from "../../../components/SearchQuery";
 import Error from "../../../components/Error/Error";
@@ -49,6 +49,9 @@ const CategoriesDashboard = () => {
         refetchOnMountOrArgChange: false,
       }
     );
+    useEffect(() => {
+      dispatch(setPage(1));
+    }, [dispatch]);
 
   const handleOpenDialog = (id: string) => {
     dispatch(openDialog(id));
@@ -146,7 +149,7 @@ const CategoriesDashboard = () => {
             gap={4}
           >
             {/* Search Query */}
-            <SearchQuery setSearchQuery={setSearchQuery} />
+            <SearchQuery setSearchQuery={setSearchQuery} placeholder="Search categories..."/>
             {/* Sort */}
             <SortMenu value={value} setValue={setValue} />
           </Flex>

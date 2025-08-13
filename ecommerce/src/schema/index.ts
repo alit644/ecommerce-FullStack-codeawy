@@ -25,7 +25,7 @@ export const schemaAddProduct = yup
     stock: yup.number().required().min(1).max(300),
     category: yup.string().required(),
     tags: yup.array().of(yup.string().required()).required().min(2).max(15),
-    brand: yup.string().required(),
+    brand: yup.string().required().transform((value) => value.charAt(0).toUpperCase() + value.slice(1)),
     thumbnail: yup
       .mixed<FileList | File[] | (File | string)[] | string>()
       .test("thumbnail-required", "Thumbnail is required", (value) => {

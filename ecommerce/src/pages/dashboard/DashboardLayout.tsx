@@ -74,7 +74,7 @@ export default function SidebarLayout() {
               onClick={() => dispatch(openDrawer())}
               variant="ghost"
             />
-            <HStack>
+            <HStack justifyContent="space-between" w="full">
               <Link to="/">
                 <Tooltip content="Store">
                   <IconButton

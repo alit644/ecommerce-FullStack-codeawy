@@ -33,28 +33,27 @@ function LazyLoadOnView({ children, height = "200px" }: LazyLoadOnViewProps) {
   }, []);
 
   return (
-    <Box ref={ref} minH={height} >
-      {isVisible ? children : ''}
+    <Box ref={ref} minH={height}>
+      {isVisible ? children : ""}
     </Box>
   );
 }
-//TODO : theme تعديل اساسيات الموقع مثل الالوان واضافة خط جديد 
-//TODO : الصحفة الرئيسة في لوحة تحكم اضافة الاحصائيات
-//TODO : اضافاة ترتيب من الاحدث الى الاقدم في قسم الفلترة و البحث
-
 const Home = () => {
   return (
     <>
       <HeroSection />
       <Container maxW="container.xl" mt={6} mb={6}>
+        {/* <ColorModeButton /> */}
         <BrowseByCategory />
         <LazyLoadOnView>
-          <Suspense fallback={<SkeletonCard count={5} noOfLines={3} isAction={true} />}>
+          <Suspense
+            fallback={<SkeletonCard count={5} noOfLines={3} isAction={true} />}
+          >
             <FeaturedProducts />
           </Suspense>
         </LazyLoadOnView>
       </Container>
-      <LazyLoadOnView height="350px" >
+      <LazyLoadOnView height="350px">
         <Suspense
           fallback={
             <SkeletonCard

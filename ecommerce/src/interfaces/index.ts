@@ -5,6 +5,8 @@ export interface IProductCard {
   documentId: string;
   title: string;
   description: string;
+  createdAt?: string;
+  updatedAt?: string;
   price: number;
   brand?: string;
   stock?: number;
@@ -221,15 +223,6 @@ export interface IDashboardLink {
   name: string;
   href: string;
   icon: IconType;
-}
-
-export interface IDashboardOverview {
-  name: string;
-  description: string;
-  percentage: string;
-  count: number;
-  icon: IconType;
-  color: string;
 }
 
 export interface ITableColumn {

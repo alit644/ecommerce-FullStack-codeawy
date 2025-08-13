@@ -42,7 +42,7 @@ class CookieManager {
   }
 
   isAuthenticated(): boolean {
-    return !!this.get("jwtToken");
+    return !!this.get("jwt");
   }
 }
 

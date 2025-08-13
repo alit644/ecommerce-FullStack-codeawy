@@ -18,7 +18,7 @@ const Wishlist = () => {
       >
         <MainTitle title="Wishlist" isArrow={false} />
       </Flex>
-      <SimpleGrid columns={{ base: 3,md:2,lg:3,xl:4 }} gap={4}>
+      <SimpleGrid columns={{ base: 2,md:2,lg:3,xl:4 }} gap={4}>
        {renderWishlist}
        
       </SimpleGrid>

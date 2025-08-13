@@ -4,7 +4,7 @@ import type { IOrder, OrdersResponse } from "../../interfaces";
 import qs from "qs";
 export const createOrderApi = createApi({
   reducerPath: "createOrderApi",
-  tagTypes: ["orders"],
+  tagTypes: ['orders', 'profile'],
   baseQuery: fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_BASE_URL}/api`,
     credentials: "include",
@@ -72,9 +72,9 @@ export const createOrderApi = createApi({
       providesTags: (result) =>
         result
           ? [
-              ...result.data.map(({ id }) => ({
+              ...result.data.map(({ documentId }) => ({
                 type: "orders" as const,
-                id,
+                id: documentId,
               })),
               { type: "orders", id: "LIST" },
             ]
@@ -126,7 +126,8 @@ export const createOrderApi = createApi({
         },
       }),
       invalidatesTags: (result) => [
-        { type: "orders", id: result?.data?.documentId },
+        { type: "orders", id: result?.data?.documentId } ,
+        { type: "profile", id: result?.data?.documentId },
       ],
     }),
     createOrder: builder.mutation({
@@ -150,7 +151,8 @@ export const createOrderApi = createApi({
         },
       }),
       invalidatesTags: (result) => [
-        { type: "orders", id: result?.data?.documentId },
+        { type: "orders", id: result?.data?.documentId } ,
+        { type: "profile", id: result?.data?.documentId },
       ],
     }),
     

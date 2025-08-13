@@ -3,10 +3,14 @@ import { useState } from "react";
 import { FaSearch } from "react-icons/fa";
 import { useDebouncedCallback } from "use-debounce";
 import MInput from "./ui/MInput";
+import { useAppDispatch } from "../App/store";
+import { setPage } from "../App/features/paginationSlice";
 interface ISearchQuery {
   setSearchQuery: (query: string) => void;
+  placeholder?: string;
 }
-const SearchQuery = ({ setSearchQuery }: ISearchQuery) => {
+const SearchQuery = ({ setSearchQuery, placeholder = "Search products..." }: ISearchQuery) => {
+  const dispatch = useAppDispatch();
   const [query, setQuery] = useState("");
 
   const debouncedSearch = useDebouncedCallback((value: string) => {
@@ -16,6 +20,7 @@ const SearchQuery = ({ setSearchQuery }: ISearchQuery) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
     debouncedSearch(e.target.value);
+    dispatch(setPage(1));
   };
   return (
     <Box w="full" position="relative">
@@ -32,7 +37,7 @@ const SearchQuery = ({ setSearchQuery }: ISearchQuery) => {
         value={query}
         onChange={handleChange}
         type="search"
-        placeholder="Search products..."
+        placeholder={placeholder}
         pl="32px"
         bg="white"
         maxW={{ md: "86%", lg: "37%" }}

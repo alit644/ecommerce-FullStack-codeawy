@@ -53,15 +53,7 @@ export const registerSlice = createSlice({
         state.isLoading = false;
         state.error = null;
         state.data = action.payload;
-        //* authSlice 
-        // //! تخزين التوكن في الكوكي
-        // cookieManager.set("jwtToken", action.payload.jwt, {
-        //   expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3),
-        // });
-        // //! تخزين معلومات المستخدم في الكوكي
-        // cookieManager.set("user", JSON.stringify(action.payload.user as IUserInfo), {
-        //   expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3),
-        // });
+        
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.isLoading = false;

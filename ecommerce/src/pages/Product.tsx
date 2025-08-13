@@ -232,18 +232,17 @@ const Product = () => {
           {/* Free delivery  */}
           <VStack alignItems={"start"}>{renderDeliveryInfo}</VStack>
         </VStack>
-
-        {/* related products */}
-        <VStack w="full" alignItems={"start"}>
-          <MainTitle title="You might also like" isArrow={false} />
-          <ProductsGrid
-            renderProducts={renderProducts() || []}
-            totalProducts={relatedProducts?.length || 0}
-            isLoading={relatedProductsLoading}
-            isError={relatedProductsError ? true : false}
-          />
-        </VStack>
       </SimpleGrid>
+      {/* related products */}
+      <Box w="full" mt={6}>
+        <MainTitle title="You might also like" isArrow={false} />
+        <ProductsGrid
+          renderProducts={renderProducts() || []}
+          totalProducts={relatedProducts?.length || 0}
+          isLoading={relatedProductsLoading}
+          isError={relatedProductsError ? true : false}
+        />
+      </Box>
     </Container>
   );
 };

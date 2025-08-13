@@ -1,8 +1,8 @@
 import { Box, Table, Flex, HStack, IconButton } from "@chakra-ui/react";
 import MainTitle from "../../../components/MainTitle";
 import { tableOrderColumns } from "../../../data";
-import { useAppSelector } from "../../../App/store";
-import { useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../../App/store";
+import { useEffect, useState } from "react";
 import SearchQuery from "../../../components/SearchQuery";
 import Error from "../../../components/Error/Error";
 import { useGetDashboardOrdersQuery } from "../../../App/services/createOrderApi";
@@ -12,10 +12,12 @@ import { Link } from "react-router";
 import SortMenu from "../../../components/ui/SortMenu";
 import TablePagination from "../../../components/ui/Table/TablePagination";
 import MBadge from "../../../components/ui/MBadge";
+import { setPage } from "../../../App/features/paginationSlice";
 
 const Orders = () => {
   const [value, setValue] = useState("asc");
   const [searchQuery, setSearchQuery] = useState("");
+  const dispatch = useAppDispatch()
 
   const { page, pageSize } = useAppSelector((state) => state.pagination);
 
@@ -31,6 +33,9 @@ const Orders = () => {
       refetchOnMountOrArgChange: false,
     }
   );
+  useEffect(() => {
+    dispatch(setPage(1))
+  }, [dispatch])
 
   const renderTableRows = data?.data.map((order: IOrder) => (
     <Table.Row key={order.id}>
@@ -56,7 +61,7 @@ const Orders = () => {
     </Table.Row>
   ));
 
-  if (isError) return <Error description="Something went wrong" />;
+  if (isError) return <Error status={500} message="Server error. Please try again later." height="100vh" />;
 
   return (
     <>
