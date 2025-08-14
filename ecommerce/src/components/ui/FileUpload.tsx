@@ -181,7 +181,7 @@ const MFileUpload = ({
                   </Box>
                   <Image
                     loading="lazy"
-                    src={`${import.meta.env.VITE_BASE_URL}${image}`}
+                    src={`${image}`}
                     alt="Existing Image"
                     w="100%"
                     h="100%"

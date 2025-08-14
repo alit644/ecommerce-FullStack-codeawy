@@ -41,7 +41,7 @@ const CartItems = ({ item }: ICartItems) => {
       <Flex align="center" justify="space-between" flexWrap={"wrap"}  gap={2}>
         <HStack spaceX={4} >
           <Image
-            src={`${import.meta.env.VITE_BASE_URL}${
+            src={`${
               item?.thumbnail?.formats?.small?.url
             }`}
             alt={item.title}

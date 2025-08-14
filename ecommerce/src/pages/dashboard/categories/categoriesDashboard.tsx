@@ -88,22 +88,22 @@ const CategoriesDashboard = () => {
 
 
   const renderTableRows = data?.data.map((category: any) => (
-    <Table.Row key={category.id}>
+    <Table.Row key={category?.id}>
       <Table.Cell>
         <Image
           loading="lazy"
-          src={`${import.meta.env.VITE_BASE_URL}${category.thumbnail?.url}`}
-          alt={category.title}
+          src={`${category?.thumbnail?.url}`}
+          alt={category?.title}
           w={50}
           h={50}
         />
       </Table.Cell>
-      <Table.Cell>{category.id}</Table.Cell>
-      <Table.Cell>{category.title}</Table.Cell>
+      <Table.Cell>{category?.id}</Table.Cell>
+      <Table.Cell>{category?.title}</Table.Cell>
 
       <Table.Cell>
         <HStack>
-          <Link to={`/dashboard/categories/create/${category.documentId}`}>
+          <Link to={`/dashboard/categories/create/${category?.documentId}`}>
             <IconButton aria-label="Edit" variant="ghost" colorScheme="blue">
               <TbEdit />
             </IconButton>

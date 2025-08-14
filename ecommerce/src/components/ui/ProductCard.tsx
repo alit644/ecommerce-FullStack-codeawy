@@ -72,7 +72,7 @@ const ProductCard = ({ data }: { data: IProductCard }) => {
           <Image
             loading="lazy"
             rounded={"md"}
-            src={`${import.meta.env.VITE_BASE_URL}${
+            src={`${
               thumbnail?.formats?.small?.url
             }`}
             alt={title}

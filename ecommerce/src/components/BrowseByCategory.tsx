@@ -56,7 +56,7 @@ const BrowseByCategory = () => {
       thumbnail={{
         formats: {
           small: {
-            url: `${import.meta.env.VITE_BASE_URL}${
+            url: `${
               item?.thumbnail?.formats?.small?.url
             }`,
           },

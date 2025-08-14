@@ -19,9 +19,7 @@ const RecentProductsCard = ({ product }: IRecentProductsCard) => {
       <HStack>
         <Image
           loading="lazy"
-          src={`${import.meta.env.VITE_BASE_URL}${
-            product.thumbnail?.formats?.small?.url
-          }`}
+          src={`${product.thumbnail?.formats?.small?.url}`}
           alt={product.title}
           width="60px"
           height="70px"

@@ -17,7 +17,7 @@ const CheckoutCartCard = ({src, alt, id}: ICheckoutCartCard) => {
  return (
     <Box position="relative" w="70px" h="80px" id={id.toString()}>
       <Image
-        src={`${import.meta.env.VITE_BASE_URL}${src}`}
+        src={`${src}`}
         alt={alt}
         w="70px"
         h="80px"

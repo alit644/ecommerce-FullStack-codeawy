@@ -9,7 +9,7 @@ const ItemDetailsCard = ({ product }: IItemDetailsCard) => {
       <HStack alignItems={"center"} gap={2}>
         <Image
           loading="lazy"
-          src={`${import.meta.env.VITE_BASE_URL}${
+          src={`${
             product?.thumbnail?.formats?.small?.url
           }`}
           alt={product?.title}

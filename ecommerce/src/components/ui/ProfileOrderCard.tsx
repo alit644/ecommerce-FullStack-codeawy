@@ -40,9 +40,7 @@ const ProfileOrderCard = ({ data }: IProfileOrderCard) => {
     >
       <Image
         loading="lazy"
-        src={`${import.meta.env.VITE_BASE_URL}${
-          data.thumbnail.formats.small.url
-        }`}
+        src={`${data.thumbnail.formats.small.url}`}
         alt={data.title}
         w="100%"
         h="180px"

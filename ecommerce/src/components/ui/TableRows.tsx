@@ -19,7 +19,7 @@ const OrdersTableRows = ({ data }: { data: IOrder[] }) => {
               <Image
                 w={"50px"}
                 h={"60px"}
-                src={`${import.meta.env.VITE_BASE_URL}${images?.[0]}`}
+                src={`${images?.[0]}`}
               />
             </Table.Cell>
             <Table.Cell>{order?.createdAt?.split("T")[0]}</Table.Cell>
