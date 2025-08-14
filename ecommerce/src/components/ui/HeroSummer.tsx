@@ -9,7 +9,7 @@ const HeroSummer = () => {
       {/* Background Image */}
       <Image
         loading="lazy"
-        src="../../../public/Banner2Web.webp"
+        src="/Banner2Web.webp"
         alt="Summer Collection"
         position="absolute"
         top={0}

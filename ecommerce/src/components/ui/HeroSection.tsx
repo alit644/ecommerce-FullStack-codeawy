@@ -75,7 +75,7 @@ const HeroSection = () => {
       >
         <Image
           loading="lazy"
-          src="../../../public/Iphone Image.webp"
+          src="/Iphone Image.webp"
           w={{ base: "70%", md: "100%" }}
           h={{ base: "70%", md: "100%" }}
           mx={"auto"}
