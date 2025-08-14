@@ -10,7 +10,6 @@ import { schemaAddCategory } from "../../../schema";
 import { yupResolver } from "@hookform/resolvers/yup";
 import type { IFormInputCategory } from "../../../interfaces";
 import {
-  useDeleteImageMutation,
   useUpdateCategoryMutation,
   useUploadCategoryMutation,
   useUploadImageMutation,
@@ -34,7 +33,6 @@ const AddCategory = () => {
     useUpdateCategoryMutation();
   const [uploadCategory, { isLoading, error: categoryError }] =
     useUploadCategoryMutation();
-  const [deleteImage] = useDeleteImageMutation();
   const {
     register,
     handleSubmit,
@@ -75,7 +73,6 @@ const AddCategory = () => {
       //! RTk Query
       let imageID = "";
       //! Get initial image IDs for comparison (to delete old images)
-      const initialImageIDs = editCategoryData?.thumbnail?.id;
 
       //! File رقع الصور في حالة كانت
       const isThumbnailFile = Array.isArray(data.thumbnail);
@@ -83,7 +80,6 @@ const AddCategory = () => {
       const isThumbnailID =
         typeof data.thumbnail === "string" ||
         typeof data.thumbnail === "number";
-
 
       //! رفع الصور الجديدة (الصورة الرئيسية وصور المعرض) إذا تم اختيارها من قبل المستخدم
       let uploadResponse: { id: string; type: string }[] = [];
@@ -121,10 +117,7 @@ const AddCategory = () => {
           documentId: editCategoryId || "",
         }).unwrap();
         console.log("updateCategoryResponse RTK Query", updateCategoryResponse);
-        if (initialImageIDs) {
-          const deleteImageResponse = await deleteImage(initialImageIDs).unwrap()
-          console.log("deleteImageResponse RTK Query", deleteImageResponse);
-        }
+
         // //? Toaster
 
         toaster.success({
@@ -247,13 +240,12 @@ const AddCategory = () => {
                 name="thumbnail"
                 control={control}
                 rules={{
-
                   required: true,
                   validate: (value) => {
-                   if (!value) {
-                    return "Thumbnail is required";
-                  }
-                  return true;
+                    if (!value) {
+                      return "Thumbnail is required";
+                    }
+                    return true;
                   },
                 }}
                 render={({ field }) => (

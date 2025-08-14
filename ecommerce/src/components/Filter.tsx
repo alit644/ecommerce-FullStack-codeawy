@@ -8,7 +8,7 @@ import type {
   ICategory,
   ITag,
 } from "../interfaces";
-import { brands, price } from "../data";
+import { brands } from "../data";
 import AccordionComponent from "./Accordion/Accordion";
 import { useMemo } from "react";
 import Error from "./Error/Error";
@@ -67,12 +67,7 @@ const FilterSidebar = ({
         label: "Brand",
         each: brands as CheckboxOption[],
       },
-      {
-        value: "price",
-        key: "price",
-        label: "Price",
-        each: price as CheckboxOption[],
-      },
+
       {
         value: "category",
         key: "category",
@@ -86,13 +81,26 @@ const FilterSidebar = ({
 
   if (isLoading)
     return (
-      <SkeletonCard count={accordionItems.length} noOfLines={2} isAction={false} height="60px" textSkeleton={false}/>
+      <SkeletonCard
+        count={accordionItems.length}
+        noOfLines={2}
+        isAction={false}
+        height="60px"
+        textSkeleton={false}
+      />
     );
   if (error) return <Error status={500} message="Failed to fetch filters" />;
-  if (!categories || !tags) return <Error status={500} message="Filters not available" />;
+  if (!categories || !tags)
+    return <Error status={500} message="Filters not available" />;
 
- return (
-    <Box w="full" maxW="280px" p={2} borderRight={{base:"0", md:"1px solid #e2e8f0"}} h="full">
+  return (
+    <Box
+      w="full"
+      maxW="280px"
+      p={2}
+      borderRight={{ base: "0", md: "1px solid #e2e8f0" }}
+      h="full"
+    >
       <Accordion.Root collapsible defaultValue={[""]}>
         {accordionItems.map((item) => (
           <AccordionComponent
@@ -106,16 +114,15 @@ const FilterSidebar = ({
         ))}
       </Accordion.Root>
 
-      
       <MButton
-      w="full"
-      mt={4}
-      mb={2}
+        w="full"
+        mt={4}
+        mb={2}
         title="Reset Filters"
         variant="outline"
         size="md"
         onClick={resetFilters}
-      /> 
+      />
     </Box>
   );
 };

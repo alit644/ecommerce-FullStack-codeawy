@@ -96,15 +96,7 @@ export const brands = [
   { name: "Motorola", count: 34 },
   { name: "Nokia", count: 22 },
   { name: "Realme", count: 35 },
-];
-
-export const price = [
-  { name: "Under $100", count: 110 },
-  { name: "$100 - $500", count: 125 },
-  { name: "$500 - $1000", count: 68 },
-  { name: "$1000 - $2000", count: 44 },
-  { name: "$2000 - $5000", count: 38 },
-  { name: "$5000 - $10000", count: 10 },
+  { name: "Dell", count: 28 },
 ];
 
 export const deliveryInfo = [

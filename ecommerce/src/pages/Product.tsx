@@ -125,9 +125,7 @@ const Product = () => {
         {/* Product Images */}
         <Stack align={{ base: "center", md: "start" }} direction={"column"}>
           <Image
-            src={`${import.meta.env.VITE_BASE_URL}${
-              product?.images?.[selectedImage]?.formats?.small?.url
-            }`}
+            src={`${product?.images?.[selectedImage]?.formats?.small?.url}`}
             alt={product?.title}
             borderRadius="lg"
             boxShadow="lg"
@@ -152,9 +150,7 @@ const Product = () => {
               >
                 <Image
                   key={index}
-                  src={`${import.meta.env.VITE_BASE_URL}${
-                    image?.formats?.small?.url
-                  }`}
+                  src={`${image?.formats?.small?.url}`}
                   alt={`Thumbnail ${index + 1}`}
                   h="80px"
                   w="70px"
