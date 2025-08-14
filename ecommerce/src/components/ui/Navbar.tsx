@@ -145,6 +145,8 @@ export default function Navbar() {
                 color={"gray.500"}
                 _hover={{ color: "teal.500" }}
                 size={"md"}
+                aria-label="Add to cart"
+                title="Add to cart"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -166,7 +168,7 @@ export default function Navbar() {
             </Box>
           </RouterLink>
           <RouterLink to={"wishlist"}>
-            <IconButton variant={"plain"} size={"md"} color={"gray.500"}>
+            <IconButton variant={"plain"} size={"md"} color={"gray.500"} aria-label="Add to wishlist" title="Add to wishlist">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="34"
