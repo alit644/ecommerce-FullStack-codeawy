@@ -1,5 +1,4 @@
 import { Grid } from "@chakra-ui/react";
-import type { IProductCard } from "../interfaces";
 import Error from "./Error/Error";
 import NoResult from "./ui/NoResult";
 import SkeletonCard from "./ui/Skeleton";

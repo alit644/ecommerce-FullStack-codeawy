@@ -1,5 +1,4 @@
 import {  Flex, HStack, IconButton, Text } from "@chakra-ui/react";
-import { HiChevronRight, HiChevronLeft } from "react-icons/hi";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 interface MainTitleProps {
   title: string;

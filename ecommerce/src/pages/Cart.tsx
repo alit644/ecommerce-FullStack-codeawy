@@ -10,7 +10,7 @@ import {
 
 import { useColorModeValue } from "../components/ui/color-mode";
 import { useAppDispatch, useAppSelector } from "../App/store";
-import { Link, Navigate } from "react-router";
+import { Link } from "react-router";
 import { removeItem } from "../App/features/cartSlice";
 import { closeDialog } from "../App/features/globalSlice";
 import DialogAlert from "../components/ui/Dialog";
