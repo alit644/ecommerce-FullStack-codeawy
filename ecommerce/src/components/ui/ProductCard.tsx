@@ -112,9 +112,8 @@ const ProductCard = ({ data }: { data: IProductCard }) => {
             fontSize={{ base: "xs", md: "sm" }}
             color="gray.500"
             lineClamp={2}
-            // h={"3.3rem"}
-            maxH={"3.3rem"}
-            overflow="hidden"
+            h="3rem"
+            maxH="3rem"
           >
             {description}
           </Text>

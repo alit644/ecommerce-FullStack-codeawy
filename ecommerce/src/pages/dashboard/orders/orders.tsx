@@ -83,7 +83,7 @@ const Orders = () => {
             gap={4}
           >
             {/* Search Query */}
-            <SearchQuery setSearchQuery={setSearchQuery} />
+            <SearchQuery setSearchQuery={setSearchQuery} placeholder="Search orders..."/>
             {/* Sort */}
             <SortMenu value={value} setValue={setValue} />
           </Flex>

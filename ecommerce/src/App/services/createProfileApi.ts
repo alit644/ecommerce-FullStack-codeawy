@@ -4,7 +4,7 @@ import type { OrdersResponse } from "../../interfaces";
 import qs from "qs";
 export const createProfileApi = createApi({
   reducerPath: "createProfileApi",
-  tagTypes: ['orders', 'profile'],
+  tagTypes: ["orders", "profile"],
   baseQuery: fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_BASE_URL}/api`,
     credentials: "include",
@@ -17,7 +17,7 @@ export const createProfileApi = createApi({
     },
   }),
   endpoints: (builder) => ({
-   getUserOrders: builder.query<
+    getUserOrders: builder.query<
       OrdersResponse,
       {
         page: number;
@@ -28,6 +28,17 @@ export const createProfileApi = createApi({
       }
     >({
       query: ({ page, pageSize, valueSort, query, userID }) => {
+       const filters: { $or: Array<Record<string, unknown>> } = { $or: [] };
+
+       if (query && query.trim()) {
+         // إذا القيمة رقم → بحث بالـ id
+         if (!isNaN(Number(query))) {
+           filters.$or.push({ id: { $eq: Number(query) } });
+         } else {
+           // إذا نص → بحث جزئي على الحالة
+           filters.$or.push({ statuss: { $containsi: query } });
+         }
+       }
         const queryString = qs.stringify(
           {
             populate: {
@@ -44,32 +55,14 @@ export const createProfileApi = createApi({
               pageSize,
             },
             sort: valueSort ? ["createdAt:" + valueSort] : undefined,
+            ...(filters.$or.length > 0 ? { filters } : {}),
           },
           { encodeValuesOnly: true }
         );
-        const searchQuery = qs.stringify({
-          filters: {
-            $or: [
-              {
-                id: {
-                  $contains: query,
-                },
-              },
-              {
-                statuss: {
-                  $contains: query,
-                },
-              },
-            ],
-            user: {
-              id: {
-                $eq: userID,
-              },
-            },
-          },
-        });
+
+       
         return {
-          url: `/orders?${queryString}&${searchQuery}`,
+          url: `/orders?${queryString}&filters[user][id][$eq]=${userID}`,
           method: "GET",
         };
       },
@@ -114,15 +107,19 @@ export const createProfileApi = createApi({
       ],
     }),
     changeUserPassword: builder.mutation({
-      query: (passwordData: { currentPassword: string; password: string; passwordConfirmation: string }) => ({
+      query: (passwordData: {
+        currentPassword: string;
+        password: string;
+        passwordConfirmation: string;
+      }) => ({
         url: `/auth/change-password`,
         method: "POST",
         body: {
-         currentPassword: passwordData.currentPassword,
+          currentPassword: passwordData.currentPassword,
           password: passwordData.password,
           passwordConfirmation: passwordData.passwordConfirmation,
         },
-      }), 
+      }),
       invalidatesTags: (result) => [
         { type: "profile", id: result?.data?.documentId },
       ],
@@ -130,5 +127,9 @@ export const createProfileApi = createApi({
   }),
 });
 
-export const { useCreateAddressMutation, useGetUserAddressQuery , useGetUserOrdersQuery , useChangeUserPasswordMutation } =
-  createProfileApi;
+export const {
+  useCreateAddressMutation,
+  useGetUserAddressQuery,
+  useGetUserOrdersQuery,
+  useChangeUserPasswordMutation,
+} = createProfileApi;

@@ -21,7 +21,7 @@ export const fetchProducts = async (
       { encodeValuesOnly: true }
     );
 
-    const { data } = await api.get(`api/products?${queryString}&${filters}&filters[$or][0][title][$contains]=${query}&filters[$or][1][category][title][$contains]=${query}`);
+    const { data } = await api.get(`api/products?${queryString}&${filters}&filters[$or][0][title][$containsi]=${query}&filters[$or][1][category][title][$containsi]=${query}`);
     return data;
   } catch (error) {
     console.log(error);

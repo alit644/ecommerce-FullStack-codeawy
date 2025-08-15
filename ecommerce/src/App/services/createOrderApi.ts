@@ -4,7 +4,7 @@ import type { IOrder, OrdersResponse } from "../../interfaces";
 import qs from "qs";
 export const createOrderApi = createApi({
   reducerPath: "createOrderApi",
-  tagTypes: ['orders', 'profile'],
+  tagTypes: ["orders", "profile"],
   baseQuery: fetchBaseQuery({
     baseUrl: `${import.meta.env.VITE_BASE_URL}/api`,
     credentials: "include",
@@ -27,16 +27,21 @@ export const createOrderApi = createApi({
       }
     >({
       query: ({ page, pageSize, valueSort, query }) => {
+        const filters: { $or: Array<Record<string, unknown>> } = { $or: [] };
+
+        if (query && query.trim()) {
+          // إذا القيمة رقم → بحث بالـ id
+          if (!isNaN(Number(query))) {
+            filters.$or.push({ id: { $eq: Number(query) } });
+          } else {
+            // إذا نص → بحث جزئي على الحالة
+            filters.$or.push({ statuss: { $containsi: query } });
+          }
+        }
         const queryString = qs.stringify(
           {
             populate: {
-              // items: {
-              //   populate: {
-              //     product: {
-              //       populate: ["thumbnail"],
-              //     },
-              //   },
-              // },
+           
               items: true,
               user: true,
             },
@@ -45,27 +50,15 @@ export const createOrderApi = createApi({
               pageSize,
             },
             sort: valueSort ? ["createdAt:" + valueSort] : undefined,
+            ...(filters.$or.length > 0 ? { filters } : {}),
+
           },
           { encodeValuesOnly: true }
+
         );
-        const searchQuery = qs.stringify({
-          filters: {
-            $or: [
-              {
-                id: {
-                  $contains: query,
-                },
-              },
-              {
-                statuss: {
-                  $contains: query,
-                },
-              },
-            ],
-          },
-        });
+        
         return {
-          url: `/orders?${queryString}&${searchQuery}`,
+          url: `/orders?${queryString}`,
           method: "GET",
         };
       },
@@ -126,7 +119,7 @@ export const createOrderApi = createApi({
         },
       }),
       invalidatesTags: (result) => [
-        { type: "orders", id: result?.data?.documentId } ,
+        { type: "orders", id: result?.data?.documentId },
         { type: "profile", id: result?.data?.documentId },
       ],
     }),
@@ -151,12 +144,10 @@ export const createOrderApi = createApi({
         },
       }),
       invalidatesTags: (result) => [
-        { type: "orders", id: result?.data?.documentId } ,
+        { type: "orders", id: result?.data?.documentId },
         { type: "profile", id: result?.data?.documentId },
       ],
     }),
-    
-  
   }),
 });
 
@@ -165,5 +156,4 @@ export const {
   useGetOrderByIdQuery,
   useUpdateOrderStatusMutation,
   useCreateOrderMutation,
- 
 } = createOrderApi;

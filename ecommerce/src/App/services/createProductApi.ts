@@ -47,13 +47,13 @@ export const createProductApi = createApi({
             $or: [
               {
                 title: {
-                  $contains: query,
+                  $containsi: query,
                 },
               },
               {
                 category: {
                   title: {
-                    $contains: query,
+                    $containsi: query,
                   },
                 },
               },
@@ -146,13 +146,13 @@ export const createProductApi = createApi({
             $or: [
               {
                 title: {
-                  $contains: query,
+                  $containsi: query,
                 },
               },
               {
                 category: {
                   title: {
-                    $contains: query,
+                    $containsi: query,
                   },
                 },
               },

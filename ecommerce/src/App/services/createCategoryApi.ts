@@ -42,7 +42,7 @@ export const createCategoryApi = createApi({
             $or: [
               {
                 title: {
-                  $contains: query,
+                  $containsi: query,
                 },
               },
             ],

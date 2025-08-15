@@ -37,7 +37,6 @@ const Profile = () => {
       refetchOnMountOrArgChange: false,
     }
   );
-
   if (isError) return <Error status={500} message="Server error. Please try again later." />;
 
   return (
