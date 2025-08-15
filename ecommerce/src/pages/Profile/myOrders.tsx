@@ -10,7 +10,7 @@ import SortMenu from "../../components/ui/SortMenu";
 import { tableOrderUserColumns } from "../../data";
 import TablePagination from "../../components/ui/Table/TablePagination";
 import OrdersTableRows from "../../components/ui/TableRows";
-import { useGetUserOrdersQuery } from "../../App/services/createProfileApi";
+import { useGetUserOrdersQuery } from "../../App/services/createOrderApi";
 import { setPage } from "../../App/features/paginationSlice";
 
 const Profile = () => {

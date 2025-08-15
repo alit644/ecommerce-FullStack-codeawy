@@ -148,6 +148,68 @@ export const createOrderApi = createApi({
         { type: "profile", id: result?.data?.documentId },
       ],
     }),
+    getUserOrders: builder.query<
+      OrdersResponse,
+      {
+        page: number;
+        pageSize: number;
+        valueSort?: string;
+        query?: string;
+        userID: number;
+      }
+    >({
+      query: ({ page, pageSize, valueSort, query, userID }) => {
+       const filters: { $or: Array<Record<string, unknown>> } = { $or: [] };
+
+       if (query && query.trim()) {
+         // إذا القيمة رقم → بحث بالـ id
+         if (!isNaN(Number(query))) {
+           filters.$or.push({ id: { $eq: Number(query) } });
+         } else {
+           // إذا نص → بحث جزئي على الحالة
+           filters.$or.push({ statuss: { $containsi: query } });
+         }
+       }
+        const queryString = qs.stringify(
+          {
+            populate: {
+              items: {
+                populate: {
+                  product: {
+                    populate: ["thumbnail"],
+                  },
+                },
+              },
+            },
+            pagination: {
+              page,
+              pageSize,
+            },
+            sort: valueSort ? ["createdAt:" + valueSort] : undefined,
+            ...(filters.$or.length > 0 ? { filters } : {}),
+          },
+          { encodeValuesOnly: true }
+        );
+
+       
+        return {
+          url: `/orders?${queryString}&filters[user][id][$eq]=${userID}`,
+          method: "GET",
+        };
+      },
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.data.map(({ documentId }) => ({
+                type: "orders" as const,
+                id: documentId,
+              })),
+              { type: "orders", id: "LIST" },
+            ]
+          : [{ type: "orders", id: "LIST" }],
+
+      keepUnusedDataFor: 300,
+    }),
   }),
 });
 
@@ -156,4 +218,5 @@ export const {
   useGetOrderByIdQuery,
   useUpdateOrderStatusMutation,
   useCreateOrderMutation,
+  useGetUserOrdersQuery,
 } = createOrderApi;
